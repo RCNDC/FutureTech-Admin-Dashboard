@@ -1,18 +1,26 @@
-import { Link } from "react-router"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { Label } from "./ui/label"
-import { useForm, type SubmitHandler } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { LoginValidationSchema, type LoginFormData } from "../types/auth"
-import { useMutation } from "@tanstack/react-query"
+import { Link } from "react-router";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginValidationSchema, type LoginFormData } from "../types/auth";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "@/lib/axiosinstance";
+import { useAuth } from "./authprovider";
+import Loading from "./loading";
 const LoginForm = () =>{
+    const  auth = useAuth();
     const {register, handleSubmit, formState:{errors}} = useForm<LoginFormData>({
         resolver: zodResolver(LoginValidationSchema),
     })
-    const {} = useMutation({
+    const {mutate, isPending} = useMutation({
         mutationFn: async (data:LoginFormData)=>{
-            const response =
+            const response = await axiosInstance.post('/auth/login', data);
+            if(auth){
+                auth.setToken(response.data.accessToken);
+            }
+            
         }
     })
     const onSubmit:SubmitHandler<LoginFormData> = (data)=>{
@@ -34,7 +42,11 @@ const LoginForm = () =>{
                 <Link to="/forgot-password" className="text-sm text-purple-900 hover:underline my-1">Forgot Password?</Link>
             </div>
             <div className="w-full">
-                <Button className="w-full bg-purple-700 text-white font-semibold">Login</Button>
+                <Button className="w-full bg-purple-700 text-white font-semibold hover:bg-purple-500" disabled={isPending}>
+                    Login
+                    {isPending && <Loading/>}
+                    
+                </Button>
             </div>
         </form>
     )

@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axiosinstance";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { redirect } from "react-router";
 
 type authContextType = {
@@ -35,5 +35,5 @@ export function useAuth(){
     if(!authContext){
         throw new Error("useAuth must be used within an AuthProvider");
     }
-    return authContext;
+    return useContext(authContext);
 }
