@@ -12,7 +12,7 @@ export default function AuthProvider({children}: {children: React.ReactNode}){
     const [token, setToken] = useState<string | null>(null);
     useEffect(()=>{
         if(!token){
-            axiosInstance.post('/refresh-token',null).then(res=>{
+            axiosInstance.post('/auth/refresh-token').then(res=>{
                 const data = res.data;
                 if(data){
                     setToken(data.accessToken);

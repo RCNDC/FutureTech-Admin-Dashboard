@@ -24,7 +24,7 @@ const LoginForm = () =>{
         }
     })
     const onSubmit:SubmitHandler<LoginFormData> = (data)=>{
-        console.log(data);
+        mutate(data)
     }
     return(
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
