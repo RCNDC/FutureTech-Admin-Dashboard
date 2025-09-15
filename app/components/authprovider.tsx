@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/axiosinstance";
 import { createContext, useContext, useEffect, useState } from "react";
-import { redirect, useLocation } from "react-router";
+import { redirect, useLocation, useNavigate } from "react-router";
 
 type authContextType = {
     token: string | null,
@@ -13,6 +13,7 @@ const excludedPath = ['/register', '/forgot-password', '/reset-password']
 export default function AuthProvider({children}: {children: React.ReactNode}){
     const [token, setToken] = useState<string | null>(null);
     const location = useLocation();
+    const navigate = useNavigate();
     useEffect(()=>{
         if(!excludedPath.includes(location.pathname)){
             if(!token){
@@ -22,7 +23,7 @@ export default function AuthProvider({children}: {children: React.ReactNode}){
                         setToken(data.accessToken);
                     }
                 }).catch(err=>{
-                    redirect('/login');
+                    navigate('/login');
                 })
             }
         }

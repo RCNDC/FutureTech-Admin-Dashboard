@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -10,17 +10,18 @@ import axiosInstance from "@/lib/axiosinstance";
 import { useAuth } from "./authprovider";
 import Loading from "./loading";
 const LoginForm = () =>{
-    const  auth = useAuth();
     const {register, handleSubmit, formState:{errors}} = useForm<LoginFormData>({
         resolver: zodResolver(LoginValidationSchema),
-    })
+    });
+    const navigate = useNavigate();
     const {mutate, isPending} = useMutation({
         mutationFn: async (data:LoginFormData)=>{
             const response = await axiosInstance.post('/auth/login', data);
-            if(auth){
-                auth.setToken(response.data.accessToken);
-            }
+            return response.data;
             
+        },
+        onSuccess:()=>{
+            navigate('/dashboard/home')
         }
     })
     const onSubmit:SubmitHandler<LoginFormData> = (data)=>{

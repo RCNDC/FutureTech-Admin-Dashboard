@@ -9,7 +9,6 @@ import {
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import type { Route } from "./+types/root";
 import "./app.css";
-import AuthProvider from "./components/authprovider";
 import { Toaster } from "./components/ui/sonner";
 
 
@@ -51,11 +50,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
 
   return(
-    <AuthProvider>
+   
     <QueryClientProvider client={queryClient}>
       <Outlet />
     </QueryClientProvider>
-    </AuthProvider> 
+    
   );
 }
 
