@@ -9,6 +9,8 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosinstance";
 import { useAuth } from "./authprovider";
 import Loading from "./loading";
+import { AxiosError } from "axios";
+import { toastError } from "@/lib/toast";
 const LoginForm = () =>{
     const {register, handleSubmit, formState:{errors}} = useForm<LoginFormData>({
         resolver: zodResolver(LoginValidationSchema),
@@ -22,6 +24,11 @@ const LoginForm = () =>{
         },
         onSuccess:()=>{
             navigate('/dashboard/home')
+        },
+        onError:(error)=>{
+            if(error instanceof AxiosError){
+                toastError("Incorrect Email or Password")
+            }
         }
     })
     const onSubmit:SubmitHandler<LoginFormData> = (data)=>{

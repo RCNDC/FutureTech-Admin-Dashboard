@@ -4,16 +4,15 @@ import ResetPasswordForm from "@/components/newpasswordform";
 import { redirect, useNavigate } from "react-router";
 import type { response } from "@/types/response";
 import Loading from "@/components/loading";
+import Fallback from "@/components/fallback";
 
-export async function clientLoader({params}:Route.ClientLoaderArgs){
+export async function clientLoader({params}:Route.ClientLoaderArgs):Promise<{message:string}>{
         const res = await axiosInstance.post<response<any>>('/user/reset-password/'+params.param);
         return {message:res.data.message};
 }
 
 export function HydrateFallback(){
-    return <div className="flex justify-center text-center ">
-        <Loading/>
-    </div>
+    return <Fallback/>
 }
 
 export default function ResetPassword({

@@ -8,7 +8,8 @@ export default [
         route('/reset-password/:param', 'routes/resetpassword.tsx')
     ]), 
     layout('layouts/dashboard.tsx', [
-        route('/dashboard/home', 'routes/dashboardhome.tsx')
+        route('/dashboard/home', 'routes/dashboardhome.tsx'),
+        route('/dashboard/embassy', 'routes/embassy/index.tsx')
     ]),
     layout('layouts/checkout.tsx', [
         route('checkout', 'routes/checkout.tsx'),

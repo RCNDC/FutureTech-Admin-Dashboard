@@ -1,4 +1,4 @@
-import { useNavigate, type ClientLoaderFunctionArgs } from "react-router";
+import { useAsyncError, useNavigate, type ClientLoaderFunctionArgs } from "react-router";
 import type { Route } from "../+types/root";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,8 @@ import { toastError, toastSuccess } from "@/lib/toast";
 import { AxiosError } from "axios";
 import Loading from "@/components/loading";
 import { Check, Ticket } from "lucide-react";
+import Fallback from "@/components/fallback";
+import { useState } from "react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -37,6 +39,10 @@ export async function clientLoader({request}:ClientLoaderFunctionArgs){
 
 }
 
+export function HydrateFallback(){
+    return <Fallback/>
+}
+
 
 
 const CheckOut = ({loaderData}: Route.ComponentProps)=>{
@@ -58,6 +64,9 @@ const CheckOut = ({loaderData}: Route.ComponentProps)=>{
             }
         }
     })
+    const [fullName, setFullName] = useState("Full name");
+    const [email, setEmail] = useState("youremail@domain.com");
+    const [phone, setPhone] = useState("000 000 000")
     const {register, handleSubmit, formState:{errors}} = useForm<AttendeeValidationType>({
         resolver: zodResolver(AttendeeValidationSchema),
         defaultValues:{
@@ -65,31 +74,34 @@ const CheckOut = ({loaderData}: Route.ComponentProps)=>{
             fullname: loaderData.fullname,
             phone: loaderData.phone,
 
-        }
+        },
+        
     });
     const submit:SubmitHandler<AttendeeValidationType> = (data)=>{
         mutate(data)
     }
     return(
         <div>
-            {
-                loaderData && loaderData?.attendeType === 'Event' &&
+           
             <form className="space-y-4 md:w-[60%] mx-auto" onSubmit={handleSubmit(submit)}>
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
                     <div className="space-y-2">
                         <Label htmlFor="fullname">Full Name</Label>
-                        <Input type="text" {...register('fullname')}/>
+                        <Input type="text" {...register('fullname')} onChange={(e)=>setFullName(e.target.value)}/>
                         {errors.fullname && <span className="text-red-500 text-sm font-semibold">{errors.fullname?.message}</span>}
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input type="email" {...register('email')}/>
+                        <Input type="email" {...register('email')} onChange={(e)=>setEmail(e.target.value)}/>
                         {errors.email && <span className="text-red-500 text-sm font-semibold">{errors.email?.message}</span>}
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="phone">Phone Number</Label>
-                        <Input type="tel" {...register('phone')}/>
+                        <Input type="tel" {...register('phone')} onChange={(e)=>setPhone(e.target.value)}/>
                         {errors.phone && <span className="text-red-500 text-sm font-semibold">{errors.phone?.message}</span>}
+                    </div>
+                    <div className="space-y-2">
+
                     </div>
                 </div>
                 <Button className="w-full bg-purple-500 text-white font-medium" disabled={isPending}>
@@ -98,14 +110,35 @@ const CheckOut = ({loaderData}: Route.ComponentProps)=>{
                     {isPending && <Loading/>}
                 </Button>
             </form>
-            }
-            {
-                loaderData && loaderData?.attendeType === 'Conference' &&
-                <div className="w-60 h-60 shadow-md rounded-md text-center">
-                    <Check className="w-32 h-32 fill-green-500 text-white"/>
-                    <h4>Email has been sent. Please check your email</h4>
+            <div className="max-w-fit mt-10 mx-auto  rounded-md border border-gray-400">
+                <div className="w-full p-5 bg-purple-500 flex items-center gap-3">
+                    <img src="https://futuretechaddis.com/wp-content/uploads/2025/04/logo-future-.png" className="w-16 h-16 object-contain"/>
+                    <div className="flex flex-col ">
+                        <span className="text-white text-lg font-extrabold">Future Tech Addis Invitation Ticket</span>
+                        <span className="text-white/80 text-sm font-semibold">November 28 - November 30, 2025</span>
+                    </div>
                 </div>
-            }
+                <div className="flex flex-wrap p-3 gap-2">
+                <div className="border border-gray-300">
+                    <img src="sample.png" className=""/>
+                </div>
+                <div className="grid grid-cols-2 gap-2 items-center">
+                    <div className="flex gap-2 items-center">
+                        <span className="font-thin uppercase">Name:</span>
+                        <span className="border-b border-dotted border-gray-300 font-normal">{fullName}</span>
+                    </div>
+                    <div className="flex gap-2 items-center">
+                        <span className="font-thin uppercase">Email:</span>
+                        <span className="border-b border-gray-300">{email}</span>
+                    </div>
+                    <div className="flex gap-2 items-center">
+                        <span className="font-thin uppercase">Phone:</span>
+                        <span className="border-b border-gray-300">{phone}</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
 
         </div>
     )
