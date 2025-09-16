@@ -8,9 +8,16 @@ export default function DashboardLayout(){
          <AuthProvider>
         <div>
             <DashboardHeader/>
-            <div className="flex gap-5">
-                <DashboardSideBar/>
-                <Outlet/>
+            <div className="flex gap-4  w-full">
+                <div>
+                    <DashboardSideBar/>
+                </div>
+                <div className="w-full mt-3 p-5">
+
+                    <Outlet/>
+                </div>
+                
+
             </div>      
         </div>
         </AuthProvider>

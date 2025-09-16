@@ -17,7 +17,7 @@ export function HydrateFallback(){
     return <Fallback/>
 }
 const Index = ()=>{
-
+    
 
 }
 

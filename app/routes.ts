@@ -9,9 +9,12 @@ export default [
     ]), 
     layout('layouts/dashboard.tsx', [
         route('/dashboard/home', 'routes/dashboardhome.tsx'),
-        route('/dashboard/embassy', 'routes/embassy/index.tsx')
+        route('/dashboard/embassy', 'routes/embassy/index.tsx'),
+        route('/dashboard/checkin', 'routes/checkin/index.tsx')
+
     ]),
     layout('layouts/checkout.tsx', [
         route('checkout', 'routes/checkout.tsx'),
-        route('checkout/completed', 'routes/completed.tsx')
+        route('checkout/completed', 'routes/completed.tsx'),
+        
     ])] satisfies RouteConfig;

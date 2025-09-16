@@ -1,4 +1,5 @@
 import { Check, GaugeCircle, Ticket, User, Users } from "lucide-react";
+import { Link } from "react-router";
 
 const DashboardSideBar = ()=>{
     return(
@@ -6,9 +7,11 @@ const DashboardSideBar = ()=>{
             <div className="mt-10 space-y-2">
                 <h5 className="text-gray-300">Overview</h5>
                 <ul className="my-3 ml-2">
-                    <li className="flex items-center gap-2 text-white text-sm">
-                        <GaugeCircle className="w-4 h-4"/>
-                        Dashboard
+                    <li className=" text-white text-sm">
+                        <Link to="/dashboard/home" className="flex items-center gap-2">
+                            <GaugeCircle className="w-4 h-4"/>
+                            Dashboard
+                        </Link>
                     </li>
                 </ul>
                 <h5 className="text-gray-300">Participants</h5>
@@ -28,9 +31,11 @@ const DashboardSideBar = ()=>{
                         <Users className="w-4 h-4"/>
                         Attendees
                     </li>
-                    <li className="flex items-center gap-2 text-white text-sm">
-                        <Check className="w-4 h-4"/>
-                        Check-in
+                    <li className=" text-white text-sm">
+                        <Link to='/dashboard/checkin'  className="flex items-center gap-2">
+                            <Check className="w-4 h-4"/>
+                            Check-in
+                        </Link>
                     </li>
                 </ul>
             </div>
