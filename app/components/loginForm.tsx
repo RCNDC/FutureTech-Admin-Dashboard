@@ -27,7 +27,7 @@ const LoginForm = () =>{
         },
         onError:(error)=>{
             if(error instanceof AxiosError){
-                toastError("Incorrect Email or Password")
+                toastError(error.response?.data.message);
             }
         }
     })

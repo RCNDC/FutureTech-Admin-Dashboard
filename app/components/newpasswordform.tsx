@@ -12,11 +12,12 @@ import { useNavigate } from "react-router";
 import Loading from "./loading";
 import type { FC } from "react";
 
-const ResetPasswordForm:FC<{token:string}> = (token)=>{
+const ResetPasswordForm:FC<{token:string}> = ({token})=>{
     const {register, handleSubmit, formState:{errors}} = useForm<PasswordResetType>({
         resolver: zodResolver(PasswordResetSchema)
     });
     const navigate = useNavigate();
+    
     const {mutate, isPending} = useMutation({
         mutationFn: async (data:PasswordResetType)=>{
             const res = await axiosInstance.post<response<any>>('/user/change-password/'+token,{password: data.password})

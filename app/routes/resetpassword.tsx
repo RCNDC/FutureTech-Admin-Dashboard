@@ -25,6 +25,7 @@ export default function ResetPassword({
         navgate('/login')
     }
     
+    
     return(
         <div className="flex justify-center items-center ">
         <div className="md:w-1/2 p-6  rounded-lg shadow-lg ">

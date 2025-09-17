@@ -60,7 +60,7 @@ const CheckOut = ({loaderData}: Route.ComponentProps)=>{
         },
         onError:(error)=>{
             if(error instanceof AxiosError){
-                toastError('Something went wrong. Please try again!');
+                toastError(error.response?.data.message);
             }
         }
     })
