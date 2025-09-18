@@ -1,3 +1,4 @@
+import TotalStat from "@/components/totalstats";
 import type { Route } from "../+types/root";
 
 export function meta({}: Route.MetaArgs) {
@@ -14,7 +15,7 @@ export function loader(){
 export default function DashboardHome(){
     return(
         <div>
-            
+            <TotalStat/>
         </div>
     )
 
