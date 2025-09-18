@@ -1,4 +1,4 @@
-import { type RouteConfig, index, route, layout } from "@react-router/dev/routes";
+    import { type RouteConfig, index, route, layout } from "@react-router/dev/routes";
 
 export default [
     index("routes/home.tsx"), 
@@ -14,7 +14,7 @@ export default [
         route('/dashboard/submission/ngo', 'routes/submissions/ngo/index.tsx'),
         route('/dashboard/submission/localcompany', 'routes/submissions/localcompany/index.tsx'),
         route('/dashboard/submission/internationalcompany', 'routes/submissions/internationalcompany/index.tsx'),
-
+        route("/dashboard/attendees", "routes/attendees/index.tsx"),
     ]),
     layout('layouts/checkout.tsx', [
         route('checkout', 'routes/checkout.tsx'),
