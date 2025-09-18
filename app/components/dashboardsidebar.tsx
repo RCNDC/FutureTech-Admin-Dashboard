@@ -18,7 +18,7 @@ const DashboardSideBar = () => {
         <ul>
           <li className="flex items-center gap-2 text-white text-sm">
             <User className="w-5 h-5" />
-            Embassy Delegation
+            Embassy Delegates
           </li>
         </ul>
         <h5 className="text-gray-300">Event Manage</h5>
@@ -37,6 +37,13 @@ const DashboardSideBar = () => {
             <Link to="/dashboard/checkin" className="flex items-center gap-2">
               <Check className="w-4 h-4" />
               Check-in
+            </Link>
+          </li>
+
+          <li className=" text-white text-sm">
+            <Link to="/dashboard/users" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Users
             </Link>
           </li>
         </ul>
