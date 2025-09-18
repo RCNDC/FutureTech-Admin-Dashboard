@@ -9,11 +9,12 @@ export default [
     ]), 
     layout('layouts/dashboard.tsx', [
         route('/dashboard/home', 'routes/dashboardhome.tsx'),
-        route('/dashboard/embassy', 'routes/embassy/index.tsx'),
         route('/dashboard/checkin', 'routes/checkin/index.tsx'),
         route('/dashboard/submission/ngo', 'routes/submissions/ngo/index.tsx'),
         route('/dashboard/submission/localcompany', 'routes/submissions/localcompany/index.tsx'),
         route('/dashboard/submission/internationalcompany', 'routes/submissions/internationalcompany/index.tsx'),
+        route('/dashboard/submission/embassies', 'routes/submissions/embassy/index.tsx'),
+        route('/dashboard/submission/startups', 'routes/submissions/startup/index.tsx'),
         route("/dashboard/attendees", "routes/attendees/index.tsx"),
     ]),
     layout('layouts/checkout.tsx', [
