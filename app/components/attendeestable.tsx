@@ -3,13 +3,13 @@ import { type AttendeeResponse } from "@/types/attendee"
 import { type response } from "@/types/response"
 import { useQuery } from "@tanstack/react-query"
 import { DataTable } from "./datatable"
-import { columns } from "./attendeecolumns"
 import Loading from "./loading"
 import type { FC } from "react"
+import type { ColumnDef } from "@tanstack/react-table"
 
 
 
-const AttendeeTable:FC<{attendeeData: AttendeeResponse[]}> = ({attendeeData})=>{
+const AttendeeTable:FC<{attendeeData: AttendeeResponse[], columns:ColumnDef<AttendeeResponse>[]}> = ({attendeeData, columns})=>{
     
     return(
         <div>

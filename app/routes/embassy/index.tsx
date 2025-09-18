@@ -11,13 +11,14 @@ export function meta({}: Route.MetaArgs) {
 }
 export async function clientLoader({}:ClientLoaderFunctionArgs){
 
+    return{};
 }
 
 export function HydrateFallback(){
     return <Fallback/>
 }
 const Index = ()=>{
-    
+
 
 }
 

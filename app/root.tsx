@@ -36,7 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body style={{overflow:'hidden'}}>
         {children}
         
         <ScrollRestoration />

@@ -16,6 +16,7 @@ import { AxiosError } from "axios";
 import Loading from "@/components/loading";
 import { useState } from "react";
 import { useDebounce } from "@/hooks/debounce";
+import { columns } from "@/components/attendeecolumns";
 
 
 export function meta({}:Route.MetaArgs){
@@ -35,7 +36,7 @@ export function HydrateFallback(){
 
 const Index = ()=>{
     const auth = useAuth();
-    const [filter, setFilter] = useState();
+    const [filter, setFilter] = useState('');
     const debounceSearchTerm = useDebounce(filter, 500);
     const {data, isLoading, isError , refetch} = useQuery({
         queryKey: ['attendees', debounceSearchTerm],
@@ -45,9 +46,7 @@ const Index = ()=>{
         },
         
     })
-    const filterFn = (text:string)=>{
-
-    }
+   
     const {mutate, isPending} = useMutation({
         mutationFn: async(orderCode:string)=>{
             const res = await axiosInstance.post<response<any>>('/attendee/checkin', {orderNo:orderCode},{
@@ -77,15 +76,15 @@ const Index = ()=>{
         <div>
             <div className="space-y-3">
                 <h3 className="font-semibold text-2xl">Event checkin</h3>
-                <div className="flex items-center gap-2 ">
-                    <Input placeholder="Search by email, order no..." onChange={(e)=>setFilter(e.target.value)}/>
+                <div className="flex  items-center gap-2 ">
+                    <Input placeholder="Search by email, Full name..." onChange={(e)=>setFilter(e.target.value)} />
                     <HtmlQRCode onQRCodeSuccess={onQRSuccess} onQRCodeError={onQRError}/>
                 </div>
                 {
                     isLoading && <Loading/>
                 }
                 {
-                    data?.data && <AttendeeTable attendeeData={data?.data}/>
+                    data?.data && <AttendeeTable attendeeData={data?.data} columns={columns}/>
                 }
             </div>
 
