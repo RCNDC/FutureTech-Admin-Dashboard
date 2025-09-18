@@ -26,8 +26,7 @@ const HtmlQRCode:FC<HtmlQRCodeProps> = ({onQRCodeSuccess, onQRCodeError})=>{
             <DialogHeader >
                 <DialogTitle>QR Code scanner</DialogTitle>
                 <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
+             
             </DialogDescription>
             </DialogHeader>
             <Scanner onScan={onQRCodeSuccess} onError={onQRCodeError} />
@@ -35,7 +34,7 @@ const HtmlQRCode:FC<HtmlQRCodeProps> = ({onQRCodeSuccess, onQRCodeError})=>{
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Save changes</Button>
+            
           </DialogFooter>
           </DialogContent>
         </Dialog>
