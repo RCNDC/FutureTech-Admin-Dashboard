@@ -69,9 +69,10 @@ const CreateUserForm = () => {
           </span>
         )}
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center">
         <Input
           type="checkbox"
+          className="w-4 h-4 mr-2"
           {...register('isLocked')}
         />
         <Label htmlFor="isLocked" className="text-sm text-purple-900">
