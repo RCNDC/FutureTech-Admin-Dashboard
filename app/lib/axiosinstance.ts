@@ -1,7 +1,7 @@
 import type { response } from '@/types/response';
 import axios, { type AxiosResponse } from 'axios';
 
-const API_URL = 'api.futuretech.habesharunway.com/api';
+const API_URL = 'https://futuretech-admin-api.onrender.com//api';
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
