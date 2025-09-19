@@ -18,7 +18,6 @@ RUN npm run build
 
 FROM node:20-alpine
 COPY ./package.json package-lock.json /app/
-COPY ./.env .env /app/
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/build /app/build
 WORKDIR /app
