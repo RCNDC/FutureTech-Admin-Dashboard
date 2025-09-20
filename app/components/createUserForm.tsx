@@ -12,15 +12,21 @@ import axiosInstance from '@/lib/axiosinstance';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { AxiosError } from 'axios';
 import Loading from './loading';
+import { useAuth } from './authprovider';
 
 const CreateUserForm = () => {
+  const auth = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm<CreateUserFormData>({
     resolver: zodResolver(CreateUserValidationSchema),
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: CreateUserFormData) => {
-      const response = await axiosInstance.post('/user/createUser', data);
+      const response = await axiosInstance.post('/user/createUser', data, {
+        headers: {
+          Authorization: `Bearer ${auth?.token}`,
+        },
+      });
       return response.data;
     },
     onSuccess: () => {
