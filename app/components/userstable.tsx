@@ -5,13 +5,17 @@ import type { ColumnDef } from "@tanstack/react-table"
 
 
 
-const UsersTable:FC<{userData: UserResponse[], columns:ColumnDef<UserResponse>[]}> = ({userData, columns})=>{
-    
-    return(
+type UserTableProps = {
+    userData: UserResponse[] | undefined;
+    columns: ColumnDef<UserResponse>[]
+}
+const UsersTable: FC<UserTableProps> = ({ userData, columns }) => {
+
+    return (
         <div>
-            
-            {userData && <DataTable columns={columns} data={userData}/> }
-            
+
+            {userData && <DataTable columns={columns} data={userData} />}
+
         </div>
     )
 }

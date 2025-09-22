@@ -16,6 +16,7 @@ export default [
         route('/dashboard/submission/embassies', 'routes/submissions/embassy/index.tsx'),
         route('/dashboard/submission/startups', 'routes/submissions/startup/index.tsx'),
         route("/dashboard/attendees", "routes/attendees/index.tsx"),
+        route('/dashboard/users', "routes/users/index.tsx")
     ]),
   layout("layouts/checkout.tsx", [
     route("checkout", "routes/checkout.tsx"),
