@@ -10,7 +10,7 @@ RUN npm ci --omit=dev
 
 FROM node:20-alpine AS build-env
 COPY . /app/
-ENV VITE_API_KEY="3EF5EABB9C32A866FF4B2AD6A4D6E"
+
 ENV VITE_ENDPOINT="https://futuretech-admin-api.onrender.com/api"
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules
 WORKDIR /app
