@@ -1,4 +1,5 @@
 import { useAuth } from "@/components/authprovider";
+import { embassycolumns } from "@/components/embassycolums";
 import { columns } from "@/components/submissioncolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
@@ -33,7 +34,7 @@ const Index = () => {
 
     return (
 
-        <SubmissionDetail columns={columns} data={data?.data} isLoading={isLoading} name="Embassy Submissions" />
+        <SubmissionDetail columns={embassycolumns} data={data?.data} isLoading={isLoading} name="Embassy Submissions" />
 
     )
 

@@ -1,7 +1,7 @@
 import type { response } from '@/types/response';
 import axios, { type AxiosResponse } from 'axios';
 
-const API_URL = 'https://futuretech-admin-api.onrender.com/api';
+const API_URL = import.meta.env.VITE_ENDPOINT;
 
 const axiosInstance = axios.create({
     baseURL: API_URL,

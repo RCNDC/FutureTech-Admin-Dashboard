@@ -27,6 +27,7 @@ const Index = () => {
                     'Authorization': 'Bearer ' + auth?.token
                 }
             });
+           
             return res.data;
         }
     });

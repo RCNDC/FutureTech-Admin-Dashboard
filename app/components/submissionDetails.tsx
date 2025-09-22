@@ -1,0 +1,37 @@
+import { Expand } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "./ui/button";
+import type { FC } from "react";
+import EmbassyDetail from "./embassydetail";
+
+type SubmissionDetailProps={
+    entry_id:number,
+    submissionType: string;
+}
+const SubmissionDetail:FC<SubmissionDetailProps> = ({entry_id, submissionType})=>{
+    return(
+        <Dialog>
+            <DialogTrigger>
+                <div className={cn(buttonVariants({variant:'default'}))}>
+                    <Expand className="w-5 h-5"/>
+                    <span className="font-medium">View Detail</span>
+                </div>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Details</DialogTitle>
+                    <DialogDescription>
+                        Show details
+                    </DialogDescription>
+                </DialogHeader>
+                {
+                    submissionType === 'embassy' &&
+                    <EmbassyDetail entry_id={entry_id}/>
+                }
+            </DialogContent>
+        </Dialog>
+    )
+}
+
+export default SubmissionDetail;
