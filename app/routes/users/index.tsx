@@ -4,20 +4,23 @@ import { useAuth } from '@/components/authprovider';
 import axiosInstance from '@/lib/axiosinstance';
 import { toastError } from '@/lib/toast';
 import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import Loading from '@/components/loading';
 import type { response } from '@/types/response';
 import { useDebounce } from '@/hooks/debounce';
 import { AxiosError } from 'axios';
 import type { Route } from './+types';
 import type { UserResponse } from '@/types/user';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import CreateUserForm from '@/components/createUserForm';
+import UsersTable from '@/components/userstable';
+import { columns } from '@/components/usercolumn';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -30,6 +33,7 @@ export default function UsersPage() {
   const auth = useAuth();
   const [filter, setFilter] = useState<string>('');
   const debounceSearchTerm = useDebounce(filter, 500);
+  const [open, setOpen] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['users', debounceSearchTerm],
@@ -62,6 +66,17 @@ export default function UsersPage() {
           placeholder="Search by email..."
           onChange={(e) => setFilter(e.target.value)}
         />
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button>Create User</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create a new user</DialogTitle>
+            </DialogHeader>
+            <CreateUserForm />
+          </DialogContent>
+        </Dialog>
       </div>
       {isLoading && <Loading />}
       {isError && (
@@ -71,50 +86,7 @@ export default function UsersPage() {
       )}
       {data?.data && data.data.length === 0 && <p>No users found.</p>}
       {data?.data && data.data.length > 0 && (
-        <Table className="border rounded-lg shadow-sm">
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Updated At</TableHead>
-              <TableHead>Is Locked</TableHead>
-              <TableHead>Is New</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.data.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
-                <TableCell>{new Date(user.updatedAt).toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      user.isLocked
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-green-100 text-green-800'
-                    }`}
-                  >
-                    {user.isLocked ? 'Locked' : 'Unlocked'}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      user.isNew
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}
-                  >
-                    {user.isNew ? 'New' : 'Existing'}
-                  </span>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <UsersTable columns={columns} userData={data.data} />
       )}
     </div>
   );
