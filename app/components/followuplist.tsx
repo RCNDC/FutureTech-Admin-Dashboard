@@ -23,7 +23,7 @@ const FollowUpList:FC<FollowUpPost> = ({title, description, noteId, followUpDate
             </div>
             <div className="flex items-center gap-2">
                 <Trash className="w-4 h-4 text-red-500"/>
-                <Checkbox/>
+                <Checkbox />
             </div>
             
         </div>
