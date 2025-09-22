@@ -122,7 +122,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
                                 <div className="flex items-center">
                                     {isLoading ? <Loading /> : <MoreVertical />}
                                     {
-                                        data?.data?.status === 'Completed' && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
+                                        followUp[row.getValue('entry_id')]?.status==="Completed"  && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
                                     }
                                 </div>
                             </DropdownMenuTrigger>

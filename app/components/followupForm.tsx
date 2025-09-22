@@ -1,4 +1,4 @@
-import { useEffect, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -12,6 +12,8 @@ import Loading from "./loading";
 import { useAuth } from "./authprovider";
 import { toastError, toastSuccess } from "@/lib/toast";
 
+import { useFollowUpNoteStore } from "store/store";
+
 
 type FollowFormProps = {
     entry_id:number,
@@ -22,11 +24,13 @@ type FollowFormProps = {
 }
 const FollowForm:FC<FollowFormProps> = ({entry_id, clientName, followUpId, refetch})=>{
     const auth = useAuth();
-    const {register, handleSubmit, formState:{errors}} = useForm<FollowUpType>({
+    const {addNote, deleteNote} = useFollowUpNoteStore();
+    const [tempId, setTempId] = useState('');
+    const {register, handleSubmit, formState:{errors}, } = useForm<FollowUpType>({
         resolver: zodResolver(FollowUpValidation),
         defaultValues:{
             clientName: clientName,
-        }
+        },
     });
     const {mutate, isPending} = useMutation({
         mutationFn: async (data:any)=>{
@@ -39,9 +43,11 @@ const FollowForm:FC<FollowFormProps> = ({entry_id, clientName, followUpId, refet
         },
         onSuccess: ()=>{
             toastSuccess('Note added');
-            refetch();
+           
         },
-        onError:(error)=>{
+        onError:(error, data)=>{
+            
+            deleteNote(tempId)
             toastError(error.message)
         }
     })
@@ -52,6 +58,8 @@ const FollowForm:FC<FollowFormProps> = ({entry_id, clientName, followUpId, refet
             followUpDate: data.folloUpDate,
             followUpId
         }
+        setTempId((prev)=>(Date.now().toString(36) + Math.random().toString(36).slice(2)).toString());
+        addNote({title: data.title, description: data.note, followUpDate: data.folloUpDate, followUpId:followUpId, Id:tempId, isCompleted:0})
         mutate(sendData)
         
     }

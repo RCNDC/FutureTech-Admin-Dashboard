@@ -17,7 +17,7 @@ import type { CheckedState } from "@radix-ui/react-checkbox"
 import { type response } from "@/types/response"
 import { type FollowUpNotes } from "@/types/followupnotes"
 import { type FollowUpListType } from "@/types/followup"
-import useFollowUpStore from "store/store"
+import useFollowUpStore, { useFollowUpNoteStore } from "store/store"
 
 type FollowUpProps = {
     entryId: number,
@@ -69,6 +69,7 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, initalFollowUp
             }
         }
     })
+    const {initalNotes, notes} = useFollowUpNoteStore();
     const {data:followupNotes, isLoading:loadingNotes, refetch:fetchNotes} = useQuery({
         queryKey:['notes', initalFollowUp?.id],
         queryFn:async ()=>{
@@ -77,6 +78,7 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, initalFollowUp
                     'Authorization': 'Bearer '+auth?.token
                 }
             });
+            initalNotes(res?.data?.data);
             return res.data
         },
         enabled: open
@@ -131,13 +133,13 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, initalFollowUp
                 <h1 className="text-lg text-gray-700 text-center underline">Notes</h1>
                 <div className="max-h-56 overflow-y-scroll">
                     {
-                        !followupNotes || followupNotes?.data?.length === 0 &&(
+                        !notes || notes?.length === 0 &&(
                             <span className="text-center text-sm text-gray-600">No notes found</span>
                         )
                     }
                     {
-                        followupNotes?.data && followupNotes?.data.map((note:FollowUpNotes)=>(
-                            <FollowUpList title={note?.title} description={note?.description} noteId={note?.Id} isCompleted={note?.isCompleted} followUpDate={note?.followUpDate} clientName={clientName}/>
+                        notes && notes?.map((note:FollowUpNotes)=>(
+                            <FollowUpList title={note?.title} description={note?.description} noteId={note?.Id} isCompleted={note?.isCompleted} followUpDate={note?.followUpDate} clientName={clientName} key={note.Id}/>
                         ))
                     }
                 </div>
