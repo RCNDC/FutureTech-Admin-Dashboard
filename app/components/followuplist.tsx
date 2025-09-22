@@ -24,6 +24,7 @@ const FollowUpList:FC<FollowUpPost> = ({title, description, noteId, followUpDate
             markCompleted(noteId, 0)
         }
     }
+
     return(
         <div className="flex items-center justify-between">
             <div className="">
