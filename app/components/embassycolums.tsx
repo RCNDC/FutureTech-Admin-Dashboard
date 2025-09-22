@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import SubmissionDetail from "./submissionDetails";
 import type { EmbassySubmission, SubmissionResponse } from "@/types/submission";
 import useFollowUpStore from "store/store";
+import MarkAsCompleted from "./markascomplete";
 
 export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
     {
@@ -98,6 +99,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
             const [open, setOpen] = useState(false)
             const {followUp, initialFollowUp} = useFollowUpStore();
             const auth = useAuth()
+            const entryId = row.getValue('entry_id');
             const { data, isLoading, refetch } = useQuery({
                 queryKey: ['followup', row.getValue('entry_id')],
                 queryFn: async () => {
@@ -106,7 +108,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                   
+                   initialFollowUp({entryId: res.data.data})
                     return res.data;
                 },
                 retry: 3
@@ -121,9 +123,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
                             <DropdownMenuTrigger>
                                 <div className="flex items-center">
                                     {isLoading ? <Loading /> : <MoreVertical />}
-                                    {
-                                        followUp[row.getValue('entry_id')]?.status==="Completed"  && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
-                                    }
+                                    <MarkAsCompleted entryId={row.getValue('entry_id')}/>
                                 </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
