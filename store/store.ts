@@ -13,7 +13,7 @@ interface FollowUpState {
 }
 
 const useFollowUpStore = create<FollowUpState>()(
-    persist(
+  
         combine(
             {
                 followUp: {},
@@ -40,10 +40,7 @@ const useFollowUpStore = create<FollowUpState>()(
                 }
             })
         ),
-        {
-            name: 'test-storage'
-        }
-    )
+       
 )
 
 interface NoteState {
