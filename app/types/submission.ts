@@ -40,7 +40,7 @@ export type NGOSubmission = Pick<SubmissionResponse, 'registeredDate'> & persona
 }
 
 export type EmbassySubmission = personalDetail & Pick<SubmissionResponse, 'passport' | 'address' | 'registeredDate'> &{
-    emabassy:string;
+    embassy:string;
     requestBilateral:string;
     attendPolicy:string;
     anyDelegation: string;

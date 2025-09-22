@@ -15,6 +15,7 @@ import { useAuth } from "./authprovider";
 import Loading from "./loading";
 import { Badge } from "./ui/badge";
 import SubmissionDetail from "./submissionDetails";
+import useFollowUpStore from "store/store";
 
 export const columns: ColumnDef<SubmissionResponse>[] = [
     {
@@ -86,7 +87,7 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
         header: 'Detail',
         cell: ({row})=>{
             return(
-                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="embassy"/>
+                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="internationcompany"/>
             )
         }
     },
@@ -97,6 +98,7 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
             const [open, setOpen] = useState(false)
 
             const auth = useAuth()
+            const {initialFollowUp} = useFollowUpStore()
             const {data, isLoading, refetch} = useQuery({
         queryKey:['followup', row.getValue('entry_id')],
         queryFn: async ()=>{
@@ -105,11 +107,19 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
                     'Authorization': 'Bearer '+auth?.token 
                 }
             });
+            const followupData= {};
+            if(res.data.data){
+                followupData[row.getValue('entry_id')]= res.data.data;
+                initialFollowUp(followupData);
+            }
             return res.data;
         },
         retry: 3
         
     });
+    
+    
+    
             return(
                 <>
             <Dialog onOpenChange={(open)=>setOpen(open)} open={open}>
@@ -138,7 +148,7 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
                     </DropdownMenuContent>
                 </DropdownMenu>
                 
-                {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} followUp={data?.data}/>}
+                {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data }/>}
             </Dialog>
                 </>
         )}

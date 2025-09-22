@@ -27,7 +27,7 @@ const EmbassyDetail:FC<EmbassyDetailProps> = ({entry_id})=>{
             <span>Email: {data?.data?.pop()?.email}</span>
             <span>Phone Number: {data?.data?.pop()?.phoneNo}</span>
             <span>Country: {data?.data?.pop()?.address}</span>
-            <span>Embassy: {data?.data?.pop()?.emabassy}</span>
+            <span>Embassy: {data?.data?.pop()?.embassy}</span>
             <span>Passport: {data?.data?.pop()?.passport}</span>
             <span>Requested Bilateral : {data?.data?.pop()?.requestBilateral}</span>
             <span>Want to Attend Policy Meeting: {data?.data?.pop()?.attendPolicy}</span>

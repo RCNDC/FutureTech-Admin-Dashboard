@@ -17,19 +17,19 @@ import type { CheckedState } from "@radix-ui/react-checkbox"
 import { type response } from "@/types/response"
 import { type FollowUpNotes } from "@/types/followupnotes"
 import { type FollowUpListType } from "@/types/followup"
+import useFollowUpStore from "store/store"
 
 type FollowUpProps = {
     entryId: number,
     clientName: string;
-    followUp:FollowUpListType | undefined;
-    open: boolean
+    open: boolean;
+    initalFollowUp: FollowUpListType
 }
-const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, followUp }) => {
+const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, initalFollowUp }) => {
     const auth = useAuth();
+   
+    const {followUp:testfollowup, initialFollowUp:initFollowup, changeStatus} = useFollowUpStore()
     
-    
-    
-
     const {mutate:createFollowUp, isPending:waitingFollowUp} = useMutation({
             mutationFn: async ()=>{
                 const res = await axiosInstance.post('/submission/followup/create', {entry_id: entryId},{
@@ -39,29 +39,40 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, followUp }) =>
                 });
                 return res.data;
             },
+            onSuccess(data) {
+                initFollowup({entryId: data});
+            },
             
         }
         
     )
 
     const {mutate:updateStatus, isPending:updating} = useMutation({
-        mutationFn: async (status:string)=>{
+        mutationFn: async (status:"Completed"|"NotStarted")=>{
             console.log()
-            const res = await axiosInstance.post('/submission/followup/updatestatus', {status: status, followUpId:followUp?.id},{
+            const res = await axiosInstance.post('/submission/followup/updatestatus', {status: status, followUpId:initalFollowUp?.id},{
                 headers:{
                     'Authorization': 'Beare '+auth?.token
                 }
             });
             return res.data;
         },
-        onSuccess: ()=>{
+        onSuccess: (data,status)=>{
             toastSuccess('Status Updated');
+            // setFollowUp(getFollowUp())
+        },
+        onError:(error, status)=>{
+            if(status==='Completed'){
+                changeStatus(entryId,'NotStarted');
+            }else{
+                 changeStatus(entryId,'Completed');
+            }
         }
     })
     const {data:followupNotes, isLoading:loadingNotes, refetch:fetchNotes} = useQuery({
-        queryKey:['notes', followUp?.id],
+        queryKey:['notes', initalFollowUp?.id],
         queryFn:async ()=>{
-            const res = await axiosInstance.get<response<FollowUpNotes[]>>('/progress/followupnote/'+followUp?.id,{
+            const res = await axiosInstance.get<response<FollowUpNotes[]>>('/progress/followupnote/'+initalFollowUp?.id,{
                 headers:{
                     'Authorization': 'Bearer '+auth?.token
                 }
@@ -73,8 +84,11 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, followUp }) =>
     const onChecked = (e:CheckedState)=>{
         if(e){
             updateStatus('Completed');
+            changeStatus(entryId,'Completed')
+
         }else{
             updateStatus('NotStarted');
+            changeStatus(entryId,'NotStarted');
         }
     }
     return (
@@ -90,7 +104,7 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, followUp }) =>
                         
                         
                         {
-                            !followUp ?  (
+                            !initalFollowUp?  (
 
                             <span className={cn(buttonVariants({variant: 'default'}),{'bg-gray-700': waitingFollowUp})} onClick={()=>createFollowUp()} >
                                 {waitingFollowUp?<Loading/>: <Plus className="w-5 h-5"/>}
@@ -98,9 +112,9 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, followUp }) =>
                             </span>
                             ):(
                                 <div className="flex items-center gap-2">
-                                    <Label>Completed</Label>
+                                    <Label>Mark as Completed</Label>
                                     {!updating ? 
-                                        <Checkbox onCheckedChange={(e)=>onChecked(e)} checked={followUp.status === 'Completed'}/>:<Loading/>
+                                        <Checkbox onCheckedChange={(e)=>onChecked(e)} checked={testfollowup[entryId]?.status === 'Completed'}/>:<Loading/>
                                     
                                     }
                                 </div>
@@ -111,9 +125,9 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, followUp }) =>
                 </DialogDescription>
             </DialogHeader>
             {
-                followUp &&
+                initalFollowUp &&
             <div className="space-y-2">
-                <FollowForm entry_id={entryId} clientName={clientName} followUpId={followUp.id} refetch={fetchNotes}/>
+                <FollowForm entry_id={entryId} clientName={clientName} followUpId={initalFollowUp?.id} refetch={fetchNotes}/>
                 <h1 className="text-lg text-gray-700 text-center underline">Notes</h1>
                 <div className="max-h-56 overflow-y-scroll">
                     {

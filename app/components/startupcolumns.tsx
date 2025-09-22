@@ -1,23 +1,22 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { columns } from "./submissioncolumns";
-import { Dialog, DialogTrigger } from "./ui/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import Loading from "./loading";
-import { ArrowUpDown, MoreVertical, Plus } from "lucide-react";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import FollowUp from "./followup";
-import axiosInstance from "@/lib/axiosinstance";
-import type { response } from "@/types/response";
-import type { FollowUpListType } from "@/types/followup";
-import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "./authprovider";
-import { useEffect, useState } from "react";
-import SubmissionDetail from "./submissionDetails";
-import type { EmbassySubmission, SubmissionResponse } from "@/types/submission";
-import useFollowUpStore from "store/store";
+import type { LocalCompanySubmission, StartupSubmissions } from "@/types/submission"
+import type { ColumnDef } from "@tanstack/react-table"
+import { Button } from "./ui/button"
+import { ArrowUpDown, MoreVertical, Plus } from "lucide-react"
+import SubmissionDetail from "./submissionDetails"
+import { useState } from "react"
+import useFollowUpStore from "store/store"
+import { useAuth } from "./authprovider"
+import { useQuery } from "@tanstack/react-query"
+import type { response } from "@/types/response"
+import type { FollowUpListType } from "@/types/followup"
+import axiosInstance from "@/lib/axiosinstance"
+import { Dialog, DialogTrigger } from "./ui/dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import Loading from "./loading"
+import { Badge } from "./ui/badge"
+import FollowUp from "./followup"
 
-export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
+export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
     {
         accessorKey: 'entry_id',
         header: ({ column }) => {
@@ -57,11 +56,11 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
         header: 'Phone Number'
     },
     {
-        accessorKey: 'embassy',
+        accessorKey: 'startupName',
         header: ({ column }) => {
             return (
                 <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    Embassy
+                    Startup name
                     <ArrowUpDown className='w-5 h-5' />
                 </Button>
             )
@@ -87,7 +86,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
         header: 'Detail',
         cell: ({ row }) => {
             return (
-                <SubmissionDetail entry_id={parseInt(row.getValue('entry_id'))} submissionType="embassy" />
+                <SubmissionDetail entry_id={parseInt(row.getValue('entry_id'))} submissionType="startup" />
             )
         }
     },

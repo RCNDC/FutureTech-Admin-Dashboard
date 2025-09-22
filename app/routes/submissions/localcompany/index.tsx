@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/authprovider";
-import { columns } from "@/components/submissioncolumns";
+import { localcompanycolumns } from "@/components/localcompanycolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
 import type { response } from "@/types/response";
@@ -33,7 +33,7 @@ const Index = () => {
 
     return (
 
-        <SubmissionDetail columns={columns} data={data?.data} isLoading={isLoading} name="Local Company Submission" />
+        <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submission" />
 
     )
 
