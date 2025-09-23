@@ -13,10 +13,10 @@ const EmbassyDetail:FC<EmbassyDetailProps> = ({entry_id})=>{
         queryKey:['embassyc', entry_id],
         queryFn: async ()=>{
             const res = await axiosInstance.get<response<EmbassySubmission[]>>('/register/submission/embassy/'+entry_id);
-            
+
             return res.data.data?.pop();
         },
- 
+
     })
     return(
         <div className="grid grid-cols-2 min-w-[80%]">
