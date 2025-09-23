@@ -19,7 +19,7 @@ const LocalCompanyDetail:FC<LocalCompanyDetailProps> = ({entry_id})=>{
 
     })
     return(
-        <div className="grid grid-cols-2 min-w-[80%]">
+        <div className="grid md:grid-cols-2 min-w-[80%]">
             {isLoading && <Loading/>}
             {!isLoading && (
                 <>
@@ -27,7 +27,6 @@ const LocalCompanyDetail:FC<LocalCompanyDetailProps> = ({entry_id})=>{
             <span>Company Name: {data?.companyName}</span>
             <span>Email : {data?.email}</span>
             <span>Phone Number : {data?.phoneNo}</span>
-            <span>Entry ID : {data?.entry_id}</span>
             <span>Address: {data?.address}</span>
             
             <ShowFile file={data?.companyLicense} name="Company License"/>

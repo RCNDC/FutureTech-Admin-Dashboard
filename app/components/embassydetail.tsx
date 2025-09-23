@@ -20,7 +20,7 @@ const EmbassyDetail:FC<EmbassyDetailProps> = ({entry_id})=>{
 
     })
     return(
-        <div className="grid grid-cols-2 min-w-[80%]">
+        <div className="grid md:grid-cols-2 min-w-[80%]">
             {isLoading && <Loading/>}
             {!isLoading && (
                 <>

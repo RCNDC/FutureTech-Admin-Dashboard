@@ -20,7 +20,7 @@ const NGODetail:FC<NGODetailProps> = ({entry_id})=>{
 
     })
     return(
-        <div className="grid grid-cols-2 min-w-[80%]">
+        <div className="grid md:grid-cols-2 min-w-[80%]">
             {isLoading && <Loading/>}
             {!isLoading && (
                 <>
@@ -28,7 +28,6 @@ const NGODetail:FC<NGODetailProps> = ({entry_id})=>{
             <span>Full Name : {data?.fullName}</span>
             <span>Email : {data?.email}</span>
             <span>Phone Number : {data?.phoneNo}</span>
-            <span>Entry ID : {data?.entry_id}</span>
             <span>Mission : {data?.mission}</span>
             <ShowFile file={data?.orgFile} name="Organization Profile"/>
             <span>Registered Date : {data?.registeredDate.toString()}</span>

@@ -1,11 +1,15 @@
 import { Check, FormInput, GaugeCircle, Ticket, User, Users } from "lucide-react";
 import { Link } from "react-router";
+import Logout from "./logout";
 
 const DashboardSideBar = () => {
 
   return (
-      <div className="md:w-56 space-y-4 max-w-56 bg-linear-150 from-purple-900 to-purple-500 md:h-[91vh] h-screen p-5 shadow-md  relative  z-99999">
+      <div className="md:w-56 space-y-4 max-w-56 bg-linear-150 from-purple-900 to-purple-500   md:h-screen p-5 shadow-md  relative md:block  hidden">
           <div className="mt-10 space-y-2">
+            <div className="w-full flex items-center justify-center space-y-2">
+                <img src="https://futuretechaddis.com/wp-content/uploads/2025/04/logo-future-.png" className="w-20 h-20 object-contain" alt="Future Tech Addis Logo" width={100} height={100}/>
+            </div>
               <h5 className="text-gray-300">Overview</h5>
               <ul className="my-3 ml-2">
                   <li className=" text-white text-sm">
@@ -73,6 +77,9 @@ const DashboardSideBar = () => {
                       </Link>
                   </li>
               </ul>
+          </div>
+          <div className="absolute bottom-5 w-[80%]">
+            <Logout/>
           </div>
 
       </div>

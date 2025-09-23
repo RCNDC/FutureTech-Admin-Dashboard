@@ -4,6 +4,7 @@ import { type StartupSubmissions } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { FC } from "react";
 import Loading from "./loading";
+import ShowFile from "./showfile";
 
 type StartupDetailProps = {
     entry_id:number
@@ -19,7 +20,7 @@ const StartupDetail:FC<StartupDetailProps> = ({entry_id})=>{
 
     })
     return(
-        <div className="grid grid-cols-2 min-w-[80%]">
+        <div className="grid md:grid-cols-2 min-w-[80%]">
             {isLoading && <Loading/>}
             {!isLoading && (
                 <>
@@ -27,13 +28,12 @@ const StartupDetail:FC<StartupDetailProps> = ({entry_id})=>{
             <span>Full Name : {data?.fullName}</span>
             <span>Phone Number : {data?.phoneNo}</span>
             <span>Email : {data?.email}</span>
-            <span>Governemnt ID : {data?.govId}</span>
-            <span>Entry ID : {data?.entry_id}</span>
+            <ShowFile file={data?.govId} name="Goverment ID"/>
             <span>Industry : {data?.industry}</span>
             <span>Stage : {data?.stage}</span>
-            <span>Pitch Deck : {data?.pitchdeck}</span>
-            <span>Registered Date : {data?.registeredDate.toString()}</span>
-            <span>Social Website : {data?.socialWebsite}</span>
+            <ShowFile file={data?.pitchdeck} name="Pitch Deck"/>
+            <span>Registered Date : {new Date(data?.registeredDate.toString()).toDateString()}</span>
+            <ShowFile file={data?.socialWebsite} name="Website/Socials"/>
             <span>Pegasus Application : {data?.appliedPegasus}</span>
             <span>Do you need booth? : {data?.booth}</span>
             <span>Do you require mentorship? : {data?.reqMentorship}</span>

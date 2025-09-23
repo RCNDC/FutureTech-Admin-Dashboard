@@ -6,9 +6,9 @@ import AuthProvider from "../components/authprovider";
 export default function DashboardLayout() {
   return (
     <AuthProvider>
-      <div>
-        <DashboardHeader />
-        <div className="flex gap-4  w-full">
+      <div className="">
+       {/* header component goes hear */}
+        <div className="flex md:gap-4  w-full">
           <div>
             <DashboardSideBar />
           </div>
