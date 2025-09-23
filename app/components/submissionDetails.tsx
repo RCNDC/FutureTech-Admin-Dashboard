@@ -4,6 +4,10 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
 import type { FC } from "react";
 import EmbassyDetail from "./embassydetail";
+import InternationalCompanyDetail from "./internationalcompanydetail";
+import LocalCompanyDetail from "./localcompanydetail";
+import NGODetail from "./NGOdetail";
+import StartupDetail from "./startupdetail";
 
 type SubmissionDetailProps={
     entry_id:number,
@@ -29,7 +33,22 @@ const SubmissionDetail:FC<SubmissionDetailProps> = ({entry_id, submissionType})=
                     submissionType === 'embassy' &&
                     <EmbassyDetail entry_id={entry_id}/>
                 }
-                
+                {
+                    submissionType === 'internationalcompany' &&
+                    <InternationalCompanyDetail entry_id={entry_id}/>
+                }
+                {
+                    submissionType === 'localcompany' &&
+                    <LocalCompanyDetail entry_id={entry_id}/>
+                }
+                {
+                  submissionType === 'ngo' &&
+                  <NGODetail entry_id={entry_id}/>
+                }
+                {
+                  submissionType === 'startup' &&
+                  <StartupDetail entry_id={entry_id}/>
+                }
             </DialogContent>
         </Dialog>
     )

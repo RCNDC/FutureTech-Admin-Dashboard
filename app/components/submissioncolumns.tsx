@@ -83,12 +83,12 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
             <span className="text-gray-800">{new Date(props.getValue() as string).toDateString()}</span>
         )
     },
-   
+
     {
         header: 'Detail',
         cell: ({row})=>{
             return(
-                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="internationcompany"/>
+                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="internationalcompany"/>
             )
         }
     },
