@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
     <div className="overflow-hidden rounded-md border md:w-full ">
       <div className="flex  items-center gap-2  my-5">
           <Input placeholder="Search by email, Full name..." 
-           onChange={(event)=>table.getColumn("email")?.setFilterValue(event.target.value)}/>
+           onChange={(event)=>table.getColumn("fullName")?.setFilterValue(event.target.value)}/>
         </div>
       <Table>
         <TableHeader>

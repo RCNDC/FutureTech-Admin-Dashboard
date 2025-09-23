@@ -25,8 +25,8 @@ const FollowUpList: FC<FollowUpPost> = ({ title, description, noteId, followUpDa
     const { markCompleted, deleteNote } = useFollowUpNoteStore();
     const auth = useAuth()
     const { mutate, isPending } = useMutation({
-        mutationFn: async (note: FollowUpNotes) => {
-            const res = await axiosInstance.post('/progress/followupnote/update', note, {
+        mutationFn: async (isCompleted:number) => {
+            const res = await axiosInstance.post('/progress/followupnote/update/'+noteId, {isCompleted: isCompleted}, {
                 headers: {
                     'Authorization': 'Bearer ' + auth?.token
                 }
@@ -38,7 +38,7 @@ const FollowUpList: FC<FollowUpPost> = ({ title, description, noteId, followUpDa
         },
         onError(data, variables, context) {
             toastError('update failed. Please try again')
-            if (variables.isCompleted) {
+            if (variables) {
                 markCompleted(noteId, 0)
             } else {
                 markCompleted(noteId, 1);
@@ -62,15 +62,14 @@ const FollowUpList: FC<FollowUpPost> = ({ title, description, noteId, followUpDa
     })
 
     const onCheck = (checked: CheckedState) => {
-        console.log(noteId)
         if (checked) {
 
             markCompleted(noteId, 1);
-            mutate({ Id: noteId, description: description, followUpDate: followUpDate, isCompleted: 1, title: title, followUpId: followUpId })
-            console.log({ Id: noteId, description: description, followUpDate: followUpDate, isCompleted: 1, title: title, followUpId: followUpId })
+            mutate(1)
+            console.log()
         } else {
             markCompleted(noteId, 0)
-            mutate({ Id: noteId, description: description, followUpDate: followUpDate, isCompleted: 0, title: title, followUpId: followUpId })
+            mutate(0)
         }
     }
     const onDelete = () => {
@@ -86,7 +85,7 @@ const FollowUpList: FC<FollowUpPost> = ({ title, description, noteId, followUpDa
             </div>
             <div className="flex items-center gap-2">
                 <Trash className="w-4 h-4 text-red-500" onClick={() => onDelete()} />
-                <Checkbox onCheckedChange={onCheck} checked={isCompleted === 1} />
+                <Checkbox onCheckedChange={(e)=>onCheck(e)} checked={isCompleted === 1} />
             </div>
 
         </div>
