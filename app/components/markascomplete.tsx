@@ -8,12 +8,13 @@ type MarkAsCompletedProps = {
     entryId:number
 }
 const MarkAsCompleted:FC<MarkAsCompletedProps> = ({entryId})=>{
-    const {followUp} = useFollowUpStore();
+    const {followUp, getFollowUp} = useFollowUpStore();
+    const currentFollowUp = getFollowUp(entryId);
     console.log(entryId)
      return(
         <>
         {
-            followUp["entryId"]?.status==="Completed" && followUp["entryId"]?.entry_id==entryId   && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
+            currentFollowUp?.status==="Completed"  && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
         }
                                     
         </>

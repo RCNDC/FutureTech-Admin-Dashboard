@@ -97,9 +97,9 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
         header: 'Actions ',
         cell: ({ row }) => {
             const [open, setOpen] = useState(false)
-            const {followUp, initialFollowUp} = useFollowUpStore();
+            const {initialFollowUp} = useFollowUpStore();
             const auth = useAuth()
-            const entryId = row.getValue('entry_id');
+            const entryId = row.getValue('entry_id') as number;
             const { data, isLoading, refetch } = useQuery({
                 queryKey: ['followup', row.getValue('entry_id')],
                 queryFn: async () => {
@@ -108,7 +108,10 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                   initialFollowUp({entryId: res.data.data})
+                    if(res.data.data){
+                        initialFollowUp(res?.data?.data, entryId)
+
+                    }
                     return res.data;
                 },
                 retry: 3

@@ -29,6 +29,7 @@ const SubmissionDetail:FC<SubmissionDetailProps> = ({entry_id, submissionType})=
                     submissionType === 'embassy' &&
                     <EmbassyDetail entry_id={entry_id}/>
                 }
+                
             </DialogContent>
         </Dialog>
     )

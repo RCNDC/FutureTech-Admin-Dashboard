@@ -15,6 +15,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Loading from "./loading"
 import { Badge } from "./ui/badge"
 import FollowUp from "./followup"
+import MarkAsCompleted from "./markascomplete"
 
 export const ngocolumns: ColumnDef<NGOSubmission>[] = [
     {
@@ -81,7 +82,7 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
             <span className="text-gray-800">{new Date(props.getValue() as string).toDateString()}</span>
         )
     },
-    
+
     {
         header: 'Detail',
         cell: ({ row }) => {
@@ -95,8 +96,9 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
         header: 'Actions ',
         cell: ({ row }) => {
             const [open, setOpen] = useState(false)
-            const {followUp, initialFollowUp} = useFollowUpStore();
+            const {initialFollowUp} = useFollowUpStore();
             const auth = useAuth()
+            const entryId = row.getValue('entry_id') as number;
             const { data, isLoading, refetch } = useQuery({
                 queryKey: ['followup', row.getValue('entry_id')],
                 queryFn: async () => {
@@ -105,7 +107,10 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                   
+                   if(res.data.data){
+                        initialFollowUp(res?.data?.data, entryId)
+
+                    }
                     return res.data;
                 },
                 retry: 3
@@ -120,9 +125,7 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
                             <DropdownMenuTrigger>
                                 <div className="flex items-center">
                                     {isLoading ? <Loading /> : <MoreVertical />}
-                                    {
-                                        data?.data?.status === 'Completed' && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
-                                    }
+                                    <MarkAsCompleted entryId={row.getValue('entry_id')}/>
                                 </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>

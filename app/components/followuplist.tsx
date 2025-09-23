@@ -6,6 +6,11 @@ import { Delete, Trash } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { useFollowUpNoteStore } from "store/store";
 import type { CheckedState } from "@radix-ui/react-checkbox";
+import { useMutation } from "@tanstack/react-query";
+import type { FollowUpNotes } from "@/types/followupnotes";
+import axiosInstance from "@/lib/axiosinstance";
+import { useAuth } from "./authprovider";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 type FollowUpPost = {
     title:string;
@@ -13,18 +18,64 @@ type FollowUpPost = {
     noteId:string;
     followUpDate: string;
     isCompleted: number;
-    clientName:string
+    clientName:string;
+    followUpId:string;
 }
-const FollowUpList:FC<FollowUpPost> = ({title, description, noteId, followUpDate, isCompleted, clientName})=>{
-    const {markCompleted, deleteNote} = useFollowUpNoteStore()
+const FollowUpList:FC<FollowUpPost> = ({title, description, noteId, followUpDate, isCompleted, clientName, followUpId})=>{
+    const {markCompleted, deleteNote} = useFollowUpNoteStore();
+    const auth = useAuth()
+    const {mutate, isPending} = useMutation({
+        mutationFn:async (note:FollowUpNotes)=>{
+            const res = await axiosInstance.post('/progress/followupnote/update', note,{
+                headers:{
+                    'Authorization': 'Bearer '+auth?.token
+                }
+            });
+            return res.data;
+        },
+        onSuccess(data, variables, context) {
+            toastSuccess('updated')
+        },
+        onError(data, variables, context) {
+            toastError('update failed. Please try again')
+            if(variables.isCompleted){
+                markCompleted(noteId, 0)
+            }else{
+                markCompleted(noteId, 1);
+            }
+        },
+    });
+
+    const {mutate:deleteNoteById} = useMutation({
+        mutationFn: async()=>{
+            const res =  await axiosInstance.delete('/progress/followupnote/delete/'+noteId, {
+                headers:{
+                    'Authorization': 'Bearer '+auth?.token
+                }
+            });
+            return res.data;
+        },
+        onError:(error)=>{
+            toastError('delete failed. Please try again')
+            
+        }
+    })
+
     const onCheck = (checked:CheckedState)=>{
+        console.log(noteId)
         if(checked){
+            
             markCompleted(noteId, 1);
+             mutate({Id:noteId, description:description, followUpDate:followUpDate, isCompleted: 1, title:title, followUpId:    followUpId})
         }else{
             markCompleted(noteId, 0)
+             mutate({Id:noteId, description, followUpDate, isCompleted:0, title, followUpId})
         }
     }
-
+    const onDelete = ()=>{
+       deleteNote(noteId);
+       deleteNoteById()
+    }
     return(
         <div className="flex items-center justify-between">
             <div className="">
@@ -33,8 +84,8 @@ const FollowUpList:FC<FollowUpPost> = ({title, description, noteId, followUpDate
                 <p className={cn("ml-1 text-sm my-1", {"line-through": isCompleted===1})}>{description}</p>
             </div>
             <div className="flex items-center gap-2">
-                <Trash className="w-4 h-4 text-red-500" onClick={()=>deleteNote(noteId)}/>
-                <Checkbox onCheckedChange={onCheck}  />
+                <Trash className="w-4 h-4 text-red-500" onClick={()=>onDelete()}/>
+                <Checkbox onCheckedChange={onCheck} checked={isCompleted===1} />
             </div>
             
         </div>
