@@ -22,7 +22,7 @@ const SubmissionDetail:FC<SubmissionDetailProps> = ({entry_id, submissionType})=
                     <span className="font-medium">View Detail</span>
                 </div>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="min-w-fit">
                 <DialogHeader>
                     <DialogTitle>Details</DialogTitle>
                     <DialogDescription>

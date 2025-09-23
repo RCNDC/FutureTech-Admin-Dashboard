@@ -4,6 +4,7 @@ import { type InternationalCompaniesSubmission } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { FC } from "react";
 import Loading from "./loading";
+import ShowFile from "./showfile";
 
 type InternationalCompanyDetailProps = {
     entry_id:number
@@ -27,12 +28,11 @@ const InternationalCompanyDetail:FC<InternationalCompanyDetailProps> = ({entry_i
             <span>Company Name: {data?.companyName}</span>
             <span>Email : {data?.email}</span>
             <span>Phone Number : {data?.phoneNo}</span>
-            <span>Entry Id: {data?.entry_id}</span>
-            <span>Passport : {data?.passport}</span>
-            <span>Company Profile: {data?.companyProfile}</span>
-            <span>Company Website: {data?.companyWebsite}</span>
+            <ShowFile file={data?.passport} name="Passport"/>
+            <ShowFile file={data?.companyProfile} name="Company Profile"/>
+            <ShowFile file={data?.companyWebsite} name="Company Website"/>
             <span>Address: {data?.address}</span>
-            <span>Registered Date : {data?.registeredDate.toString()}</span>
+            <span>Registered Date : {new Date(data?.registeredDate.toString()).toDateString()}</span>
             <span>Pitch Product : {data?.pitchProduct}</span>
             <span>Areas of Interest: {data?.areaOfInterest}</span>
             <span>Interest Type: {data?.interestType}</span>

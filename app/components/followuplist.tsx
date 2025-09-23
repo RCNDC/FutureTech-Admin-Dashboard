@@ -13,22 +13,22 @@ import { useAuth } from "./authprovider";
 import { toastError, toastSuccess } from "@/lib/toast";
 
 type FollowUpPost = {
-    title:string;
-    description:string;
-    noteId:string;
+    title: string;
+    description: string;
+    noteId: string;
     followUpDate: string;
     isCompleted: number;
-    clientName:string;
-    followUpId:string;
+    clientName: string;
+    followUpId: string;
 }
-const FollowUpList:FC<FollowUpPost> = ({title, description, noteId, followUpDate, isCompleted, clientName, followUpId})=>{
-    const {markCompleted, deleteNote} = useFollowUpNoteStore();
+const FollowUpList: FC<FollowUpPost> = ({ title, description, noteId, followUpDate, isCompleted, clientName, followUpId }) => {
+    const { markCompleted, deleteNote } = useFollowUpNoteStore();
     const auth = useAuth()
-    const {mutate, isPending} = useMutation({
-        mutationFn:async (note:FollowUpNotes)=>{
-            const res = await axiosInstance.post('/progress/followupnote/update', note,{
-                headers:{
-                    'Authorization': 'Bearer '+auth?.token
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (note: FollowUpNotes) => {
+            const res = await axiosInstance.post('/progress/followupnote/update', note, {
+                headers: {
+                    'Authorization': 'Bearer ' + auth?.token
                 }
             });
             return res.data;
@@ -38,56 +38,57 @@ const FollowUpList:FC<FollowUpPost> = ({title, description, noteId, followUpDate
         },
         onError(data, variables, context) {
             toastError('update failed. Please try again')
-            if(variables.isCompleted){
+            if (variables.isCompleted) {
                 markCompleted(noteId, 0)
-            }else{
+            } else {
                 markCompleted(noteId, 1);
             }
         },
     });
 
-    const {mutate:deleteNoteById} = useMutation({
-        mutationFn: async()=>{
-            const res =  await axiosInstance.delete('/progress/followupnote/delete/'+noteId, {
-                headers:{
-                    'Authorization': 'Bearer '+auth?.token
+    const { mutate: deleteNoteById } = useMutation({
+        mutationFn: async () => {
+            const res = await axiosInstance.delete('/progress/followupnote/delete/' + noteId, {
+                headers: {
+                    'Authorization': 'Bearer ' + auth?.token
                 }
             });
             return res.data;
         },
-        onError:(error)=>{
+        onError: (error) => {
             toastError('delete failed. Please try again')
-            
+
         }
     })
 
-    const onCheck = (checked:CheckedState)=>{
+    const onCheck = (checked: CheckedState) => {
         console.log(noteId)
-        if(checked){
-            
+        if (checked) {
+
             markCompleted(noteId, 1);
-             mutate({Id:noteId, description:description, followUpDate:followUpDate, isCompleted: 1, title:title, followUpId:    followUpId})
-        }else{
+            mutate({ Id: noteId, description: description, followUpDate: followUpDate, isCompleted: 1, title: title, followUpId: followUpId })
+            console.log({ Id: noteId, description: description, followUpDate: followUpDate, isCompleted: 1, title: title, followUpId: followUpId })
+        } else {
             markCompleted(noteId, 0)
-             mutate({Id:noteId, description, followUpDate, isCompleted:0, title, followUpId})
+            mutate({ Id: noteId, description: description, followUpDate: followUpDate, isCompleted: 0, title: title, followUpId: followUpId })
         }
     }
-    const onDelete = ()=>{
-       deleteNote(noteId);
-       deleteNoteById()
+    const onDelete = () => {
+        deleteNote(noteId);
+        deleteNoteById()
     }
-    return(
+    return (
         <div className="flex items-center justify-between">
             <div className="">
-                <h3 className={cn("font-medium text-purple-500", {"line-through": isCompleted===1})}>{clientName}: <span className="font-semibold text-black">{title}</span></h3>
-                <span className={cn("text-gray-600 text-sm ",{"line-through": isCompleted===1})}>Follow up date: {new Date(followUpDate).toDateString()}</span>
-                <p className={cn("ml-1 text-sm my-1", {"line-through": isCompleted===1})}>{description}</p>
+                <h3 className={cn("font-medium text-purple-500", { "line-through": isCompleted === 1 })}>{clientName}: <span className="font-semibold text-black">{title}</span></h3>
+                <span className={cn("text-gray-600 text-sm ", { "line-through": isCompleted === 1 })}>Follow up date: {new Date(followUpDate).toDateString()}</span>
+                <p className={cn("ml-1 text-sm my-1", { "line-through": isCompleted === 1 })}>{description}</p>
             </div>
             <div className="flex items-center gap-2">
-                <Trash className="w-4 h-4 text-red-500" onClick={()=>onDelete()}/>
-                <Checkbox onCheckedChange={onCheck} checked={isCompleted===1} />
+                <Trash className="w-4 h-4 text-red-500" onClick={() => onDelete()} />
+                <Checkbox onCheckedChange={onCheck} checked={isCompleted === 1} />
             </div>
-            
+
         </div>
     );
 }

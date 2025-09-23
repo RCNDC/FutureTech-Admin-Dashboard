@@ -4,6 +4,7 @@ import { type LocalCompanySubmission } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { FC } from "react";
 import Loading from "./loading";
+import ShowFile from "./showfile";
 
 type LocalCompanyDetailProps = {
     entry_id:number
@@ -28,9 +29,10 @@ const LocalCompanyDetail:FC<LocalCompanyDetailProps> = ({entry_id})=>{
             <span>Phone Number : {data?.phoneNo}</span>
             <span>Entry ID : {data?.entry_id}</span>
             <span>Address: {data?.address}</span>
-            <span>Company License: {data?.companyLicense}</span>
-            <span>Company Profile: {data?.companyProfile}</span>
-            <span>Company Website: {data?.companyWebsite}</span>
+            
+            <ShowFile file={data?.companyLicense} name="Company License"/>
+            <ShowFile file={data?.companyProfile} name="Company Profile"/>
+            <ShowFile file={data?.companyWebsite} name="Company Website"/>
             <span>Registered As : {data?.registerAs}</span>
             <span>Number of Attendee : {data?.numOfAttendee}</span>
             <span>Registered Date : {data?.registeredDate.toString()}</span>

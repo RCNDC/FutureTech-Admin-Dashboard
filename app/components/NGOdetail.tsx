@@ -4,6 +4,7 @@ import { type NGOSubmission } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { FC } from "react";
 import Loading from "./loading";
+import ShowFile from "./showfile";
 
 type NGODetailProps = {
     entry_id:number
@@ -29,7 +30,7 @@ const NGODetail:FC<NGODetailProps> = ({entry_id})=>{
             <span>Phone Number : {data?.phoneNo}</span>
             <span>Entry ID : {data?.entry_id}</span>
             <span>Mission : {data?.mission}</span>
-            <span>Organization File : {data?.orgFile}</span>
+            <ShowFile file={data?.orgFile} name="Organization Profile"/>
             <span>Registered Date : {data?.registeredDate.toString()}</span>
             <span>Collaboration : {data?.collaborate}</span>
             <span>Speak Request : {data?.requestSpeaking}</span>

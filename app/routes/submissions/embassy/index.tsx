@@ -1,5 +1,6 @@
 import { useAuth } from "@/components/authprovider";
 import { embassycolumns } from "@/components/embassycolums";
+import Fallback from "@/components/fallback";
 import { columns } from "@/components/submissioncolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
@@ -15,7 +16,13 @@ export function meta({ }: MetaArgs) {
     ]
 }
 
-export function loader() { }
+export function loader() { 
+    
+}
+
+export function HydrateFallback(){
+    return <Fallback/>
+}
 
 
 const Index = () => {

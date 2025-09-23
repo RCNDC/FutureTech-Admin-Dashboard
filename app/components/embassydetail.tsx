@@ -4,6 +4,7 @@ import { type EmbassySubmission } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { FC } from "react";
 import Loading from "./loading";
+import ShowFile from "./showfile";
 
 type EmbassyDetailProps = {
     entry_id:number
@@ -28,7 +29,7 @@ const EmbassyDetail:FC<EmbassyDetailProps> = ({entry_id})=>{
             <span>Phone Number: {data?.phoneNo}</span>
             <span>Country: {data?.address}</span>
             <span>Embassy: {data?.embassy}</span>
-            <span>Passport: {data?.passport}</span>
+            <ShowFile file={data?.passport} name="Passport"/>
             <span>Requested Bilateral : {data?.requestBilateral}</span>
             <span>Want to Attend Policy Meeting: {data?.attendPolicy}</span>
             <span>Has Delegation: {data?.anyDelegation}</span>
