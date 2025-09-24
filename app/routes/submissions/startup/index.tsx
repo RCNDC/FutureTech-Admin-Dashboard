@@ -1,7 +1,7 @@
 import { useAuth } from "@/components/authprovider"
 import { DataTable } from "@/components/datatable";
 import Loading from "@/components/loading";
-import { columns } from "@/components/submissioncolumns";
+import { startupcolumns } from "@/components/startupcolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosinstance";
@@ -37,7 +37,7 @@ const Index = ()=>{
 
     return(
         
-            <SubmissionDetail columns={columns} data={data?.data} isLoading={isLoading} name="Startup Submissions"/>
+            <SubmissionDetail columns={startupcolumns} data={data?.data} isLoading={isLoading} name="Startup Submissions"/>
 
     )
 
