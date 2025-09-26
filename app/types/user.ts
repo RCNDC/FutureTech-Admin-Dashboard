@@ -20,3 +20,9 @@ export const CreateUserValidationSchema = z.object({
 });
 
 export type CreateUserFormData = z.infer<typeof CreateUserValidationSchema>;
+
+export const EditUserValidationSchema = z.object({
+  isLocked: z.boolean(),
+});
+
+export type EditUserFormData = z.infer<typeof EditUserValidationSchema>;
