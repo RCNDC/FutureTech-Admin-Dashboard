@@ -29,7 +29,7 @@ const NGODetail:FC<NGODetailProps> = ({entry_id})=>{
             <span>Email : {data?.email}</span>
             <span>Phone Number : {data?.phoneNo}</span>
             <span>Mission : {data?.mission}</span>
-            <ShowFile file={data?.orgFile} name="Organization Profile"/>
+            <ShowFile file={data?.orgFile || ''} name="Organization Profile"/>
             <span>Registered Date : {data?.registeredDate.toString()}</span>
             <span>Collaboration : {data?.collaborate}</span>
             <span>Speak Request : {data?.requestSpeaking}</span>

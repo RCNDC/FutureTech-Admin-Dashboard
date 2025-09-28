@@ -15,6 +15,9 @@ export default [
         route('/dashboard/submission/internationalcompany', 'routes/submissions/internationalcompany/index.tsx'),
         route('/dashboard/submission/embassies', 'routes/submissions/embassy/index.tsx'),
         route('/dashboard/submission/startups', 'routes/submissions/startup/index.tsx'),
+        route('/dashboard/submission/event', 'routes/submissions/event/index.tsx'),
+        route('/dashboard/submission/conference', 'routes/submissions/conference/index.tsx'),
+
         route("/dashboard/attendees", "routes/attendees/index.tsx"),
         route('/dashboard/users', "routes/users/index.tsx")
     ]),

@@ -32,6 +32,7 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
     },
     {
         accessorKey: 'fullName',
+        
         header: ({ column }) => {
             return (
                 <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -43,6 +44,7 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
     },
     {
         accessorKey: 'email',
+        filterFn: 'includesString',
         header: ({ column }) => {
             return (
                 <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>

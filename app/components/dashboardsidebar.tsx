@@ -5,7 +5,7 @@ import Logout from "./logout";
 const DashboardSideBar = () => {
 
   return (
-      <div className="md:w-56 space-y-4 max-w-56 bg-linear-150 from-purple-900 to-purple-500   md:h-screen p-5 shadow-md  relative md:block  hidden">
+      <div className="md:w-64 space-y-4 max-w-56 bg-linear-150 from-purple-900 to-purple-500 border   md:h-screen p-5 shadow-md  relative md:block  hidden">
           <div className="mt-10 space-y-2">
             <div className="w-full flex items-center justify-center space-y-2">
                 <img src="https://futuretechaddis.com/wp-content/uploads/2025/04/logo-future-.png" className="w-20 h-20 object-contain" alt="Future Tech Addis Logo" width={100} height={100}/>

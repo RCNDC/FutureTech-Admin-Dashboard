@@ -6,8 +6,13 @@ type ShowFileProps = {
     name:string
 }
 const ShowFile:FC<ShowFileProps> = ({file, name})=>{
-    const urlRegex = /https?:\/\/[^\s"]+/g;
-    const url = file.match(urlRegex)
+    let url = [];
+    try{
+        const urlRegex = /https?:\/\/[^\s"]+/g;
+        url = file.match(urlRegex) || [];
+    }catch(err){
+        return <span>No file</span>
+    }
     
     return(
         <div className="flex items-center gap-2  ">

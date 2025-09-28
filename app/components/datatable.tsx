@@ -50,10 +50,10 @@ export function DataTable<TData, TValue>({
   })
  
   return (
-    <div className="overflow-hidden rounded-md border md:w-full ">
-      <div className="flex  items-center gap-2  my-5">
+    <div className="rounded-md border  w-full px-10">
+      <div className="flex  items-center gap-2 my-5">
           <Input placeholder="Search by email, Full name..." 
-           onChange={(event)=>table.getColumn("fullName")?.setFilterValue(event.target.value)}/>
+           onChange={(event)=>table.getColumn("fullName")?.setFilterValue(event.target.value)} className=""/>
         </div>
       <Table>
         <TableHeader>

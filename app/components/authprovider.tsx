@@ -28,7 +28,7 @@ export default function AuthProvider({children}: {children: React.ReactNode}){
                     navigate('/login');
                 }).finally(()=>{
                     setIsLoading(false)
-                })
+                })  
             }
         
     },[token]);

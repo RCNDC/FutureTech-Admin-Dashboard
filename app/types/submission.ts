@@ -59,3 +59,16 @@ export type StartupSubmissions = Pick<SubmissionResponse, 'registeredDate'> & pe
     appliedPegasus:string;
 
 }
+
+export type EventAttendeeSubmission = personalDetail & {
+    sectorOfInterest: string;
+    ticketType: string;
+}
+
+export type ConferenceAttendeeSubmission = EventAttendeeSubmission & {
+    workshop:string;
+    profession: string;
+    investmentOpportunity: string;
+    other:string;
+}
+
