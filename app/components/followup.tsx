@@ -18,6 +18,7 @@ import { type response } from "@/types/response"
 import { type FollowUpNotes } from "@/types/followupnotes"
 import { type FollowUpListType } from "@/types/followup"
 import useFollowUpStore, { useFollowUpNoteStore } from "store/store"
+import CreateFollowUp from "./createfollowup"
 
 type FollowUpProps = {
     entryId: number,
@@ -27,55 +28,40 @@ type FollowUpProps = {
 }
 const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, initalFollowUp }) => {
     const auth = useAuth();
-   
-    const {followUp:testfollowup, initialFollowUp:initFollowup, changeStatus} = useFollowUpStore()
-    
-    const {mutate:createFollowUp, isPending:waitingFollowUp} = useMutation({
-            mutationFn: async ()=>{
-                const res = await axiosInstance.post('/submission/followup/create', {entry_id: entryId},{
-                    headers:{
-                        'Authorization': 'Bearer '+auth?.token
-                    }
-                });
-                return res.data;
-            },
-            onSuccess(data) {
-                initFollowup({entryId: data});
-            },
-            
-        }
-        
-    )
 
-    const {mutate:updateStatus, isPending:updating} = useMutation({
-        mutationFn: async (status:"Completed"|"NotStarted")=>{
+    const { followUp: testfollowup, changeStatus, getFollowUp } = useFollowUpStore();
+    console.log(entryId);
+    const currentFollowUp = getFollowUp(entryId);
+    console.log(testfollowup, currentFollowUp)
+    const { mutate: updateStatus, isPending: updating } = useMutation({
+        mutationFn: async (status: "Completed" | "NotStarted") => {
             console.log()
-            const res = await axiosInstance.post('/submission/followup/updatestatus', {status: status, followUpId:initalFollowUp?.id},{
-                headers:{
-                    'Authorization': 'Beare '+auth?.token
+            const res = await axiosInstance.post('/submission/followup/updatestatus', { status: status, followUpId: currentFollowUp?.id }, {
+                headers: {
+                    'Authorization': 'Bearer ' + auth?.token
                 }
             });
             return res.data;
         },
-        onSuccess: (data,status)=>{
+        onSuccess: (data, status) => {
             toastSuccess('Status Updated');
-            // setFollowUp(getFollowUp())
+             //setFollowUp(getFollowUp())
         },
-        onError:(error, status)=>{
-            if(status==='Completed'){
-                changeStatus(entryId,'NotStarted');
-            }else{
-                 changeStatus(entryId,'Completed');
+        onError: (error, status) => {
+            if (status === 'Completed') {
+                changeStatus(entryId, 'NotStarted');
+            } else {
+                changeStatus(entryId, 'Completed');
             }
         }
     })
-    const {initalNotes, notes} = useFollowUpNoteStore();
-    const {data:followupNotes, isLoading:loadingNotes, refetch:fetchNotes} = useQuery({
-        queryKey:['notes', initalFollowUp?.id],
-        queryFn:async ()=>{
-            const res = await axiosInstance.get<response<FollowUpNotes[]>>('/progress/followupnote/'+initalFollowUp?.id,{
-                headers:{
-                    'Authorization': 'Bearer '+auth?.token
+    const { initalNotes, notes } = useFollowUpNoteStore();
+    const { data: followupNotes, isLoading: loadingNotes, refetch: fetchNotes } = useQuery({
+        queryKey: ['notes', currentFollowUp?.id],
+        queryFn: async () => {
+            const res = await axiosInstance.get<response<FollowUpNotes[]>>('/progress/followupnote/' + currentFollowUp?.id, {
+                headers: {
+                    'Authorization': 'Bearer ' + auth?.token
                 }
             });
             initalNotes(res?.data?.data);
@@ -83,16 +69,17 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, initalFollowUp
         },
         enabled: open
     })
-    const onChecked = (e:CheckedState)=>{
-        if(e){
+    const onChecked = (e: CheckedState) => {
+        if (e) {
             updateStatus('Completed');
-            changeStatus(entryId,'Completed')
+            changeStatus(entryId, 'Completed')
 
-        }else{
+        } else {
             updateStatus('NotStarted');
-            changeStatus(entryId,'NotStarted');
+            changeStatus(entryId, 'NotStarted');
         }
     }
+    
     return (
         <DialogContent>
             <DialogHeader>
@@ -103,21 +90,18 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, initalFollowUp
                 <DialogDescription className="flex justify-between items-center">
                     Manage your followup
                     <div >
-                        
-                        
-                        {
-                            !initalFollowUp?  (
 
-                            <span className={cn(buttonVariants({variant: 'default'}),{'bg-gray-700': waitingFollowUp})} onClick={()=>createFollowUp()} >
-                                {waitingFollowUp?<Loading/>: <Plus className="w-5 h-5"/>}
-                                Create Follow up
-                            </span>
-                            ):(
+
+                        {
+                            !currentFollowUp ? (
+
+                                <CreateFollowUp entryId={entryId}/>
+                            ) : (
                                 <div className="flex items-center gap-2">
                                     <Label>Mark as Completed</Label>
-                                    {!updating ? 
-                                        <Checkbox onCheckedChange={(e)=>onChecked(e)} checked={testfollowup[entryId]?.status === 'Completed'}/>:<Loading/>
-                                    
+                                    {!updating ?
+                                        <Checkbox onCheckedChange={(e) => onChecked(e)} checked={currentFollowUp?.status === 'Completed'} /> : <Loading />
+
                                     }
                                 </div>
                             )
@@ -127,23 +111,23 @@ const FollowUp: FC<FollowUpProps> = ({ entryId, clientName, open, initalFollowUp
                 </DialogDescription>
             </DialogHeader>
             {
-                initalFollowUp &&
-            <div className="space-y-2">
-                <FollowForm entry_id={entryId} clientName={clientName} followUpId={initalFollowUp?.id} refetch={fetchNotes}/>
-                <h1 className="text-lg text-gray-700 text-center underline">Notes</h1>
-                <div className="max-h-56 overflow-y-scroll">
-                    {
-                        !notes || notes?.length === 0 &&(
-                            <span className="text-center text-sm text-gray-600">No notes found</span>
-                        )
-                    }
-                    {
-                        notes && notes?.map((note:FollowUpNotes)=>(
-                            <FollowUpList title={note?.title} description={note?.description} noteId={note?.Id} isCompleted={note?.isCompleted} followUpDate={note?.followUpDate} clientName={clientName} key={note.Id}/>
-                        ))
-                    }
+                currentFollowUp &&
+                <div className="space-y-2">
+                    <FollowForm entry_id={entryId} clientName={clientName} followUpId={initalFollowUp?.id} refetch={fetchNotes} />
+                    <h1 className="text-lg text-gray-700 text-center underline">Notes</h1>
+                    <div className="max-h-56 overflow-y-scroll">
+                        {
+                            !notes || notes?.length === 0 && (
+                                <span className="text-center text-sm text-gray-600">No notes found</span>
+                            )
+                        }
+                        {
+                            notes && notes?.map((note: FollowUpNotes) => (
+                                <FollowUpList title={note?.title} description={note?.description} noteId={note?.Id} isCompleted={note?.isCompleted} followUpDate={note?.followUpDate} clientName={clientName} followUpId={currentFollowUp?.id} key={note?.Id} />
+                            ))
+                        }
+                    </div>
                 </div>
-            </div>
             }
             <DialogFooter>
 

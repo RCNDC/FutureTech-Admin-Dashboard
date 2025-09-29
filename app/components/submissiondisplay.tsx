@@ -13,7 +13,7 @@ const SubmissionDetail:FC<SubmissionDetailProps> = ({isLoading, name, data, colu
     return(
         <div>
             <div className="space-y-3">
-                <h3 className="font-semibold text-2xl">{name}</h3>
+                <h3 className="font-semibold md:text-2xl text-center md:text-left">{name}</h3>
                 
                 {
                     isLoading && <Loading/>

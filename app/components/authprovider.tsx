@@ -12,10 +12,12 @@ const excludedPath = ['/register', '/forgot-password', '/reset-password']
 
 export default function AuthProvider({children}: {children: React.ReactNode}){
     const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+
     useEffect(()=>{
-        if(!excludedPath.includes(location.pathname)){
+        setIsLoading(true)
             if(!token){
                 axiosInstance.post('/auth/refresh-token').then(res=>{
                     const data = res.data;
@@ -24,14 +26,19 @@ export default function AuthProvider({children}: {children: React.ReactNode}){
                     }
                 }).catch(err=>{
                     navigate('/login');
-                })
+                }).finally(()=>{
+                    setIsLoading(false)
+                })  
             }
-        }
+        
     },[token]);
 
     return(
         <authContext.Provider value={{setToken, token}}>
-            {children}
+            {isLoading && <>
+                {children}
+            </>}
+            
         </authContext.Provider>
     )
 

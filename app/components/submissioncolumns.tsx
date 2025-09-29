@@ -16,6 +16,7 @@ import Loading from "./loading";
 import { Badge } from "./ui/badge";
 import SubmissionDetail from "./submissionDetails";
 import useFollowUpStore from "store/store";
+import MarkAsCompleted from "./markascomplete";
 
 export const columns: ColumnDef<SubmissionResponse>[] = [
     {
@@ -82,12 +83,12 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
             <span className="text-gray-800">{new Date(props.getValue() as string).toDateString()}</span>
         )
     },
-   
+
     {
         header: 'Detail',
         cell: ({row})=>{
             return(
-                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="internationcompany"/>
+                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="internationalcompany"/>
             )
         }
     },
@@ -96,62 +97,58 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
         header: 'Actions ',
         cell: ({ row }) => {
             const [open, setOpen] = useState(false)
-
+            const {initialFollowUp} = useFollowUpStore();
             const auth = useAuth()
-            const {initialFollowUp} = useFollowUpStore()
-            const {data, isLoading, refetch} = useQuery({
-        queryKey:['followup', row.getValue('entry_id')],
-        queryFn: async ()=>{
-            const res = await axiosInstance.get<response<FollowUpListType>>(`/submission/followup?entry_id=${row.getValue('entry_id')}`,{
-                headers:{
-                    'Authorization': 'Bearer '+auth?.token 
-                }
-            });
-            const followupData= {};
-            if(res.data.data){
-                followupData[row.getValue('entry_id')]= res.data.data;
-                initialFollowUp(followupData);
-            }
-            return res.data;
-        },
-        retry: 3
-        
-    });
-    
-    
-    
-            return(
-                <>
-            <Dialog onOpenChange={(open)=>setOpen(open)} open={open}>
-                <DropdownMenu>
-                    <DropdownMenuTrigger>
-                        <div className="flex items-center">
-                            {isLoading?<Loading/>: <MoreVertical />}                        
-                            {
-                                data?.data?.status === 'Completed' && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
-                            }
-                        </div>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuItem>
-                            <DialogTrigger>
-                                <Button variant='ghost'>
-                                    <Plus className="w-5 h-5"/>    
-                                    Followup
+            const entryId = row.getValue('entry_id') as number;
+            const { data, isLoading, refetch } = useQuery({
+                queryKey: ['followup', row.getValue('entry_id')],
+                queryFn: async () => {
+                    const res = await axiosInstance.get<response<FollowUpListType>>(`/submission/followup?entry_id=${row.getValue('entry_id')}`, {
+                        headers: {
+                            'Authorization': 'Bearer ' + auth?.token
+                        }
+                    });
+                    if(res.data.data){
+                        initialFollowUp(res?.data?.data, entryId)
+                    }
+                    return res.data;
+                },
+                retry: 3
 
-                                </Button>
-                            </DialogTrigger>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-                
-                {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data }/>}
-            </Dialog>
+            });
+          
+            
+            return (
+                <>
+                    <Dialog onOpenChange={(open) => setOpen(open)} open={open}>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <div className="flex items-center">
+                                    {isLoading ? <Loading /> : <MoreVertical />}
+                                    <MarkAsCompleted entryId={row.getValue('entry_id')}/>
+                                </div>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem>
+                                    <DialogTrigger>
+                                        <Button variant='ghost'>
+                                            <Plus className="w-5 h-5" />
+                                            Followup
+
+                                        </Button>
+                                    </DialogTrigger>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data}/>}
+                    </Dialog>
                 </>
-        )}
+            )
+        }
     }
 
 

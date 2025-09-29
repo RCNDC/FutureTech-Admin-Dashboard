@@ -15,7 +15,7 @@ export function loader(){
 export default function DashboardHome(){
     return(
         <div>
-          <h3>Welcome,</h3>
+          <h3 className="font-semibold text-2xl">Dashboard</h3>
             <TotalStat/>
         </div>
     )

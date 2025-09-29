@@ -15,6 +15,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Loading from "./loading"
 import { Badge } from "./ui/badge"
 import FollowUp from "./followup"
+import MarkAsCompleted from "./markascomplete"
 
 export const localcompanycolumns: ColumnDef<LocalCompanySubmission>[] = [
     {
@@ -95,7 +96,8 @@ export const localcompanycolumns: ColumnDef<LocalCompanySubmission>[] = [
         header: 'Actions ',
         cell: ({ row }) => {
             const [open, setOpen] = useState(false)
-            const {followUp, initialFollowUp} = useFollowUpStore();
+            const {initialFollowUp} = useFollowUpStore();
+            const entryId = row.getValue('entry_id') as number;
             const auth = useAuth()
             const { data, isLoading, refetch } = useQuery({
                 queryKey: ['followup', row.getValue('entry_id')],
@@ -105,7 +107,10 @@ export const localcompanycolumns: ColumnDef<LocalCompanySubmission>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                   
+                   if(res.data.data){
+                        initialFollowUp(res?.data?.data, entryId)
+
+                    }
                     return res.data;
                 },
                 retry: 3
@@ -120,9 +125,7 @@ export const localcompanycolumns: ColumnDef<LocalCompanySubmission>[] = [
                             <DropdownMenuTrigger>
                                 <div className="flex items-center">
                                     {isLoading ? <Loading /> : <MoreVertical />}
-                                    {
-                                        data?.data?.status === 'Completed' && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
-                                    }
+                                    <MarkAsCompleted entryId={row.getValue('entry_id')}/>
                                 </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>

@@ -1,12 +1,10 @@
 import { useAuth } from "@/components/authprovider";
-import { embassycolumns } from "@/components/embassycolums";
-import Fallback from "@/components/fallback";
-import { columns } from "@/components/submissioncolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
-import type { response } from "@/types/response";
-import type { SubmissionResponse } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
+import { EventAttendeeColumns } from "@/components/eventattendeecolumns";
+import type { response } from "@/types/response";
+import type { EventAttendeeSubmission } from "@/types/submission";
 import type { MetaArgs } from "react-router";
 
 export function meta({ }: MetaArgs) {
@@ -14,40 +12,24 @@ export function meta({ }: MetaArgs) {
         { title: 'Registration Submissions - Future tech addis' },
         { name: 'description', content: 'Form submissions' }
     ]
-}
-
-export function loader() { 
-    
-}
-
-export function HydrateFallback(){
-    return <Fallback/>
-}
-
-
+} 
 const Index = () => {
-    const auth = useAuth();
+     const auth = useAuth();
     const { data, isLoading } = useQuery({
-        queryKey: ['lc'],
+        queryKey: ['eventAttendee'],
         queryFn: async () => {
-            const res = await axiosInstance.get<response<SubmissionResponse[]>>('/register/submission/embassy', {
+            const res = await axiosInstance.get<response<EventAttendeeSubmission[]>>('/register/submission/event', {
                 headers: {
                     'Authorization': 'Bearer ' + auth?.token
                 }
             });
+           
             return res.data;
         }
     });
-
-    return (
-
-        <SubmissionDetail columns={embassycolumns} data={data?.data} isLoading={isLoading} name="Embassy Submissions" />
-
+    return(
+         <SubmissionDetail columns={EventAttendeeColumns} data={data?.data} isLoading={isLoading} name="Event Attendess" />
     )
-
-
-
-
 }
 
 export default Index;

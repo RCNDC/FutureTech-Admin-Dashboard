@@ -11,15 +11,15 @@ type StatCardProps = {
 }
 const StatCard:FC<StatCardProps> = ({title, totalCount, changes, icon}) => {
     return (
-        <Card>
+        <Card className="max-w-md">
             <CardHeader>
                 
             </CardHeader>
-            <CardContent>
-                <div className="flex justify-between items-center">
-                    <div>
-                        <h4 className="text-2xl text-gray-500">{title}</h4>
-                        <h4 className="text-3xl text-gray-900 font-extrabold">{totalCount}</h4>
+            <CardContent >
+                <div className="flex  justify-between items-center">
+                    <div className="text-sm">
+                        <h4 className="md:text-2xl  text-gray-500">{title}</h4>
+                        <h4 className="md:text-3xl text-gray-900 font-extrabold">{totalCount}</h4>
                     </div>
                     {icon}
                 </div>

@@ -6,43 +6,33 @@ import {create} from 'zustand'
 import {combine, persist} from 'zustand/middleware';
 
 interface FollowUpState {
-    followUp: { [key: number]: FollowUpListType },
+    followUp: FollowUpListType[],
     changeStatus: (entry_id: number, status: "Completed" | "NotStarted") => void,
-    initialFollowUp: (followUps: { [key: number]: FollowUpListType }) => void,
-    getFollowUp: (entry:number) => { [key: number]: FollowUpListType }
+    initialFollowUp: (followUp: FollowUpListType, entryId: number) => void,
+    getFollowUp: (entry: number) => FollowUpListType | undefined
 }
 
 const useFollowUpStore = create<FollowUpState>()(
-    persist(
-        combine(
-            {
-                followUp: {},
-            },
-            (set, get) => ({
-                changeStatus(entry_id, status) {
-                    set(state => ({
-                        followUp: {
-                            ...state.followUp,
-                            [entry_id]: {
-                                ...state.followUp[entry_id],
-                                status,
-                            }
-                        }
-                    }));
-                },
-                initialFollowUp(followUps) {
-                    set((state) => ({
-                        followUp: {...state, ...followUps}
-                    }));
-                },
-                getFollowUp(entry) {
-                    return get().followUp[entry];
-                }
-            })
-        ),
+    combine(
         {
-            name: 'test-storage'
-        }
+            followUp: [] as FollowUpListType[],
+        },
+        (set, get)=>({
+            changeStatus(entry_id, status) {
+                set((state)=>({
+                    followUp:state.followUp.map((f)=>f.entry_id==entry_id?{...f, status:status}:f)
+                }))
+            },
+            getFollowUp(entry) {
+                console.log(entry)
+                return get().followUp.find((value)=>value.entry_id == entry)
+            },
+            initialFollowUp(followUp, entryId) {
+                set((state)=>({
+                    followUp: [...state.followUp, followUp].filter((value, index,self)=>index===self.findIndex((t)=> t.id === value.id))
+                }))
+            },
+        })
     )
 )
 

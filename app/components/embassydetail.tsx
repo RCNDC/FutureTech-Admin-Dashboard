@@ -4,6 +4,7 @@ import { type EmbassySubmission } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { FC } from "react";
 import Loading from "./loading";
+import ShowFile from "./showfile";
 
 type EmbassyDetailProps = {
     entry_id:number
@@ -13,26 +14,26 @@ const EmbassyDetail:FC<EmbassyDetailProps> = ({entry_id})=>{
         queryKey:['embassyc', entry_id],
         queryFn: async ()=>{
             const res = await axiosInstance.get<response<EmbassySubmission[]>>('/register/submission/embassy/'+entry_id);
-            console.log(res.data.data?.pop());
-            return res.data;
+
+            return res.data.data?.pop();
         },
- 
+
     })
     return(
-        <div className="grid grid-cols-2">
+        <div className="grid md:grid-cols-2 min-w-[80%]">
             {isLoading && <Loading/>}
             {!isLoading && (
                 <>
-            <span>Full Name: {data?.data[0]?.fullName}</span>
-            <span>Email: {data?.data?.pop()?.email}</span>
-            <span>Phone Number: {data?.data?.pop()?.phoneNo}</span>
-            <span>Country: {data?.data?.pop()?.address}</span>
-            <span>Embassy: {data?.data?.pop()?.embassy}</span>
-            <span>Passport: {data?.data?.pop()?.passport}</span>
-            <span>Requested Bilateral : {data?.data?.pop()?.requestBilateral}</span>
-            <span>Want to Attend Policy Meeting: {data?.data?.pop()?.attendPolicy}</span>
-            <span>Has Delegation: {data?.data?.pop()?.anyDelegation}</span>
-            <span>Number of Delegation: {data?.data?.pop()?.numDelegation}</span>
+            <span>Full Name: {data?.fullName}</span>
+            <span>Email: {data?.email}</span>
+            <span>Phone Number: {data?.phoneNo}</span>
+            <span>Country: {data?.address}</span>
+            <span>Embassy: {data?.embassy}</span>
+            <ShowFile file={data?.passport} name="Passport"/>
+            <span>Requested Bilateral : {data?.requestBilateral}</span>
+            <span>Want to Attend Policy Meeting: {data?.attendPolicy}</span>
+            <span>Has Delegation: {data?.anyDelegation}</span>
+            <span>Number of Delegation: {data?.numDelegation}</span>
                 </>
             )}
         </div>

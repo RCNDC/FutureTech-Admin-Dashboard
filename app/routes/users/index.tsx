@@ -38,23 +38,16 @@ export default function UsersPage() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['users', debounceSearchTerm],
     queryFn: async () => {
-      try {
         const res = await axiosInstance.get<response<UserResponse[]>>(
           `/user/getAllUsers?query=${debounceSearchTerm}`,
           {
             headers: {
-              Authorization: `Bearer ${auth?.token}`,
+              Authorization: `Bearer `+auth?.token,
             },
           }
         );
         return res.data;
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          console.error('API Error:', error.response?.data, error.response?.status);
-          toastError(error.response?.data?.message || 'Failed to fetch users');
-        }
-        throw error;
-      }
+      
     },
   });
 
@@ -79,15 +72,7 @@ export default function UsersPage() {
         </Dialog>
       </div>
       {isLoading && <Loading />}
-      {isError && (
-        <div className="p-4 text-red-500">
-          Error loading users: {error instanceof AxiosError ? error.response?.data?.message || error.message : 'Unknown error'}
-        </div>
-      )}
-      {data?.data && data.data.length === 0 && <p>No users found.</p>}
-      {data?.data && data.data.length > 0 && (
-        <UsersTable columns={columns} userData={data.data} />
-      )}
+        <UsersTable columns={columns} userData={data?.data}  />
     </div>
   );
 }

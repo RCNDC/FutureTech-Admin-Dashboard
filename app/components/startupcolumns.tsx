@@ -15,6 +15,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Loading from "./loading"
 import { Badge } from "./ui/badge"
 import FollowUp from "./followup"
+import MarkAsCompleted from "./markascomplete"
 
 export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
     {
@@ -31,6 +32,7 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
     },
     {
         accessorKey: 'fullName',
+        
         header: ({ column }) => {
             return (
                 <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -42,6 +44,7 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
     },
     {
         accessorKey: 'email',
+        filterFn: 'includesString',
         header: ({ column }) => {
             return (
                 <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -95,8 +98,9 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
         header: 'Actions ',
         cell: ({ row }) => {
             const [open, setOpen] = useState(false)
-            const {followUp, initialFollowUp} = useFollowUpStore();
+            const {initialFollowUp} = useFollowUpStore();
             const auth = useAuth()
+            const entryId = row.getValue('entry_id') as number;
             const { data, isLoading, refetch } = useQuery({
                 queryKey: ['followup', row.getValue('entry_id')],
                 queryFn: async () => {
@@ -105,7 +109,10 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                   
+                   if(res.data.data){
+                        initialFollowUp(res?.data?.data, entryId)
+
+                    }
                     return res.data;
                 },
                 retry: 3
@@ -120,9 +127,7 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
                             <DropdownMenuTrigger>
                                 <div className="flex items-center">
                                     {isLoading ? <Loading /> : <MoreVertical />}
-                                    {
-                                        data?.data?.status === 'Completed' && <Badge variant="outline" className="bg-green-500 text-white">C</Badge>
-                                    }
+                                    <MarkAsCompleted entryId={row.getValue('entry_id')}/>
                                 </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
