@@ -16,7 +16,13 @@ export const CreateUserValidationSchema = z.object({
     message: 'Password must be at least 8 characters long',
   }),
   isLocked: z.boolean(),
+  role: z.enum(['Admin', 'User']),
 });
 
 export type CreateUserFormData = z.infer<typeof CreateUserValidationSchema>;
 
+export const EditUserValidationSchema = z.object({
+  isLocked: z.boolean(),
+});
+
+export type EditUserFormData = z.infer<typeof EditUserValidationSchema>;

@@ -75,11 +75,24 @@ const CreateUserForm = () => {
           </span>
         )}
       </div>
+      <div className="space-y-1">
+        <Label htmlFor="role" className="text-sm text-purple-900">
+          Role
+        </Label>
+        <select {...register('role')} className="w-full p-2 border rounded-md">
+          <option value="Admin">Admin</option>
+          <option value="User">User</option>
+        </select>
+        {errors.role && (
+          <span className="text-red-500 text-sm font-medium">
+            {errors.role.message}
+          </span>
+        )}
+      </div>
       <div className="flex items-center">
         <Input
           type="checkbox"
           className="w-4 h-4 mr-2"
-          {...register('isLocked')}
         />
         <Label htmlFor="isLocked" className="text-sm text-purple-900">
           Is Locked

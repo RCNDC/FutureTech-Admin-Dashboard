@@ -7,7 +7,9 @@ export default [
     route("/forgot-password", "routes/forgetpassword.tsx"),
     route("/reset-password/:param", "routes/resetpassword.tsx"),
   ]),
+
   layout('layouts/dashboard.tsx', [
+
         route('/dashboard/home', 'routes/dashboardhome.tsx'),
         route('/dashboard/checkin', 'routes/checkin/index.tsx'),
         route('/dashboard/submission/ngo', 'routes/submissions/ngo/index.tsx'),
@@ -21,6 +23,7 @@ export default [
         route("/dashboard/attendees", "routes/attendees/index.tsx"),
         route('/dashboard/users', "routes/users/index.tsx")
     ]),
+
   layout("layouts/checkout.tsx", [
     route("checkout", "routes/checkout.tsx"),
     route("checkout/completed", "routes/completed.tsx"),
