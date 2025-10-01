@@ -40,7 +40,8 @@ const CreateUserForm = () => {
   });
 
   const onSubmit: SubmitHandler<CreateUserFormData> = (data) => {
-    mutate(data);
+    const { role, ...rest } = data;
+    mutate(rest);
   };
 
   return (
@@ -75,6 +76,7 @@ const CreateUserForm = () => {
           </span>
         )}
       </div>
+
       <div className="space-y-1">
         <Label htmlFor="role" className="text-sm text-purple-900">
           Role
@@ -93,6 +95,7 @@ const CreateUserForm = () => {
         <Input
           type="checkbox"
           className="w-4 h-4 mr-2"
+          {...register('isLocked')}
         />
         <Label htmlFor="isLocked" className="text-sm text-purple-900">
           Is Locked
