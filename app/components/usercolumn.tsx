@@ -54,7 +54,7 @@ export const columns: ColumnDef<UserResponse>[] = [
 
       const { mutate: deleteUser } = useMutation({
         mutationFn: async (id: string) => {
-          const response = await axiosInstance.delete(`/user/${id}`,
+          const response = await axiosInstance.delete(`/user/delete/${id}`,
           {
             headers: {
               Authorization: `Bearer ${auth?.token}`,
