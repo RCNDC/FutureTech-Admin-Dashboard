@@ -60,7 +60,7 @@ export type StartupSubmissions = Pick<SubmissionResponse, 'registeredDate'> & pe
 
 }
 
-export type EventAttendeeSubmission = personalDetail & {
+export type EventAttendeeSubmission = personalDetail & Pick<SubmissionResponse, 'registeredDate'> & {
     sectorOfInterest: string;
     ticketType: string;
 }

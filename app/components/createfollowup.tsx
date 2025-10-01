@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import axiosInstance from "@/lib/axiosinstance";
 import { useMutation } from "@tanstack/react-query";
 import type { FC } from "react";
@@ -32,10 +32,10 @@ const CreateFollowUp:FC<CreateFollowUpProps> = ({entryId})=>{
 
     )
     return(
-        <span className={cn(buttonVariants({ variant: 'default' }), { 'bg-gray-700': waitingFollowUp })} onClick={() => createFollowUp()} >
+        <Button className={cn({ 'bg-gray-700': waitingFollowUp })} disabled={waitingFollowUp} aria-busy={waitingFollowUp} onClick={() => createFollowUp()} >
                                     {waitingFollowUp ? <Loading /> : <Plus className="w-5 h-5" />}
                                     Create Follow up
-                                </span>
+                                </Button>
     )
 }
 

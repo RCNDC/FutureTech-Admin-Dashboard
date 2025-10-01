@@ -11,6 +11,7 @@ export type AttendeeResponse = {
     fullname:string;
     email:string;
     phone:string;
+    
     status: 'PENDING' | 'COMPLETED' | 'CANCLLED' | 'CHECKEDIN';
 }
 

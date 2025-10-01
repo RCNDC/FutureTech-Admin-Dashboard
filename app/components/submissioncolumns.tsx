@@ -17,46 +17,10 @@ import { Badge } from "./ui/badge";
 import SubmissionDetail from "./submissionDetails";
 import useFollowUpStore from "store/store";
 import MarkAsCompleted from "./markascomplete";
-
+import { DateRangeColumnFilter } from "./datefilter";
+import { BaseColumns } from "./basecolumns";
 export const columns: ColumnDef<SubmissionResponse>[] = [
-    {
-        accessorKey: 'entry_id',
-        header: ({ column }) => {
-            return (
-                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    ID
-                    <ArrowUpDown className='w-5 h-5' />
-                </Button>
-            )
-        },
-
-    },
-    {
-        accessorKey: 'fullName',
-        header: ({ column }) => {
-            return (
-                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    Full Name
-                    <ArrowUpDown className='w-5 h-5' />
-                </Button>
-            )
-        },
-    },
-    {
-        accessorKey: 'email',
-        header: ({ column }) => {
-            return (
-                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    Email
-                    <ArrowUpDown className='w-5 h-5' />
-                </Button>
-            )
-        },
-    },
-    {
-        accessorKey: 'phoneNo',
-        header: 'Phone Number'
-    },
+    ...(BaseColumns as ColumnDef<SubmissionResponse>[]),
     {
         accessorKey: 'companyName',
         header: ({ column }) => {
@@ -81,7 +45,11 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
         },
         cell: (props) => (
             <span className="text-gray-800">{new Date(props.getValue() as string).toDateString()}</span>
-        )
+        ),
+        filterFn: 'dateRange',
+        meta:{
+            filter: DateRangeColumnFilter
+        }
     },
 
     {

@@ -28,6 +28,7 @@ export const columns:ColumnDef<AttendeeResponse>[] = [
         accessorKey: 'phone',
         header: 'Phone number'
     },
+    
     {
         accessorKey: 'status',
         header:'Status',

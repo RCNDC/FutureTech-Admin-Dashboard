@@ -2,8 +2,35 @@ import type { personalDetail } from "@/types/submission";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "./ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { Checkbox } from "./ui/checkbox";
 
 export const BaseColumns:ColumnDef<personalDetail>[] = [
+    {
+        accessorKey: 'Select',
+        header: ({table})=>{
+            
+            return(
+            <Checkbox 
+            checked={table.getIsAllRowsSelected()}
+            onCheckedChange={(value)=>{
+                table.toggleAllRowsSelected(!!value)
+            }
+            }
+            
+            />
+        )},
+        cell: ({row})=>(
+            <Checkbox 
+            checked={row.getIsSelected()}
+            onCheckedChange={(value)=>{
+                row.toggleSelected(!!value)
+            }
+            }
+            />
+        ),
+        enableSorting: false,
+        enableColumnFilter: false
+    },
     {
         accessorKey: 'entry_id',
         header: ({column})=>{

@@ -17,7 +17,10 @@ export const PasswordResetSchema = z.object({
                         .regex(/^(?=.*[a-z]).*$/, 'Password must contain at least one lowercase letter.')
                         .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character.'),
     confirmPassword: z.string()
-}).refine((data)=>data.password===data.confirmPassword,'Password does not match')
+}).refine((data)=>data.password===data.confirmPassword,{
+    message:'Password Does not match',
+    path:['confirmPassword']
+})
 
 export type PasswordResetType = z.infer<typeof PasswordResetSchema>;
 

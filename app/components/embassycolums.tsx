@@ -13,61 +13,26 @@ import type { FollowUpListType } from "@/types/followup";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "./authprovider";
 import { useEffect, useState } from "react";
+import { BaseColumns } from "./basecolumns";
 import SubmissionDetail from "./submissionDetails";
 import type { EmbassySubmission, SubmissionResponse } from "@/types/submission";
 import useFollowUpStore from "store/store";
 import MarkAsCompleted from "./markascomplete";
+import { DateRangeColumnFilter } from "./datefilter";
 
 export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
-    {
-        accessorKey: 'entry_id',
-        header: ({ column }) => {
-            return (
-                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    ID
-                    <ArrowUpDown className='w-5 h-5' />
-                </Button>
-            )
-        },
-
+   ...(BaseColumns as ColumnDef<EmbassySubmission>[]),
+   {
+    accessorKey: 'embassy',
+    header: ({ column }) => {
+        return (
+            <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                Embassy
+                <ArrowUpDown className='w-5 h-5' />
+            </Button>
+        )
     },
-    {
-        accessorKey: 'fullName',
-        header: ({ column }) => {
-            return (
-                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    Full Name
-                    <ArrowUpDown className='w-5 h-5' />
-                </Button>
-            )
-        },
-    },
-    {
-        accessorKey: 'email',
-        header: ({ column }) => {
-            return (
-                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    Email
-                    <ArrowUpDown className='w-5 h-5' />
-                </Button>
-            )
-        },
-    },
-    {
-        accessorKey: 'phoneNo',
-        header: 'Phone Number'
-    },
-    {
-        accessorKey: 'embassy',
-        header: ({ column }) => {
-            return (
-                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    Embassy
-                    <ArrowUpDown className='w-5 h-5' />
-                </Button>
-            )
-        }
-    },
+   },
 
     {
         accessorKey: 'registeredDate',
@@ -81,7 +46,12 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
         },
         cell: (props) => (
             <span className="text-gray-800">{new Date(props.getValue() as string).toDateString()}</span>
-        )
+        ),
+        filterFn: "dateRange",
+        meta:{
+            filter: DateRangeColumnFilter
+        },
+        enableColumnFilter: true
     },
     
     {

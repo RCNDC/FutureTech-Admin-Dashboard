@@ -3,6 +3,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { BaseColumns } from "./basecolumns";
 import { Button } from "./ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { InterestColumnFilter } from "./interestcolumnfilter";
+import { ProfessionColumnFilter } from "./professioncolumnfilter";
 
 export const ConferenceAttendeeColumns: ColumnDef<ConferenceAttendeeSubmission>[] = [
     ...(BaseColumns as ColumnDef<ConferenceAttendeeSubmission>[]),
@@ -19,7 +21,7 @@ export const ConferenceAttendeeColumns: ColumnDef<ConferenceAttendeeSubmission>[
     },
     {
         accessorKey: 'profession',
-        accessorFn: row => row.profession==='Other'? row.other:row.profession,
+        //accessorFn: row => row.profession==='Other'? row.other:row.profession,
         header: ({ column, table }) => {
             
             return (
@@ -27,7 +29,11 @@ export const ConferenceAttendeeColumns: ColumnDef<ConferenceAttendeeSubmission>[
                     Profession
                     <ArrowUpDown className='w-5 h-5' />
                 </Button>
-            )}
+            )},
+        filterFn: 'profession',
+        meta: {
+            filter: ProfessionColumnFilter
+        }
     },
     {
         accessorKey: 'sectorOfInterest',
@@ -38,6 +44,10 @@ export const ConferenceAttendeeColumns: ColumnDef<ConferenceAttendeeSubmission>[
                     <ArrowUpDown className='w-5 h-5' />
                 </Button>
             )
+        },
+        filterFn: 'interest',
+        meta: {
+            filter: InterestColumnFilter
         }
     },
     {

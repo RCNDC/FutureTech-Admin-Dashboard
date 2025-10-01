@@ -24,18 +24,20 @@ export default function AuthProvider({children}: {children: React.ReactNode}){
                     if(data){
                         setToken(data.accessToken);
                     }
-                }).catch(err=>{
+                }).catch(()=>{
                     navigate('/login');
                 }).finally(()=>{
                     setIsLoading(false)
                 })  
+            }else{
+                setIsLoading(false)
             }
         
-    },[token]);
+    },[token, navigate]);
 
     return(
         <authContext.Provider value={{setToken, token}}>
-            {isLoading && <>
+            {!isLoading && <>
                 {children}
             </>}
             

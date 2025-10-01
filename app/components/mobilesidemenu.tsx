@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
+import { Menu, Users } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
+import { useSelectedEmailStore } from "store/selectedemailstore";
+import { Badge } from "./ui/badge";
 
 export const MobileSideMenu = ()=>{
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+    const {selectedUserEmails} = useSelectedEmailStore()
     const clickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
             setIsSidebarOpen(false);
@@ -104,7 +106,7 @@ export const MobileSideMenu = ()=>{
                     </Link>
                     <Link to="#" className="flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors duration-200">
                         <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        <span>Messages</span>
+                        <span>Messages {selectedUserEmails.length >0 && (<Badge variant='default'>{selectedUserEmails.length}</Badge>)}</span>
                     </Link>
                    
                     <span className="text-xs font-semibold uppercase text-purple-200 px-4 py-2 mt-4 block">Event Manage</span>
@@ -115,6 +117,11 @@ export const MobileSideMenu = ()=>{
                     <Link to='/dashboard/checkin' className="flex items-center px-4 py-3 rounded-lg  bg-opacity-20 font-semibold transition-colors duration-200">
                         <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                         <span>Check-in</span>
+                    </Link>
+                    <span className="text-xs font-semibold uppercase text-purple-200 px-4 py-2 mt-4 block">Admin</span>
+                    <Link to="/dashboard/users" className="flex items-center gap-2">
+                          <Users className="w-4 h-4" />
+                          <span>Users</span>
                     </Link>
                 </nav>
             </aside>
