@@ -36,7 +36,7 @@ const InternationalCompanyDetail:FC<InternationalCompanyDetailProps> = ({entry_i
             <span>Pitch Product : {data?.pitchProduct}</span>
             <span>Areas of Interest: {data?.areaOfInterest}</span>
             <span>Interest Type: {data?.interestType}</span>
-            <span>Business Schedule: {data?.b2Schedule}</span>
+            <span>Schedule B2B: {data?.b2Schedule}</span>
             <span>Sponsorship Tier : {data?.sponsorshipTier}</span>
 
                 </>
