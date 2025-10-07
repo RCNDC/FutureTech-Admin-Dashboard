@@ -18,6 +18,8 @@ import FollowUp from "./followup"
 import MarkAsCompleted from "./markascomplete"
 import { DateRangeColumnFilter } from "./datefilter"
 import { BaseColumns } from "./basecolumns"
+import { StageColumnFilter } from "./stagefilter"
+import { BoothColumnFilter } from "./filterbooth"
 
 export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
     ...(BaseColumns as ColumnDef<StartupSubmissions>[]),
@@ -50,6 +52,43 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
         meta:{
             filter: DateRangeColumnFilter
         }
+    },
+    {
+        accessorKey: 'stage',
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                    Stage
+                    <ArrowUpDown className='w-5 h-5' />
+                </Button>
+            )
+        },
+        
+        filterFn: 'stage',
+        meta:{
+            filter: StageColumnFilter
+        }
+    },
+    {
+        accessorKey: 'booth',
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                    Booth
+                    <ArrowUpDown className='w-5 h-5' />
+                </Button>
+            )
+        },
+        cell: (props)=>{
+            const value = props.getValue();
+            return !value? 'Yes':value
+        },
+        filterFn: 'booth',
+        meta:{
+            filter: BoothColumnFilter
+        }
+        
+       
     },
     
     {

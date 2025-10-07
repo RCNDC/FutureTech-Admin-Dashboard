@@ -19,7 +19,7 @@ export function DateRangeColumnFilter({ column }: { column: Column<any, unknown>
 
   return (
     <div className='flex flex-wrap items-center justify-center gap-3'>
-      <div>
+      <div className='space-y-2'>
         <Label>From</Label>
         <Input
           type="date"
@@ -30,7 +30,7 @@ export function DateRangeColumnFilter({ column }: { column: Column<any, unknown>
         />
 
       </div>
-      <div>
+      <div className='space-y-2'>
         <Label>To</Label>
         <Input
           type="date"

@@ -24,7 +24,7 @@
   import { useState } from "react"
   import { Input } from "./ui/input"
   import { Label } from "./ui/label"
-  import { dateRangeFilter, interestFilter, professionFilter } from "@/filters/filter"
+  import { dateRangeFilter, filterByBooth, filterByStage, interestFilter, professionFilter } from "@/filters/filter"
 import { DateRangeColumnFilter } from "./datefilter"
 import { EmailUI } from "./emailui"
   
@@ -65,6 +65,8 @@ import { EmailUI } from "./emailui"
         dateRange: dateRangeFilter,
         interest: interestFilter,
         profession: professionFilter,
+        stage: filterByStage,
+        booth: filterByBooth,
       }
 
     });
@@ -72,8 +74,8 @@ import { EmailUI } from "./emailui"
   
     return (
       <div className="rounded-md border  w-full px-10">
-        <div className="flex flex-wrap items-center justify-center-safe gap-1 my-5">
-          <div>
+        <div className="flex flex-wrap items-center justify-center-safe gap-1 my-5 border p-10">
+          <div className="space-y-2">
             <Label>Search</Label>
             <Input placeholder="Search by email, Full name..." 
             onChange={(event)=>table.getColumn("fullName")?.setFilterValue(event.target.value)} className="w-full"/>
@@ -82,11 +84,11 @@ import { EmailUI } from "./emailui"
             {table.getHeaderGroups().map((headerGroup)=>(
               <>
               {headerGroup.headers.map((header)=>(
-                <div key={"filter"+header.id}>
+                <div className="felx flex-wrap gap-4 items-center" >
                   {header.column.getCanFilter() ? (
-                    <div>
+                    <div key={"filter"+header.id}>
                       {header.column.columnDef.meta?.filter ? (
-                        <header.column.columnDef.meta.filter column={header.column} />
+                        <header.column.columnDef.meta.filter column={header.column}  />
                       ) : null}
                     </div>
                   ) : null}
@@ -94,7 +96,7 @@ import { EmailUI } from "./emailui"
               ))}
               </>
             ))}
-            <div>
+            <div className="my">
               
               <EmailUI recepiantInfo={table.getSelectedRowModel().rows.map(row=>row.original)}/>
             </div>

@@ -1,6 +1,7 @@
 import axiosInstance from "@/lib/axiosinstance";
 import { createContext, useContext, useEffect, useState } from "react";
 import { redirect, useLocation, useNavigate } from "react-router";
+import Loading from "./loading";
 
 type authContextType = {
     token: string | null,
@@ -37,6 +38,9 @@ export default function AuthProvider({children}: {children: React.ReactNode}){
 
     return(
         <authContext.Provider value={{setToken, token}}>
+            {isLoading && <div className="flex justify-center items-center absolute w-full h-full">
+                <Loading/>
+                </div>}
             {!isLoading && <>
                 {children}
             </>}

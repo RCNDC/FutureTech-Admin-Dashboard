@@ -118,11 +118,17 @@ export const MobileSideMenu = ()=>{
                         <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                         <span>Check-in</span>
                     </Link>
+                    <span className="text-xs font-semibold uppercase text-purple-200 px-4 py-2 mt-4 block">Partners</span>
+                    <Link to="/dashboard/partners" className="flex items-center gap-2">
+                          <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                          <span>Companies</span>
+                    </Link>
                     <span className="text-xs font-semibold uppercase text-purple-200 px-4 py-2 mt-4 block">Admin</span>
                     <Link to="/dashboard/users" className="flex items-center gap-2">
                           <Users className="w-4 h-4" />
                           <span>Users</span>
                     </Link>
+                    
                 </nav>
             </aside>
             <button

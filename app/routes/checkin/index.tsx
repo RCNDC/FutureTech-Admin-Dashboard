@@ -14,9 +14,10 @@ import type { IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { useAuth } from "@/components/authprovider";
 import { AxiosError } from "axios";
 import Loading from "@/components/loading";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "@/hooks/debounce";
 import { columns } from "@/components/attendeecolumns";
+import { toast } from "sonner";
 
 
 export function meta({}:Route.MetaArgs){
@@ -65,6 +66,11 @@ const Index = ()=>{
             }
         }
     })
+    useEffect(()=>{
+        if(isPending){
+            toast.info('Verifing ticket',{icon:<Loading/>,cancel:!isPending, position:'top-center'})
+        }
+    }, [isPending])
    const onQRSuccess = (result:IDetectedBarcode[])=>{
     const orderCode = result[0].rawValue
     mutate(orderCode);

@@ -56,3 +56,33 @@ export const professionFilter: FilterFn<any> = (row, columnId, filterValue) => {
   return filterProfessions.includes(professions.trim().toLowerCase());
 }
 professionFilter.autoRemove = (val) => !val || val.length === 0;
+
+
+// export const filterByAll: FilterFn<any> = (row, columnId, filterValue)=>{
+//   if(!filterValue || filterValue.length === 0) return true;
+//   const rowValue = row.getValue(columnId) as string;
+//   if(!rowValue) return false;
+//   const 
+// }
+
+export const filterByStage: FilterFn<any> = (row, columnId, filterValue)=>{
+  if(!filterValue || filterValue.length === 0) return true;
+  const rowValue = row.getValue(columnId) as string;
+  if(!rowValue) return false;
+  const stage = rowValue;
+  const filterStages = (filterValue as string[]).map((s)=> s.trim().toLowerCase());
+  return filterStages.includes(stage.trim().toLowerCase());
+}
+filterByStage.autoRemove = (val) => !val || val.length === 0;
+
+export const filterByBooth: FilterFn<any> = (row, columnId, filterValue)=>{
+  if(!filterValue || filterValue.length === 0) return true;
+  const rowValue = row.getValue(columnId) as string;
+  if(!rowValue) return false;
+  const stage = rowValue;
+  const filterStages = (filterValue as string).toLowerCase();
+  return filterStages === stage.toLowerCase();
+}
+
+filterByBooth.autoRemove = (val) => !val 
+
