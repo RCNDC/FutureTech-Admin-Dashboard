@@ -25,7 +25,7 @@ export type LocalCompanySubmission = Omit<SubmissionResponse, 'sponsorshipTier' 
     sponserShip:string;
     directoryList:string;
     interest:string;
-    numOfAttendee:number;
+    numberOfAttendee:number;
 }
 
 export type InternationalCompaniesSubmission = Omit<SubmissionResponse, 'registerAs'> & personalDetail

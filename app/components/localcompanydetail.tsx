@@ -33,7 +33,7 @@ const LocalCompanyDetail:FC<LocalCompanyDetailProps> = ({entry_id})=>{
             <ShowFile file={data?.companyProfile} name="Company Profile"/>
             <ShowFile file={data?.companyWebsite} name="Company Website"/>
             <span>Registered As : {data?.registerAs}</span>
-            <span>Number of Attendee : {data?.numOfAttendee}</span>
+            <span>Number of Attendee : {data?.numberOfAttendee}</span>
             <span>Registered Date : {data?.registeredDate.toString()}</span>
             <span>Directory List : {data?.directoryList}</span>
             <span>Areas of Interest: {data?.areaOfInterest}</span>
