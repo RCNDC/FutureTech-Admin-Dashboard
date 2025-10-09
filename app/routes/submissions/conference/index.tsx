@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/authprovider"
-import { ConferenceAttendeeColumns } from "@/components/conferenceattendeecolumns";
+import { ConferenceAttendeeColumns } from "@/components/tablecolumns/conferenceattendeecolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
 import type { response } from "@/types/response";

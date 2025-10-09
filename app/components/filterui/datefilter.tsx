@@ -1,7 +1,7 @@
 import React from 'react';
 import { type Column } from '@tanstack/react-table';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
 export function DateRangeColumnFilter({ column }: { column: Column<any, unknown> }) {
   // The filter value is expected to be an array: [startDate, endDate]
   const columnFilterValue = (column.getFilterValue() ?? []) as [string, string];

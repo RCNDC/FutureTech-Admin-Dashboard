@@ -1,8 +1,8 @@
 import type { personalDetail } from "@/types/submission";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 
 export const BaseColumns:ColumnDef<personalDetail>[] = [
     {
@@ -62,7 +62,8 @@ export const BaseColumns:ColumnDef<personalDetail>[] = [
                     <ArrowUpDown className='w-5 h-5'/>
                 </Button>
             )
-        }
+        },
+        
     },
     {
         accessorKey: 'phoneNo',

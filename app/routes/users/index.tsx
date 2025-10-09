@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/dialog';
 import CreateUserForm from '@/components/createUserForm';
 import UsersTable from '@/components/userstable';
-import { columns } from '@/components/usercolumn';
+import { columns } from '@/components/tablecolumns/usercolumn';
 
 export function meta({}: Route.MetaArgs) {
   return [

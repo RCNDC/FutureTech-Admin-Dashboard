@@ -1,9 +1,9 @@
 import type { Column } from "@tanstack/react-table"
 import { useState } from "react";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import type { CheckedState } from "@radix-ui/react-checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { Label } from "./ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 export const ProfessionColumnFilter = ({ column }: { column: Column<any, unknown>})=>{
     const columnFilterValue = column.getFilterValue() ?? "";
     const [selectedValues, setSelectedValues] = useState<string[]>(Array.isArray(columnFilterValue) ? columnFilterValue : []);

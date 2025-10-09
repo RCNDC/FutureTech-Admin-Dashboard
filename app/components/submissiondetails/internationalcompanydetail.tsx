@@ -3,8 +3,8 @@ import { type response } from "@/types/response";
 import { type InternationalCompaniesSubmission } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { FC } from "react";
-import Loading from "./loading";
-import ShowFile from "./showfile";
+import Loading from "@/components/loading";
+import ShowFile from "@/components/showfile";
 
 type InternationalCompanyDetailProps = {
     entry_id:number
@@ -32,7 +32,7 @@ const InternationalCompanyDetail:FC<InternationalCompanyDetailProps> = ({entry_i
             <ShowFile file={data?.companyProfile} name="Company Profile"/>
             <ShowFile file={data?.companyWebsite} name="Company Website"/>
             <span>Address: {data?.address}</span>
-            <span>Registered Date : {new Date(data?.registeredDate.toString()).toDateString()}</span>
+            <span>Registered Date : {new Date(data?.registeredDate?.toString()).toDateString()}</span>
             <span>Pitch Product : {data?.pitchProduct}</span>
             <span>Areas of Interest: {data?.areaOfInterest}</span>
             <span>Interest Type: {data?.interestType}</span>

@@ -1,7 +1,7 @@
 import { useAuth } from "@/components/authprovider";
 import { DataTable } from "@/components/datatable";
 import Loading from "@/components/loading";
-import { partnerColumn } from "@/components/partnercolumns";
+import { partnerColumn } from "@/components/tablecolumns/partnercolumns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import UploadFile from "@/components/upload";

@@ -1,9 +1,9 @@
 import type { Column } from "@tanstack/react-table"
 import { useState } from "react";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import type { CheckedState } from "@radix-ui/react-checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { Label } from "./ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Label } from "../ui/label";
 export const BoothColumnFilter = ({ column }: { column: Column<any, unknown>})=>{
     const columnFilterValue = column.getFilterValue() as string;
     const [selectedValues, setSelectedValues] = useState<string>(columnFilterValue);

@@ -104,7 +104,7 @@ export const MobileSideMenu = ()=>{
                         <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         <span>Create Template</span>
                     </Link>
-                    <Link to="#" className="flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors duration-200">
+                    <Link to="/dashboard/messages" className="flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors duration-200">
                         <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         <span>Messages {selectedUserEmails.length >0 && (<Badge variant='default'>{selectedUserEmails.length}</Badge>)}</span>
                     </Link>

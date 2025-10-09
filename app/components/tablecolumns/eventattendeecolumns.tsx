@@ -1,10 +1,10 @@
 import type { EventAttendeeSubmission } from "@/types/submission";
 import type { ColumnDef } from "@tanstack/react-table";
 import { BaseColumns } from "./basecolumns";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
-import { DateRangeColumnFilter } from "./datefilter";
-import { InterestColumnFilter } from "./interestcolumnfilter";
+import { DateRangeColumnFilter } from "../filterui/datefilter";
+import { InterestColumnFilter } from "@/components/filterui/interestcolumnfilter";
 
 export const EventAttendeeColumns: ColumnDef<EventAttendeeSubmission>[] = [
     ...(BaseColumns as ColumnDef<EventAttendeeSubmission>[]),

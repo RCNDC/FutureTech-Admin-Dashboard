@@ -2,10 +2,10 @@
 
 import type { UserResponse } from '@/types/user';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosinstance';
-import { useAuth } from './authprovider';
+import { useAuth } from '../authprovider';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { AxiosError } from 'axios';
 import {
@@ -17,8 +17,8 @@ import {
   DialogFooter,
   DialogClose,
   DialogDescription,
-} from './ui/dialog';
-import EditUserForm from './editUserForm';
+} from '../ui/dialog';
+import EditUserForm from '../editUserForm';
 
 export const columns: ColumnDef<UserResponse>[] = [
   {

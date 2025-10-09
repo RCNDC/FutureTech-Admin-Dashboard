@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/authprovider";
-import { columns } from "@/components/submissioncolumns";
+import { columns } from "@/components/tablecolumns/submissioncolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
 import type { response } from "@/types/response";

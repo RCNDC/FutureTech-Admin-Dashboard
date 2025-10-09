@@ -1,32 +1,32 @@
-import type { LocalCompanySubmission, NGOSubmission } from "@/types/submission"
-import type { ColumnDef } from "@tanstack/react-table"
-import { Button } from "./ui/button"
-import { ArrowUpDown, MoreVertical, Plus } from "lucide-react"
-import SubmissionDetail from "./submissionDetails"
-import { useState } from "react"
-import useFollowUpStore from "store/store"
-import { useAuth } from "./authprovider"
-import { useQuery } from "@tanstack/react-query"
-import type { response } from "@/types/response"
-import type { FollowUpListType } from "@/types/followup"
-import axiosInstance from "@/lib/axiosinstance"
-import { Dialog, DialogTrigger } from "./ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import Loading from "./loading"
-import { Badge } from "./ui/badge"
-import FollowUp from "./followup"
-import MarkAsCompleted from "./markascomplete"
-import { DateRangeColumnFilter } from "./datefilter"
-import { BaseColumns } from "./basecolumns"
-
-export const ngocolumns: ColumnDef<NGOSubmission>[] = [
-    ...(BaseColumns as ColumnDef<NGOSubmission>[]),
+import type { SubmissionResponse } from "@/types/submission";
+import type { ColumnDef } from "@tanstack/react-table";
+import { Button, buttonVariants } from "../ui/button";
+import { ArrowUpDown, BoxSelectIcon, MoreVertical, Plus } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import FollowUp from "../followup";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import type { response } from "@/types/response";
+import axiosInstance from "@/lib/axiosinstance";
+import type { FollowUpListType } from "@/types/followup";
+import { useAuth } from "../authprovider";
+import Loading from "../loading";
+import { Badge } from "../ui/badge";
+import SubmissionDetail from "@/components/submissiondetails/submissionDetails";
+import useFollowUpStore from "store/store";
+import MarkAsCompleted from "../markascomplete";
+import { DateRangeColumnFilter } from "../filterui/datefilter";
+import { BaseColumns } from "./basecolumns";
+export const columns: ColumnDef<SubmissionResponse>[] = [
+    ...(BaseColumns as ColumnDef<SubmissionResponse>[]),
     {
-        accessorKey: 'orgName',
+        accessorKey: 'companyName',
         header: ({ column }) => {
             return (
                 <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    NGO
+                    Company Name
                     <ArrowUpDown className='w-5 h-5' />
                 </Button>
             )
@@ -54,9 +54,9 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
 
     {
         header: 'Detail',
-        cell: ({ row }) => {
-            return (
-                <SubmissionDetail entry_id={parseInt(row.getValue('entry_id'))} submissionType="ngo" />
+        cell: ({row})=>{
+            return(
+                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="internationalcompany"/>
             )
         }
     },
@@ -76,9 +76,8 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                   if(res.data.data){
+                    if(res.data.data){
                         initialFollowUp(res?.data?.data, entryId)
-
                     }
                     return res.data;
                 },
@@ -119,4 +118,6 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
             )
         }
     }
+
+
 ]

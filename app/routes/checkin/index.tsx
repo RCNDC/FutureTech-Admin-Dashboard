@@ -16,7 +16,7 @@ import { AxiosError } from "axios";
 import Loading from "@/components/loading";
 import { useEffect, useState } from "react";
 import { useDebounce } from "@/hooks/debounce";
-import { columns } from "@/components/attendeecolumns";
+import { columns } from "@/components/tablecolumns/attendeecolumns";
 import { toast } from "sonner";
 
 

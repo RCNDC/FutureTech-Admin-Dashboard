@@ -1,5 +1,5 @@
 import { type FilterFn } from "@tanstack/react-table";
-import { parseISO, isAfter, isBefore, isValid,  } from "date-fns";
+import { parseISO, isAfter, isBefore, isValid, isEqual } from "date-fns";
 export const dateRangeFilter: FilterFn<any> = (row, columnId, filterValue) => {
   // filterValue is expected to be an array: [startDate, endDate]
   const [startDateStr, endDateStr] = filterValue as [string | null, string | null];
@@ -24,7 +24,7 @@ export const dateRangeFilter: FilterFn<any> = (row, columnId, filterValue) => {
     endDate = parseISO(endDateStr);
   }
 
-  const matchesStart = !startDate || isAfter(rowDate, startDate) || rowDate.getTime() === startDate.getTime();
+  const matchesStart = !startDate || isAfter(rowDate, startDate)  || rowDate.getTime() === startDate.getTime();
   const matchesEnd = !endDate || isBefore(rowDate, endDate) || rowDate.getTime() === endDate.getTime();
 
   return matchesStart && matchesEnd;

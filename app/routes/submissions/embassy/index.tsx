@@ -1,7 +1,7 @@
 import { useAuth } from "@/components/authprovider";
-import { embassycolumns } from "@/components/embassycolums";
+import { embassycolumns } from "@/components/tablecolumns/embassycolums";
 import Fallback from "@/components/fallback";
-import { columns } from "@/components/submissioncolumns";
+import { columns } from "@/components/tablecolumns/submissioncolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
 import type { response } from "@/types/response";

@@ -2,7 +2,7 @@ import { useAuth } from "@/components/authprovider";
 import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
 import { useQuery } from "@tanstack/react-query";
-import { EventAttendeeColumns } from "@/components/eventattendeecolumns";
+import { EventAttendeeColumns } from "@/components/tablecolumns/eventattendeecolumns";
 import type { response } from "@/types/response";
 import type { EventAttendeeSubmission } from "@/types/submission";
 import type { MetaArgs } from "react-router";

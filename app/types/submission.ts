@@ -1,4 +1,4 @@
-export type personalDetail = {
+export interface personalDetail {
     entry_id:string;
     fullName:string;
     email:string;
@@ -26,6 +26,12 @@ export type LocalCompanySubmission = Omit<SubmissionResponse, 'sponsorshipTier' 
     directoryList:string;
     interest:string;
     numberOfAttendee:number;
+}
+
+export type Partners = Omit<personalDetail ,'entry_id'> & Pick<SubmissionResponse, 'companyName'> &{
+    id:string;
+    interest:string;
+
 }
 
 export type InternationalCompaniesSubmission = Omit<SubmissionResponse, 'registerAs'> & personalDetail

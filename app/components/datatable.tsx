@@ -25,8 +25,9 @@
   import { Input } from "./ui/input"
   import { Label } from "./ui/label"
   import { dateRangeFilter, filterByBooth, filterByStage, interestFilter, professionFilter } from "@/filters/filter"
-import { DateRangeColumnFilter } from "./datefilter"
+import { DateRangeColumnFilter } from "./filterui/datefilter"
 import { EmailUI } from "./emailui"
+import QRCodeSender from "./qrsender"
   
   interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -39,6 +40,7 @@ import { EmailUI } from "./emailui"
   }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [globalFilter, setGlobalFilter] = useState('');
     const table = useReactTable({
       data,
       columns,
@@ -46,7 +48,7 @@ import { EmailUI } from "./emailui"
       getPaginationRowModel: getPaginationRowModel(),
       onColumnFiltersChange: setColumnFilters,
       onSortingChange: setSorting,
-      
+      onGlobalFilterChange: setGlobalFilter,
       getFilteredRowModel: getFilteredRowModel(),
       getSortedRowModel: getSortedRowModel(),
       initialState:{
@@ -59,6 +61,7 @@ import { EmailUI } from "./emailui"
       state:{
         sorting,
         columnFilters,
+        globalFilter,
 
       },
       filterFns:{
@@ -78,7 +81,7 @@ import { EmailUI } from "./emailui"
           <div className="space-y-2">
             <Label>Search</Label>
             <Input placeholder="Search by email, Full name..." 
-            onChange={(event)=>table.getColumn("fullName")?.setFilterValue(event.target.value)} className="w-full"/>
+            onChange={(event)=>setGlobalFilter(event.target.value)} className="w-full"/>
           </div>
           
             {table.getHeaderGroups().map((headerGroup)=>(
@@ -96,9 +99,10 @@ import { EmailUI } from "./emailui"
               ))}
               </>
             ))}
-            <div className="my">
+            <div className="flex gap-2">
               
               <EmailUI recepiantInfo={table.getSelectedRowModel().rows.map(row=>row.original)}/>
+              <QRCodeSender attendee={table.getSelectedRowModel().rows.map(row=>{return {fullname: row.original.fullName, email: row.original.email, phone: row.original.phoneNo}})}/>
             </div>
           </div>
         <Table>

@@ -1,11 +1,15 @@
-import type { LocalCompanySubmission } from "@/types/submission";
+import type { LocalCompanySubmission, Partners } from "@/types/submission";
 import type { ColumnDef } from "@tanstack/react-table";
 import { BaseColumns } from "./basecolumns";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { ArrowDownUp } from "lucide-react";
+import { DropdownMenu } from "../ui/dropdown-menu";
 
-export const partnerColumn: ColumnDef<LocalCompanySubmission>[] = [
-    ...(BaseColumns as ColumnDef<LocalCompanySubmission>[]),
+const baseColDef = [...BaseColumns as ColumnDef<Partners>[]];
+
+export const partnerColumn: ColumnDef<Partners>[] = [
+    ...(BaseColumns as ColumnDef<Partners>[]),
+    
     {
         accessorKey: 'companyName',
         header:({column})=>{
@@ -17,5 +21,9 @@ export const partnerColumn: ColumnDef<LocalCompanySubmission>[] = [
             )
         }
     },
+    {
+        accessorKey: 'action',
+        header:'Action',
+    }
     
 ]

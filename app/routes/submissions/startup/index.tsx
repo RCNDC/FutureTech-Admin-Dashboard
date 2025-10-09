@@ -1,7 +1,7 @@
 import { useAuth } from "@/components/authprovider"
 import { DataTable } from "@/components/datatable";
 import Loading from "@/components/loading";
-import { startupcolumns } from "@/components/startupcolumns";
+import { startupcolumns } from "@/components/tablecolumns/startupcolumns";
 import SubmissionDetail from "@/components/submissiondisplay";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosinstance";

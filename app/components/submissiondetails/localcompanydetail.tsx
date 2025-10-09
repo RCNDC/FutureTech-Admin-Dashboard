@@ -3,8 +3,8 @@ import { type response } from "@/types/response";
 import { type LocalCompanySubmission } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { FC } from "react";
-import Loading from "./loading";
-import ShowFile from "./showfile";
+import Loading from "@/components/loading";
+import ShowFile from "@/components/showfile";
 
 type LocalCompanyDetailProps = {
     entry_id:number

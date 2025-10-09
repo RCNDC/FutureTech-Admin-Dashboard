@@ -1,6 +1,6 @@
 import type { AttendeeResponse } from '@/types/attendee';
 import {type ColumnDef} from '@tanstack/react-table';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { ArrowUpDown } from 'lucide-react';
 
 export const columns:ColumnDef<AttendeeResponse>[] = [
