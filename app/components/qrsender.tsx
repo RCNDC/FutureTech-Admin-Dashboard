@@ -13,6 +13,7 @@ type QRCodeSenderProps = {
         email: string;
         phone: string;
         fullName: string;
+        ticketType:string;
     }[]
 }
 

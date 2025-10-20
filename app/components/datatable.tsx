@@ -102,7 +102,7 @@ import QRCodeSender from "./qrsender"
             <div className="flex gap-2">
               
               <EmailUI recepiantInfo={table.getSelectedRowModel().rows.map(row=>row.original)}/>
-              <QRCodeSender attendee={table.getSelectedRowModel().rows.map(row=>{return {fullname: row.original.fullName, email: row.original.email, phone: row.original.phoneNo}})}/>
+              <QRCodeSender attendee={table.getSelectedRowModel().rows.map(row=>{return {fullname: row.original.fullName, email: row.original.email, phone: row.original.phoneNo, ticketType: row.original.ticketType}})}/>
             </div>
           </div>
         <Table>
