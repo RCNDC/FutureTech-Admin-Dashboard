@@ -9,7 +9,6 @@ const TotalStat = ()=>{
         queryKey:['stat'],
         queryFn: async ()=>{
             const res = await axiosInstance.get('/register/submission/stat');
-            console.log(res.data.data)
             return res.data;
         }
     })
