@@ -2,6 +2,8 @@ import axiosInstance from "@/lib/axiosinstance";
 import { createContext, useContext, useEffect, useState } from "react";
 import { redirect, useLocation, useNavigate } from "react-router";
 import Loading from "./loading";
+import { GetUser, useUserStore } from "store/userstore";
+import { AxiosError } from "axios";
 
 type authContextType = {
     token: string | null,
@@ -16,7 +18,7 @@ export default function AuthProvider({children}: {children: React.ReactNode}){
     const [isLoading, setIsLoading] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-
+    const {setUser} = useUserStore()
     useEffect(()=>{
         setIsLoading(true)
             if(!token){
@@ -32,6 +34,13 @@ export default function AuthProvider({children}: {children: React.ReactNode}){
                 })  
             }else{
                 setIsLoading(false)
+                GetUser(token).then((user)=>{
+                    setUser(user)
+                }).catch((err)=>{
+                        err.status === 401 && 
+                        navigate('/login')
+                });
+                
             }
         
     },[token, navigate]);

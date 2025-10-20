@@ -22,14 +22,14 @@ const HtmlQRCode:FC<HtmlQRCodeProps> = ({onQRCodeSuccess, onQRCodeError})=>{
                     Scan QR Code
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className='w-screen'>
             <DialogHeader >
                 <DialogTitle>QR Code scanner</DialogTitle>
                 <DialogDescription>
              
             </DialogDescription>
             </DialogHeader>
-            <Scanner onScan={onQRCodeSuccess} onError={onQRCodeError} />
+            <Scanner onScan={onQRCodeSuccess} onError={onQRCodeError} allowMultiple />
             <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
