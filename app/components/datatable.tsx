@@ -32,13 +32,15 @@ import QRCodeSender from "./qrsender"
   interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[],
-    showActions?: boolean
+    showActions?: boolean,
+    showGlobalFilter?: boolean
   }
   
   export function DataTable<TData, TValue>({
     columns,
     data,
-    showActions = false
+    showActions = false,
+    showGlobalFilter = true
   }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -80,11 +82,11 @@ import QRCodeSender from "./qrsender"
     return (
       <div className="rounded-md border  w-full px-10">
         <div className="flex flex-wrap items-center justify-center-safe gap-1 my-5 border p-10">
-          <div className="space-y-2">
+          {showGlobalFilter && <div className="space-y-2">
             <Label>Search</Label>
             <Input placeholder="Search by email, Full name..." 
             onChange={(event)=>setGlobalFilter(event.target.value)} className="w-full"/>
-          </div>
+          </div>}
           
             {table.getHeaderGroups().map((headerGroup)=>(
               <>
