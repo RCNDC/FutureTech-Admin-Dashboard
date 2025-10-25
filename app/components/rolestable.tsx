@@ -19,7 +19,7 @@ const RolesTable: FC<RoleTableProps> = ({ data, columns }) => {
                 <CreateRoleForm />
                 <DeleteRoleForm />
             </div>
-            {data && <DataTable columns={columns} data={data} />}
+            {data && <DataTable columns={columns} data={data} showGlobalFilter={false} />}
 
         </div>
     )
