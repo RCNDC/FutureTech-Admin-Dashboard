@@ -31,12 +31,14 @@ import QRCodeSender from "./qrsender"
   
   interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+    data: TData[],
+    showActions?: boolean
   }
   
   export function DataTable<TData, TValue>({
     columns,
     data,
+    showActions = false
   }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -99,11 +101,12 @@ import QRCodeSender from "./qrsender"
               ))}
               </>
             ))}
-            <div className="flex gap-2">
+            {showActions && <div className="flex gap-2">
               
               <EmailUI recepiantInfo={table.getSelectedRowModel().rows.map(row=>row.original)}/>
               <QRCodeSender attendee={table.getSelectedRowModel().rows.map(row=>{return {fullname: row.original.fullName, email: row.original.email, phone: row.original.phoneNo, ticketType: row.original.ticketType}})}/>
-            </div>
+            </div>}
+
           </div>
         <Table>
           <TableHeader>
