@@ -127,7 +127,7 @@ const CheckOut = ({loaderData}: Route.ComponentProps)=>{
                 </div>
                 <div className="flex flex-wrap items-center p-3 gap-2">
                 <div className="border border-gray-300">
-                    <img src="sample.png" className=""/>
+                    <img src="/images/sample.png" className=""/>
                 </div>
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-2 items-center">
                     <div className="flex gap-2 items-center">
