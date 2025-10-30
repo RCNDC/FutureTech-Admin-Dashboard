@@ -41,7 +41,7 @@ const Index = () => {
 
     return (
 
-        <SubmissionDetail columns={embassycolumns} data={data?.data} isLoading={isLoading} name="Embassy Submissions" />
+        <SubmissionDetail columns={embassycolumns} data={data?.data} isLoading={isLoading} name="Embassy Submissions" exportEndPoint="embassiess"/>
 
     )
 

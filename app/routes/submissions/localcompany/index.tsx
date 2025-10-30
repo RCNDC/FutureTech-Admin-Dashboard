@@ -4,8 +4,12 @@ import SubmissionDetail from "@/components/submissiondisplay";
 import axiosInstance from "@/lib/axiosinstance";
 import type { response } from "@/types/response";
 import type { SubmissionResponse } from "@/types/submission";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { MetaArgs } from "react-router";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import Loading from "@/components/loading";
+import exportToExcel from "@/hooks/useExport";
 
 export function meta({ }: MetaArgs) {
     return [
@@ -31,9 +35,13 @@ const Index = () => {
         }
     });
 
-    return (
+    
 
-        <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submission" />
+    return (
+        <>
+            
+            <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submission" exportEndPoint="localcompanies"/>
+        </>
 
     )
 
