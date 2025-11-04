@@ -18,8 +18,10 @@ const TotalStat = () => {
         queryKey: ['stat', date, filter],
         queryFn: async () => {
             const params: any = {};
-            if (date?.[0] && date?.[1]) {
+            if (date?.[0]) {
                 params.startDate = date[0];
+            }
+            if (date?.[1]) {
                 params.endDate = date[1];
             }
             params.type = filter.toLowerCase();
@@ -32,8 +34,10 @@ const TotalStat = () => {
         queryKey: ['chart', date, filter],
         queryFn: async () => {
             const params: any = {};
-            if (date?.[0] && date?.[1]) {
+            if (date?.[0]) {
                 params.startDate = date[0];
+            }
+            if (date?.[1]) {
                 params.endDate = date[1];
             }
             params.type = filter.toLowerCase();
