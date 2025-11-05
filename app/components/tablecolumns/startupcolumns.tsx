@@ -67,7 +67,7 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
                 </Button>
             )
         },
-        
+
         filterFn: 'stage',
         meta:{
             filter: StageColumnFilter
@@ -91,10 +91,10 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
         meta:{
             filter: BoothColumnFilter
         }
-        
-       
+
+
     },
-    
+
     {
         header: 'Detail',
         cell: ({ row }) => {
@@ -154,8 +154,8 @@ export const startupcolumns: ColumnDef<StartupSubmissions>[] = [
             const handleDelete = () => {
                 mutate();
             }
-          
-            
+
+
             return (
                 <>
                     <Dialog onOpenChange={(open) => setOpen(open)} open={open}>

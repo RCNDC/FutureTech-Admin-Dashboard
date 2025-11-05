@@ -55,7 +55,7 @@ export const localcompanycolumns: ColumnDef<LocalCompanySubmission>[] = [
             filter: DateRangeColumnFilter
         }
     },
-    
+
     {
         header: 'Detail',
         cell: ({ row }) => {
@@ -115,8 +115,8 @@ export const localcompanycolumns: ColumnDef<LocalCompanySubmission>[] = [
             const handleDelete = () => {
                 mutate();
             }
-          
-            
+
+
             return (
                 <>
                     <Dialog onOpenChange={(open) => setOpen(open)} open={open}>

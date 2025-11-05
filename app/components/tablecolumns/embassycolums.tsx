@@ -57,7 +57,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
         },
         enableColumnFilter: true
     },
-    
+
     {
         header: 'Detail',
         cell: ({ row }) => {
@@ -117,8 +117,8 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
             const handleDelete = () => {
                 mutate();
             }
-          
-            
+
+
             return (
                 <>
                     <Dialog onOpenChange={(open) => setOpen(open)} open={open}>

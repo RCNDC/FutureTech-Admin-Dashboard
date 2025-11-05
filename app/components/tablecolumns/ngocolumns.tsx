@@ -115,8 +115,8 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
             const handleDelete = () => {
                 mutate();
             }
-          
-            
+
+
             return (
                 <>
                     <Dialog onOpenChange={(open) => setOpen(open)} open={open}>

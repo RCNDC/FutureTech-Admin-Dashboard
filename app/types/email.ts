@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const EmailSchema = z.object({
-    subject: z.string().min(1, 'Subject is required'),
+    subject: z.string(),
     body: z.string().min(1, 'Body is required'),
    
 });

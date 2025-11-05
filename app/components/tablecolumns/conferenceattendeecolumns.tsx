@@ -31,7 +31,7 @@ export const ConferenceAttendeeColumns: ColumnDef<ConferenceAttendeeSubmission>[
         accessorKey: 'profession',
         //accessorFn: row => row.profession==='Other'? row.other:row.profession,
         header: ({ column, table }) => {
-            
+
             return (
                 <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
                     Profession
@@ -111,7 +111,7 @@ export const ConferenceAttendeeColumns: ColumnDef<ConferenceAttendeeSubmission>[
             const handleDelete = () => {
                 mutate();
             }
-            
+
             return (
                 <>
                     <DropdownMenu>

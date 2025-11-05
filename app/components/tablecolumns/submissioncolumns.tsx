@@ -115,8 +115,8 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
             const handleDelete = () => {
                 mutate();
             }
-          
-            
+
+
             return (
                 <>
                     <Dialog onOpenChange={(open) => setOpen(open)} open={open}>

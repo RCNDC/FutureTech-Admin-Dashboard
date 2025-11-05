@@ -89,8 +89,8 @@ export const EventAttendeeColumns: ColumnDef<EventAttendeeSubmission>[] = [
             const handleDelete = () => {
                 mutate();
             }
-          
-            
+
+
             return (
                 <>
                     <DropdownMenu>
