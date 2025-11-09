@@ -28,7 +28,7 @@ const Index = () => {
         }
     });
     return(
-         <SubmissionDetail columns={EventAttendeeColumns} data={data?.data} isLoading={isLoading} name="Event Attendess" />
+         <SubmissionDetail columns={EventAttendeeColumns} data={data?.data} isLoading={isLoading} name="Event Attendess" type="event"/>
     )
 }
 

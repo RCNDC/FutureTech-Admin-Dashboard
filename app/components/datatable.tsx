@@ -28,19 +28,23 @@
 import { DateRangeColumnFilter } from "./filterui/datefilter"
 import { EmailUI } from "./emailui"
 import QRCodeSender from "./qrsender"
+import { ImportButton } from "./ImportButton";
+import { DeleteButton } from "./DeleteButton";
   
   interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[],
     showActions?: boolean,
-    showGlobalFilter?: boolean
+    showGlobalFilter?: boolean,
+    type: string
   }
   
   export function DataTable<TData, TValue>({
     columns,
     data,
     showActions = false,
-    showGlobalFilter = true
+    showGlobalFilter = true,
+    type
   }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -107,6 +111,8 @@ import QRCodeSender from "./qrsender"
               
               <EmailUI recepiantInfo={table.getSelectedRowModel().rows.map(row=>row.original)}/>
               <QRCodeSender attendee={table.getSelectedRowModel().rows.map(row=>{return {fullname: row.original.fullName, email: row.original.email, phone: row.original.phoneNo, ticketType: row.original.ticketType}})}/>
+              <ImportButton />
+              <DeleteButton selectedRows={table.getSelectedRowModel().rows} type={type} />
             </div>}
 
           </div>

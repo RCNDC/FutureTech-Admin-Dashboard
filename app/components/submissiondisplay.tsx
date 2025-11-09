@@ -1,4 +1,3 @@
-import type { ColumnDef } from "@tanstack/react-table";
 import type { FC } from "react";
 import Loading from "./loading";
 import { DataTable } from "./datatable";
@@ -13,6 +12,7 @@ type SubmissionDetailProps = {
     isLoading: boolean;
     data: any;
     columns: ColumnDef<any>[];
+    type: string;
 }
 const SubmissionDetail:FC<SubmissionDetailProps> = ({isLoading, exportEndPoint, fileName, name, data, columns})=>{
     const {mutate, isPending} = exportToExcel(exportEndPoint || '', fileName || 'exported_data');
@@ -29,12 +29,12 @@ const SubmissionDetail:FC<SubmissionDetailProps> = ({isLoading, exportEndPoint, 
                         <Button onClick={handleExport} disabled={isPending}>Export {isPending ? <Loading/>: <Download className="w-5 h-5"/>} </Button>
                     }
                 </div>
-                
+
                 {
                     isLoading && <Loading/>
                 }
                 {
-                    data && <DataTable data={data} columns={columns} showActions={true}/>
+                    data && <DataTable data={data} columns={columns} showActions={true} type={type}/>
                 }
             </div>
 
