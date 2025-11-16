@@ -37,7 +37,7 @@ const Index = ()=>{
 
     return(
         
-            <SubmissionDetail columns={startupcolumns} data={data?.data} isLoading={isLoading} name="Startup Submissions" exportEndPoint="startup"/>
+            <SubmissionDetail columns={startupcolumns} data={data?.data} isLoading={isLoading} name="Startup Submissions" exportEndPoint="startup" type="startup"/>
 
     )
 

@@ -40,7 +40,7 @@ const Index = () => {
     return (
         <>
             
-            <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submission" exportEndPoint="localcompanies"/>
+            <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submission" exportEndPoint="localcompanies" type="localcompany"/>
         </>
 
     )

@@ -37,7 +37,7 @@ const Index = ()=>{
 
     return(
         
-            <SubmissionDetail columns={ngocolumns} data={data?.data} isLoading={isLoading} name="NGO Submissions" exportEndPoint="ngo"/>
+            <SubmissionDetail columns={ngocolumns} data={data?.data} isLoading={isLoading} name="NGO Submissions" exportEndPoint="ngo" type="ngo"/>
 
     )
 

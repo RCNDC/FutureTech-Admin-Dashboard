@@ -33,16 +33,25 @@ export const ImportButton = () => {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = e.target?.result;
-                const workbook = XLSX.read(data, { type: 'binary', cellDates: true });
+                const workbook = XLSX.read(data, { type: 'binary' });
                 const sheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[sheetName];
                 const json = XLSX.utils.sheet_to_json(worksheet);
 
-                const processedData = json.map((row: any) => ({
-                    'Full Name': `${row['first name']} ${row['last name']}`,
-                    'Email': row.email,
-                    'Registered Date': row.Date,
-                }));
+                const processedData = json.map((row: any) => {
+                    const dateNumber = row.date;
+                    const date = XLSX.SSF.parse_date_code(dateNumber);
+                    const year = date.y;
+                    const month = date.m.toString().padStart(2, '0');
+                    const day = date.d.toString().padStart(2, '0');
+                    const formattedDate = `${year}-${month}-${day}`;
+
+                    return {
+                        'Full Name': `${row['first name']} ${row['last name']}`,
+                        'Email': row.email,
+                        'Registered Date': formattedDate,
+                    }
+                });
 
                 mutate(processedData);
             };

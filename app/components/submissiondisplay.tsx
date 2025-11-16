@@ -14,7 +14,7 @@ type SubmissionDetailProps = {
     columns: ColumnDef<any>[];
     type: string;
 }
-const SubmissionDetail:FC<SubmissionDetailProps> = ({isLoading, exportEndPoint, fileName, name, data, columns})=>{
+const SubmissionDetail:FC<SubmissionDetailProps> = ({isLoading, exportEndPoint, fileName, name, data, columns, type})=>{
     const {mutate, isPending} = exportToExcel(exportEndPoint || '', fileName || 'exported_data');
     const handleExport = () => {
         mutate();
