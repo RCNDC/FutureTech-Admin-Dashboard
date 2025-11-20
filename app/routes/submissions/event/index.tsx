@@ -12,7 +12,7 @@ export function meta({ }: MetaArgs) {
         { title: 'Registration Submissions - Future tech addis' },
         { name: 'description', content: 'Form submissions' }
     ]
-} 
+}
 const Index = () => {
      const auth = useAuth();
     const { data, isLoading } = useQuery({
@@ -23,12 +23,20 @@ const Index = () => {
                     'Authorization': 'Bearer ' + auth?.token
                 }
             });
-           
+
             return res.data;
         }
     });
     return(
-         <SubmissionDetail columns={EventAttendeeColumns} data={data?.data} isLoading={isLoading} name="Event Attendess" type="event"/>
+         <SubmissionDetail
+    columns={EventAttendeeColumns}
+    data={data?.data}
+    isLoading={isLoading}
+    name="Event Attendess"
+    type="event"
+    exportEndPoint="event"
+    fileName="event_attendees"
+    />
     )
 }
 

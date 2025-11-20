@@ -23,12 +23,12 @@ const Index = () =>{
                     'Authorization': 'Bearer ' + auth?.token
                 }
             });
-           
+
             return res.data;
         }
     });
     return(
-         <SubmissionDetail columns={ConferenceAttendeeColumns} data={data?.data} isLoading={isLoading} name="Conference Attendess" exportEndPoint="conference" type="conference"/>
+         <SubmissionDetail columns={ConferenceAttendeeColumns} data={data?.data} isLoading={isLoading} name="Conference Attendess" exportEndPoint="conference" type="conference" fileName="conference_attendees"/>
     )
 }
 

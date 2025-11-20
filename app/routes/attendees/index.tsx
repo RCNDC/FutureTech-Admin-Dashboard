@@ -88,6 +88,43 @@ export default function AttendeesPage() {
     },
   });
 
+  const exportMutation = useMutation({
+    mutationFn: async () => {
+      try {
+        const res = await axiosInstance.get(`/export/attendees`, {
+          headers: {
+            Authorization: `Bearer ${auth?.token}`,
+          },
+          responseType: "blob",
+        });
+        return res.data;
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          toastError(
+            error.response?.data.message || "Failed to export attendees",
+          );
+        }
+        throw error;
+      }
+    },
+    onSuccess: (data) => {
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "attendees.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
+      }
+      toastSuccess("Attendees exported successfully");
+    },
+  });
+
+  const handleExport = () => {
+    exportMutation.mutate();
+  };
+
   const handleSelectRow = (id: string) => {
     setSelectedRows((prev) =>
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id],
@@ -124,6 +161,9 @@ export default function AttendeesPage() {
           disabled={selectedRows.length === 0 || sendQRCodeMutation.isPending}
         >
           {sendQRCodeMutation.isPending ? "Sending..." : "Send QRCode"}
+        </Button>
+        <Button onClick={handleExport} disabled={exportMutation.isPending}>
+          {exportMutation.isPending ? "Exporting..." : "Export to Excel"}
         </Button>
       </div>
       {isLoading && <Loading />}
