@@ -11,33 +11,33 @@ import { useQuery } from "@tanstack/react-query";
 import type { MetaArgs } from "react-router";
 
 
-export function meta({}:MetaArgs){
-    return[
-        {title: 'Registration Submissions - Future tech addis'},
-        {name: 'description', content: 'Form submissions'}
+export function meta({ }: MetaArgs) {
+    return [
+        { title: 'Registration Submissions - Future tech addis' },
+        { name: 'description', content: 'Form submissions' }
     ]
 }
 
-export function loader(){}
 
 
-const Index = ()=>{
+
+const Index = () => {
     const auth = useAuth();
-    const {data, isLoading} = useQuery({
-        queryKey:['submissions', 'ngo'],
-        queryFn: async ()=>{
-            const res = await axiosInstance.get<response<SubmissionResponse[]>>('/register/submission/ngo',{
+    const { data, isLoading } = useQuery({
+        queryKey: ['submissions', 'ngo'],
+        queryFn: async () => {
+            const res = await axiosInstance.get<response<SubmissionResponse[]>>('/register/submission/ngo', {
                 headers: {
-                    'Authorization': 'Bearer '+auth?.token
+                    'Authorization': 'Bearer ' + auth?.token
                 }
             });
             return res.data;
         }
     });
 
-    return(
-        
-            <SubmissionDetail columns={ngocolumns} data={data?.data} isLoading={isLoading} name="NGO Submissions" exportEndPoint="ngo" type="ngo"/>
+    return (
+
+        <SubmissionDetail columns={ngocolumns} data={data?.data} isLoading={isLoading} name="NGO Submissions" exportEndPoint="ngo" type="ngo" />
 
     )
 

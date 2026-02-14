@@ -14,7 +14,7 @@ export function meta({ }: MetaArgs) {
     ]
 }
 
-export function loader() { }
+
 
 
 const Index = () => {
@@ -27,14 +27,14 @@ const Index = () => {
                     'Authorization': 'Bearer ' + auth?.token
                 }
             });
-           
+
             return res.data;
         }
     });
 
     return (
 
-        <SubmissionDetail columns={columns} data={data?.data} isLoading={isLoading} name="International Company Submission" exportEndPoint="internationalcompanies" type="internationalcompany"/>
+        <SubmissionDetail columns={columns} data={data?.data} isLoading={isLoading} name="International Company Submission" exportEndPoint="internationalcompanies" type="internationalcompany" />
 
     )
 

@@ -18,7 +18,7 @@ export function meta({ }: MetaArgs) {
     ]
 }
 
-export function loader() { }
+
 
 
 const Index = () => {
@@ -35,12 +35,12 @@ const Index = () => {
         }
     });
 
-    
+
 
     return (
         <>
-            
-            <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submission" exportEndPoint="localcompanies" type="localcompany"/>
+
+            <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submission" exportEndPoint="localcompanies" type="localcompany" />
         </>
 
     )

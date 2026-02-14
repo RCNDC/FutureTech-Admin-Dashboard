@@ -1,0 +1,21 @@
+# 1. FORCE HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 2. SPA ROUTING (The Infoethiopia Way)
+# This sends all requests to index.html so the JS can handle the routing
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# 3. ENVIRONMENT VARIABLES (For your API)
+<IfModule Litespeed>
+    SetEnv VITE_ENDPOINT https://api-admin.futuretechaddis.com/api
+    SetEnv VITE_API_KEY 3EF5EABB9C32A866FF4B2AD6A4D6E
+</IfModule>

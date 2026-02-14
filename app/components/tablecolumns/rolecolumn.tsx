@@ -1,4 +1,4 @@
-'use client';
+
 
 import type { ColumnDef } from '@tanstack/react-table';
 
@@ -45,28 +45,28 @@ export const columns: ColumnDef<RoleResponse>[] = [
     id: 'actions',
     header: 'Actions',
     cell: ({ row }) => {
-        const role = row.original;
-        const auth = useAuth();
-        const queryClient = useQueryClient();
-        const { mutate } = useMutation({
-            mutationFn: async () => {
-                const response = await axiosInstance.delete(`/role/deleteRole/${role.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${auth?.token}`,
-                    },
-                });
-                return response.data;
+      const role = row.original;
+      const auth = useAuth();
+      const queryClient = useQueryClient();
+      const { mutate } = useMutation({
+        mutationFn: async () => {
+          const response = await axiosInstance.delete(`/role/deleteRole/${role.id}`, {
+            headers: {
+              Authorization: `Bearer ${auth?.token}`,
             },
-            onSuccess: () => {
-                toastSuccess('Role deleted successfully');
-                queryClient.invalidateQueries({ queryKey: ['roles'] });
-            },
-            onError: (error) => {
-                if (error instanceof AxiosError) {
-                    toastError(error.response?.data.message);
-                }
-            },
-        });
+          });
+          return response.data;
+        },
+        onSuccess: () => {
+          toastSuccess('Role deleted successfully');
+          queryClient.invalidateQueries({ queryKey: ['roles'] });
+        },
+        onError: (error) => {
+          if (error instanceof AxiosError) {
+            toastError(error.response?.data.message);
+          }
+        },
+      });
       return (
         <div className='flex gap-2'>
           <Dialog>
@@ -80,7 +80,7 @@ export const columns: ColumnDef<RoleResponse>[] = [
               <EditRoleForm role={role} />
             </DialogContent>
           </Dialog>
-              </div>
+        </div>
       );
     },
   },

@@ -21,28 +21,26 @@ import { columns } from "@/components/tablecolumns/attendeecolumns";
 import { toast } from "sonner";
 
 
-export function meta({}:Route.MetaArgs){
-    return[
+export function meta({ }: Route.MetaArgs) {
+    return [
         { title: 'CheckIn - Future Tech Addis' },
-        {name: 'description', content: 'Checkin page'}
+        { name: 'description', content: 'Checkin page' }
     ]
 }
 
-export function clientLoader(){
+export function clientLoader() {
 
 }
 
-export function HydrateFallback(){
-    return <Fallback/>
-}
 
-const Index = ()=>{
+
+const Index = () => {
     const auth = useAuth();
     const [filter, setFilter] = useState('');
     const debounceSearchTerm = useDebounce(filter, 500);
-    const {data, isLoading, isError , refetch} = useQuery({
+    const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ['confirmedList', debounceSearchTerm],
-        queryFn: async ()=>{
+        queryFn: async () => {
             // Fetch the flat list of confirmed rows from the legacy `confirmed` table.
             // Response shape is: { message: 'fetched successful', data: [ { fullname, phone, email, registereddate, checkedindate }, ... ] }
             const res = await axiosInstance.get('/attendee/getConfirmedList', {
@@ -92,16 +90,16 @@ const Index = ()=>{
         return m;
     }, [eventSubmissionsRaw]);
 
-    const {mutate, isPending} = useMutation({
-        mutationFn: async(orderCode:string)=>{
-            const res = await axiosInstance.post<response<any>>('/attendee/checkin', {orderNo:orderCode},{
-                headers:{
-                    'Authorization': 'Bearer '+auth?.token
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (orderCode: string) => {
+            const res = await axiosInstance.post<response<any>>('/attendee/checkin', { orderNo: orderCode }, {
+                headers: {
+                    'Authorization': 'Bearer ' + auth?.token
                 }
             });
             return res.data;
         },
-        onSuccess: (data)=>{
+        onSuccess: (data) => {
             // Show a single, appropriate toast and avoid duplicate toasts for the 'already' case.
             // Use a less-intrusive info toast for 'Already checked in' and the regular success toast for first-time check-in.
             if (data && data.message) {
@@ -113,7 +111,7 @@ const Index = ()=>{
                 }
             }
             // If backend returned order and attendee, show modal with details and refresh the attendees list
-            if(data && data.data){
+            if (data && data.data) {
                 setCheckedInData(data.data);
                 setShowDetails(false);
                 setIsCheckinModalOpen(true);
@@ -121,34 +119,34 @@ const Index = ()=>{
                 try { refetch(); } catch (e) { /* ignore */ }
             }
         },
-        onError: (error)=>{
-            if(error instanceof AxiosError){
+        onError: (error) => {
+            if (error instanceof AxiosError) {
                 toastError(error.response?.data.message)
             }
         }
     })
-    useEffect(()=>{
-        if(isPending){
-            toast.info('Verifing ticket',{icon:<Loading/>,cancel:!isPending, position:'top-center'})
+    useEffect(() => {
+        if (isPending) {
+            toast.info('Verifing ticket', { icon: <Loading />, cancel: !isPending, position: 'top-center' })
         }
     }, [isPending])
-   const onQRSuccess = (result:IDetectedBarcode[])=>{
-    const orderCode = result[0].rawValue
-    mutate(orderCode);
-   }
-   const onQRError = (error:unknown)=>{
+    const onQRSuccess = (result: IDetectedBarcode[]) => {
+        const orderCode = result[0].rawValue
+        mutate(orderCode);
+    }
+    const onQRError = (error: unknown) => {
 
-   }
-    return(
+    }
+    return (
         <div>
             <div className="space-y-3">
                 <h3 className="font-semibold text-2xl">Event checkin</h3>
                 <div className="flex  items-center gap-2 ">
-                    <Input placeholder="Search by email, Full name..." onChange={(e)=>setFilter(e.target.value)} />
-                    <HtmlQRCode onQRCodeSuccess={onQRSuccess} onQRCodeError={onQRError}/>
+                    <Input placeholder="Search by email, Full name..." onChange={(e) => setFilter(e.target.value)} />
+                    <HtmlQRCode onQRCodeSuccess={onQRSuccess} onQRCodeError={onQRError} />
                 </div>
                 {
-                    isLoading && <Loading/>
+                    isLoading && <Loading />
                 }
                 {/* Render the check-in list returned by the new API.
                     The API returns a payload with .data.items and pagination meta.
@@ -157,7 +155,7 @@ const Index = ()=>{
                     <table className="w-full text-sm table-auto border-collapse">
                         <thead>
                             <tr className="text-left">
-                                <th className = "p-2">ID</th>
+                                <th className="p-2">ID</th>
                                 <th className="p-2">Full Name</th>
                                 <th className="p-2">Email</th>
                                 <th className="p-2">Phone</th>
@@ -177,18 +175,18 @@ const Index = ()=>{
                                     return (
                                         <>
                                             <tr className="border-t">
-                                                            <td className="p-2 align-top" colSpan={7}>No attendees found.</td>
-                                                        </tr>
-                                                        <tr className="border-t">
-                                                            <td className="p-2 align-top" colSpan={7}>
-                                                                {/* JSON dump of the response so it's visible in the UI for debugging */}
-                                                                <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(data, null, 2)}</pre>
-                                                            </td>
-                                                        </tr>
+                                                <td className="p-2 align-top" colSpan={7}>No attendees found.</td>
+                                            </tr>
+                                            <tr className="border-t">
+                                                <td className="p-2 align-top" colSpan={7}>
+                                                    {/* JSON dump of the response so it's visible in the UI for debugging */}
+                                                    <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(data, null, 2)}</pre>
+                                                </td>
+                                            </tr>
                                         </>
                                     );
                                 }
-                                return itemsArr.map((item:any, idx:number) => (
+                                return itemsArr.map((item: any, idx: number) => (
                                     <tr key={item.entry_id ?? item.id ?? idx} className="border-t">
                                         <td className="p-2 align-top">{(() => {
                                             const mappedByEmail = item.email ? eventEmailToEntryId.get(String(item.email).toLowerCase()) : null;
@@ -221,7 +219,7 @@ const Index = ()=>{
                                         <h3 className="text-lg font-semibold">Checked in</h3>
                                         <p className="text-sm text-muted-foreground">Ticket verified successfully</p>
                                     </div>
-                                    <button aria-label="Close" onClick={()=>{
+                                    <button aria-label="Close" onClick={() => {
                                         setIsCheckinModalOpen(false);
                                         try { refetch(); } catch (e) { /* ignore */ }
                                     }} className="text-gray-500 hover:text-gray-700">✕</button>
@@ -237,7 +235,7 @@ const Index = ()=>{
 
                                 <div className="mt-4 flex gap-2">
                                     <Button onClick={() => setShowDetails(v => !v)}>{showDetails ? 'Hide Details' : 'View Details'}</Button>
-                                    <Button variant="ghost" onClick={()=>{
+                                    <Button variant="ghost" onClick={() => {
                                         setIsCheckinModalOpen(false);
                                         try { refetch(); } catch (e) { /* ignore */ }
                                     }}>Close</Button>
@@ -269,7 +267,7 @@ const Index = ()=>{
                                 )}
                             </div>
                         </div>
-                        <div className="fixed inset-0 bg-black opacity-30" onClick={()=>{
+                        <div className="fixed inset-0 bg-black opacity-30" onClick={() => {
                             setIsCheckinModalOpen(false);
                             try { refetch(); } catch (e) { /* ignore */ }
                         }} />
@@ -286,7 +284,7 @@ const Index = ()=>{
                                         <h3 className="text-lg font-semibold">Attendee Details</h3>
                                         <p className="text-sm text-muted-foreground">Details for the selected attendee</p>
                                     </div>
-                                    <button aria-label="Close" onClick={()=>{
+                                    <button aria-label="Close" onClick={() => {
                                         setIsDetailModalOpen(false);
                                     }} className="text-gray-500 hover:text-gray-700">✕</button>
                                 </div>
@@ -301,13 +299,13 @@ const Index = ()=>{
                                 </div>
 
                                 <div className="mt-4 flex gap-2">
-                                    <Button variant="ghost" onClick={()=>{
+                                    <Button variant="ghost" onClick={() => {
                                         setIsDetailModalOpen(false);
                                     }}>Close</Button>
                                 </div>
                             </div>
                         </div>
-                        <div className="fixed inset-0 bg-black opacity-30" onClick={()=>{
+                        <div className="fixed inset-0 bg-black opacity-30" onClick={() => {
                             setIsDetailModalOpen(false);
                         }} />
                     </div>

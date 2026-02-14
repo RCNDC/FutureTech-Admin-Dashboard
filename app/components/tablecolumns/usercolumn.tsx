@@ -1,4 +1,4 @@
-'use client';
+
 
 import type { UserResponse } from '@/types/user';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -63,11 +63,11 @@ export const columns: ColumnDef<UserResponse>[] = [
       const { mutate: deleteUser } = useMutation({
         mutationFn: async (id: string) => {
           const response = await axiosInstance.delete(`/user/delete/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth?.token}`,
-            },
-          });
+            {
+              headers: {
+                Authorization: `Bearer ${auth?.token}`,
+              },
+            });
           return response.data;
         },
         onSuccess: () => {

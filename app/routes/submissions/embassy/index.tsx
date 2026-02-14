@@ -16,13 +16,9 @@ export function meta({ }: MetaArgs) {
     ]
 }
 
-export function loader() { 
-    
-}
 
-export function HydrateFallback(){
-    return <Fallback/>
-}
+
+
 
 
 const Index = () => {
@@ -41,7 +37,7 @@ const Index = () => {
 
     return (
 
-        <SubmissionDetail columns={embassycolumns} data={data?.data} isLoading={isLoading} name="Embassy Submissions" exportEndPoint="embassiess" type="embassy"/>
+        <SubmissionDetail columns={embassycolumns} data={data?.data} isLoading={isLoading} name="Embassy Submissions" exportEndPoint="embassiess" type="embassy" />
 
     )
 
