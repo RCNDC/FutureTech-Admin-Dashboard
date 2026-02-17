@@ -5,8 +5,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "react-router";
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { Route } from "./+types/root";
 import "./app.css";
 import { Toaster } from "./components/ui/sonner";
@@ -28,6 +29,9 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const navigation = useNavigation();
+  const isNavigating = navigation.state !== "idle";
+
   return (
     <html lang="en">
       <head>
@@ -36,12 +40,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body style={{'overflowY': 'hidden'}}>
+      <body style={{ 'overflowY': 'hidden' }}>
+        {isNavigating && (
+          <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-purple-200">
+            <div className="h-full bg-purple-600 animate-progress"></div>
+          </div>
+        )}
         {children}
-        
+
         <ScrollRestoration />
         <Scripts />
-        <Toaster/>
+        <Toaster />
       </body>
     </html>
   );
@@ -49,12 +58,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
 
-  return(
-   
+  return (
+
     <QueryClientProvider client={queryClient}>
       <Outlet />
     </QueryClientProvider>
-    
+
   );
 }
 
@@ -81,7 +90,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
       </div>
       <p className="text-sm">{details}</p>
-      
+
     </main>
   );
 }

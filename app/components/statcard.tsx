@@ -1,40 +1,42 @@
-import { ArrowDown, ArrowUp, ArrowUpWideNarrow, ChartColumnIncreasing, House } from "lucide-react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card"
+import { ArrowDown, ArrowUp } from "lucide-react";
+import { Card, CardContent } from "./ui/card"
+import { cn } from "@/lib/utils";
 import type { FC } from "react";
 
-
 type StatCardProps = {
-    title:string;
-    totalCount:number;
-    changes:number,
-    icon?:React.ReactNode
+    title: string;
+    totalCount: number;
+    changes: number,
+    icon?: React.ReactNode
 }
-const StatCard:FC<StatCardProps> = ({title, totalCount, changes, icon}) => {
+
+const StatCard: FC<StatCardProps> = ({ title, totalCount, changes, icon }) => {
     return (
-        <Card className="max-w-md">
-            <CardHeader>
-                
-            </CardHeader>
-            <CardContent >
-                <div className="flex  justify-between items-center">
-                    <div className="text-sm">
-                        <h4 className="md:text-2xl  text-gray-500">{title}</h4>
-                        <h4 className="md:text-3xl text-gray-900 font-extrabold">{totalCount}</h4>
+        <Card className="premium-card border-none overflow-hidden group">
+            <CardContent className="p-6">
+                <div className="flex justify-between items-start mb-6">
+                    <div className="space-y-1">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">{title}</p>
+                        <h4 className="text-3xl font-black text-slate-800 tracking-tight group-hover:scale-105 transition-transform duration-300 origin-left">
+                            {totalCount.toLocaleString()}
+                        </h4>
                     </div>
-                    {icon}
+                    <div className="p-3 rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-primary/20">
+                        {icon}
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+                    <div className={cn(
+                        "flex items-center gap-1 text-[11px] font-black px-2 py-1 rounded-lg transition-colors",
+                        changes >= 0 ? "text-emerald-600 bg-emerald-50" : "text-rose-600 bg-rose-50"
+                    )}>
+                        {changes >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
+                        <span>{Math.abs(Math.floor(changes))}%</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Growth snapshot</span>
                 </div>
             </CardContent>
-            <CardFooter>
-                <div className="w-full flex text-sm gap-2 items-center justify-between">
-                    <span className="text-gray-500">Since yesterday</span>
-                    <div className="flex items-center text-gray-600">
-                        {changes > 0 ? (<div className="text-green-500 flex"><ArrowUp className="w-5 h-5"/>
-                        {`${Math.floor(changes)}%`}</div>):(<div className="flex text-red-500"><ArrowDown className="w-5 h-5"/>{`${Math.floor(changes)}%`}</div>)}
-                        
-
-                    </div>
-                </div>
-            </CardFooter>
         </Card>
     )
 }

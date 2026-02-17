@@ -35,7 +35,15 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
                     <ArrowUpDown className='w-5 h-5' />
                 </Button>
             )
-        }
+        },
+        cell: ({ row }) => (
+            <div className="flex items-center gap-2">
+                <span className="font-bold text-slate-800">{row.getValue('companyName')}</span>
+                {(row.original as any).isManual && (
+                    <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-none px-2 py-0.5 text-[10px] uppercase font-black tracking-wider">Manual</Badge>
+                )}
+            </div>
+        )
     },
 
     {
@@ -52,16 +60,16 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
             <span className="text-gray-800">{new Date(props.getValue() as string).toDateString()}</span>
         ),
         filterFn: 'dateRange',
-        meta:{
+        meta: {
             filter: DateRangeColumnFilter
         }
     },
 
     {
         header: 'Detail',
-        cell: ({row})=>{
-            return(
-                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="internationalcompany"/>
+        cell: ({ row }) => {
+            return (
+                <SubmissionDetail entry_id={row.getValue('entry_id')} submissionType="internationalcompany" />
             )
         }
     },
@@ -70,9 +78,9 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
         header: 'Actions ',
         cell: ({ row }) => {
             const [open, setOpen] = useState(false)
-            const {initialFollowUp} = useFollowUpStore();
+            const { initialFollowUp } = useFollowUpStore();
             const auth = useAuth()
-            const {user} = useUserStore();
+            const { user } = useUserStore();
             const queryClient = useQueryClient();
             const entryId = row.getValue('entry_id') as number;
             const { data, isLoading, refetch } = useQuery({
@@ -83,7 +91,7 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                    if(res.data.data){
+                    if (res.data.data) {
                         initialFollowUp(res?.data?.data, entryId)
                     }
                     return res.data;
@@ -124,7 +132,7 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
                             <DropdownMenuTrigger>
                                 <div className="flex items-center">
                                     {isLoading ? <Loading /> : <MoreVertical />}
-                                    <MarkAsCompleted entryId={row.getValue('entry_id')}/>
+                                    <MarkAsCompleted entryId={row.getValue('entry_id')} />
                                 </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
@@ -143,7 +151,7 @@ export const columns: ColumnDef<SubmissionResponse>[] = [
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data}/>}
+                        {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data} />}
                     </Dialog>
                 </>
             )

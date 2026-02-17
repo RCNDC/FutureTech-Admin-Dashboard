@@ -7,66 +7,70 @@ import Loading from "@/components/loading";
 import ShowFile from "@/components/showfile";
 
 type InternationalCompanyDetailProps = {
-    entry_id:number
+    entry_id: number;
 }
-const InternationalCompanyDetail:FC<InternationalCompanyDetailProps> = ({entry_id})=>{
-    const [address, setAddress] = useState('');
-    const {data, isLoading} = useQuery({
-        queryKey:['internationalcompany', entry_id],
-        queryFn: async ()=>{
-            const res = await axiosInstance.get<response<InternationalCompaniesSubmission[]>>('/register/submission/internationalcompany/'+entry_id);
 
+const DetailItem = ({ label, value, icon: Icon }: { label: string; value: any; icon?: any }) => (
+    <div className="flex flex-col space-y-1 p-4 rounded-2xl bg-slate-50 border border-slate-100/50 transition-all hover:bg-white hover:shadow-sm">
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+            {Icon && <Icon className="w-3 h-3" />}
+            {label}
+        </span>
+        <span className="text-sm font-bold text-slate-700 leading-relaxed">
+            {value || <em className="text-slate-300 font-medium">Not provided</em>}
+        </span>
+    </div>
+);
+
+const InternationalCompanyDetail: FC<InternationalCompanyDetailProps> = ({ entry_id }) => {
+    const { data, isLoading } = useQuery({
+        queryKey: ['internationalcompany', entry_id],
+        queryFn: async () => {
+            const res = await axiosInstance.get<response<InternationalCompaniesSubmission[]>>('/register/submission/internationalcompany/' + entry_id);
             return res.data.data?.pop();
         },
+    });
 
-    })
-    const regex = /country";s:\d+:"([^"]+)";/g;
+    if (isLoading) return <div className="p-20 flex justify-center"><Loading /></div>;
 
-// Alternative syntax using RegExp constructor
-// const regex = new RegExp('s:\\d+:"([^"]+)"', 'g')
+    const isManual = (data as any)?.isManual;
+    const addressRegex = /country";s:\d+:"([^"]+)";/g;
+    const country = data?.address ? addressRegex.exec(data.address)?.[1] : null;
 
-const str = data?.address || '';
+    return (
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DetailItem label="Full Name" value={data?.fullName} />
+                <DetailItem label="Company Name" value={data?.companyName} />
+                <DetailItem label="Email" value={data?.email} />
+                <DetailItem label="Phone Number" value={data?.phoneNo} />
+                <DetailItem label="Registered Date" value={data?.registeredDate ? new Date(data.registeredDate).toDateString() : null} />
 
-// Reset `lastIndex` if this regex is defined globally
-// regex.lastIndex = 0;
+                {!isManual && (
+                    <>
+                        <DetailItem label="Country" value={country} />
+                        <DetailItem label="Pitch Product" value={data?.pitchProduct} />
+                        <DetailItem label="Areas of Interest" value={data?.areaOfInterest} />
+                        <DetailItem label="Schedule B2B" value={data?.b2Schedule} />
+                        <DetailItem label="Sponsorship Tier" value={data?.sponsorshipTier} />
+                    </>
+                )}
 
-let m;
-m = regex.exec(str)
+                {isManual && (
+                    <>
+                        <DetailItem label="Sector" value={(data as any).sector} />
+                        <DetailItem label="LinkedIn / Social" value={(data as any).socialLinks} />
+                        <DetailItem label="Source" value="Manual Registration" />
+                    </>
+                )}
+            </div>
 
-console.log(m && m[1])
-while ((m = regex.exec(str)) !== null) {
-    // This is necessary to avoid infinite loops with zero-width matches
-    if (m.index === regex.lastIndex) {
-        regex.lastIndex++;
-    }
-    
-    // The result can be accessed through the `m`-variable.
-    
-    
-}
-    return(
-        
-        <div className="grid grid-cols-2 min-w-[80%]">
-            {isLoading && <Loading/>}
-            {!isLoading && (
-                <>
-            <span>Full Name: {data?.fullName}</span>
-            <span>Company Name: {data?.companyName}</span>
-            <span>Email : {data?.email}</span>
-            <span>Phone Number : {data?.phoneNo}</span>
-            <ShowFile file={data?.passport} name="Passport"/>
-            <ShowFile file={data?.companyProfile} name="Company Profile"/>
-            <ShowFile file={data?.companyWebsite} name="Company Website"/>
-            <span>Address: <b>{regex.exec(data?.address || '')?.[1]}</b></span>
-            <span>Registered Date : {new Date(data?.registeredDate?.toString()).toDateString()}</span>
-            <span>Pitch Product : {data?.pitchProduct}</span>
-            <span>Areas of Interest: {data?.areaOfInterest}</span>
-            <span>Interest Type: {data?.interestType}</span>
-            <span>Schedule B2B: {data?.b2Schedule}</span>
-            <span>Sponsorship Tier : {data?.sponsorshipTier}</span>
-
-                </>
-            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ShowFile file={data?.passport} name="Passport / ID" />
+                <ShowFile file={data?.companyProfile} name="Company Profile" />
+                <ShowFile file={data?.companyWebsite} name="Company Website" />
+                {(data as any).upgradeLicense && <ShowFile file={(data as any).upgradeLicense} name="License Document" />}
+            </div>
         </div>
     )
 }

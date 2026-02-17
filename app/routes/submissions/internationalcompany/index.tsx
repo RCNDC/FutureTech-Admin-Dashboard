@@ -17,8 +17,12 @@ export function meta({ }: MetaArgs) {
 
 
 
+import { AddCompanyDialog } from "@/components/addCompanyDialog";
+import { useUserStore } from "store/userstore";
+
 const Index = () => {
     const auth = useAuth();
+    const { user } = useUserStore();
     const { data, isLoading } = useQuery({
         queryKey: ['submissions', 'internationalcompany'],
         queryFn: async () => {
@@ -32,15 +36,18 @@ const Index = () => {
         }
     });
 
+    const canAddCompany = user?.role === 1 || user?.role === 3;
+
     return (
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-black text-slate-900 tracking-tight">International Company Profiles</h1>
+                {canAddCompany && <AddCompanyDialog type="international" />}
+            </div>
 
-        <SubmissionDetail columns={columns} data={data?.data} isLoading={isLoading} name="International Company Submission" exportEndPoint="internationalcompanies" type="internationalcompany" />
-
+            <SubmissionDetail columns={columns} data={data?.data} isLoading={isLoading} name="International Company Submissions" exportEndPoint="internationalcompanies" type="internationalcompany" />
+        </div>
     )
-
-
-
-
 }
 
 export default Index;

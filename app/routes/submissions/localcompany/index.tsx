@@ -21,8 +21,12 @@ export function meta({ }: MetaArgs) {
 
 
 
+import { AddCompanyDialog } from "@/components/addCompanyDialog";
+import { useUserStore } from "store/userstore";
+
 const Index = () => {
     const auth = useAuth();
+    const { user } = useUserStore();
     const { data, isLoading } = useQuery({
         queryKey: ['submissions', 'localcompany'],
         queryFn: async () => {
@@ -35,19 +39,18 @@ const Index = () => {
         }
     });
 
-
+    const canAddCompany = user?.role === 1 || user?.role === 3;
 
     return (
-        <>
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-black text-slate-900 tracking-tight">Local Company Profiles</h1>
+                {canAddCompany && <AddCompanyDialog type="local" />}
+            </div>
 
-            <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submission" exportEndPoint="localcompanies" type="localcompany" />
-        </>
-
+            <SubmissionDetail columns={localcompanycolumns} data={data?.data} isLoading={isLoading} name="Local Company Submissions" exportEndPoint="localcompanies" type="localcompany" />
+        </div>
     )
-
-
-
-
 }
 
 export default Index;

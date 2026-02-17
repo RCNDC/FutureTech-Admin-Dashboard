@@ -13,17 +13,17 @@ type User = {
 }
 
 interface UserStoreState {
-    user: User;
-    setUser: (user: User) => void;
+    user: User | null;
+    setUser: (user: User | null) => void;
 }
 
 export const useUserStore = create<UserStoreState>()(
     combine(
         {
-            user: {} as User
+            user: null as User | null
         },
         (set) => ({
-            setUser(user: User) {
+            setUser(user: User | null) {
                 set(() => ({
                     user: user
                 }));
@@ -33,7 +33,7 @@ export const useUserStore = create<UserStoreState>()(
 )
 
 export async function GetUser(token: string) {
-    try{
+    try {
 
         const res = await axiosInstance.get<response<User>>("/user/me", {
             headers: {
@@ -41,7 +41,7 @@ export async function GetUser(token: string) {
             }
         });
         return res.data.data as User;
-    }catch(err){
+    } catch (err) {
         throw err;
     }
 

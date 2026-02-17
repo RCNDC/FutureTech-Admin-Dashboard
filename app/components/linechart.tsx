@@ -1,100 +1,62 @@
-import React, { useEffect, useState } from 'react';
-
-/**
- * Client-safe LineChart component.
- *
- * - Does not statically import `recharts` (avoids build-time resolution issues).
- * - Dynamically imports `recharts` on the client and renders a chart when available.
- * - Falls back to a simple placeholder when the library cannot be loaded.
- *
- * Note: dynamic import still requires the package to be installed for runtime usage.
- */
-type ChartModule = {
-  LineChart: any;
-  Line: any;
-  XAxis: any;
-  YAxis: any;
-  CartesianGrid: any;
-  Tooltip: any;
-  Legend: any;
-};
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const LineChartComponent = ({ data }: { data: any[] }) => {
-  const [components, setComponents] = useState<ChartModule | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  if (!data || data.length === 0) return (
+    <div className="flex items-center justify-center h-[350px] text-slate-400 text-sm italic font-medium">
+      System performance trends ...
+    </div>
+  );
 
-  useEffect(() => {
-    let mounted = true;
-
-    // Only attempt to load on the client
-    if (typeof window === 'undefined') return;
-
-    (async () => {
-      try {
-        // dynamic import so bundlers don't treat `recharts` as a static top-level import
-        const mod = await import('recharts');
-        if (!mounted) return;
-
-        // Some bundlers may re-export components under default; normalize both shapes
-        const resolved = {
-          LineChart: (mod as any).LineChart ?? (mod as any).default?.LineChart,
-          Line: (mod as any).Line ?? (mod as any).default?.Line,
-          XAxis: (mod as any).XAxis ?? (mod as any).default?.XAxis,
-          YAxis: (mod as any).YAxis ?? (mod as any).default?.YAxis,
-          CartesianGrid: (mod as any).CartesianGrid ?? (mod as any).default?.CartesianGrid,
-          Tooltip: (mod as any).Tooltip ?? (mod as any).default?.Tooltip,
-          Legend: (mod as any).Legend ?? (mod as any).default?.Legend,
-        };
-
-        // If essential parts are missing, treat as an error
-        if (!resolved.LineChart || !resolved.Line) {
-          throw new Error('Incomplete recharts export');
-        }
-
-        setComponents(resolved as ChartModule);
-      } catch (err) {
-        // Gracefully handle absence/failure to load recharts (e.g., not installed in some environments)
-        // Log for debugging and show fallback UI
-        // eslint-disable-next-line no-console
-        console.warn('Recharts failed to load dynamically', err);
-        if (mounted) setError('Chart library unavailable');
-      }
-    })();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (error) {
-    return <div className="text-sm text-muted-foreground">Chart unavailable</div>;
-  }
-
-  if (!components) {
-    return <div>Loading chart...</div>;
-  }
-
-  const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } = components;
+  const EMERALD = 'oklch(0.6 0.18 160)';
+  const SLATE_MUTED = 'oklch(0.5 0.05 200)';
+  const SLATE_BORDER = 'oklch(0.9 0.02 200)';
 
   return (
-    <LineChart
-      width={500}
-      height={300}
-      data={data}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 5,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
-    </LineChart>
+    <div className="h-[350px] w-full mt-4">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <defs>
+            <linearGradient id="linePulse" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={EMERALD} stopOpacity={0.1} />
+              <stop offset="95%" stopColor={EMERALD} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="4 4" vertical={false} stroke={SLATE_BORDER} />
+          <XAxis
+            dataKey="name"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: SLATE_MUTED, fontSize: 10, fontWeight: 800 }}
+            dy={12}
+          />
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: SLATE_MUTED, fontSize: 10, fontWeight: 800 }}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: 'white',
+              borderRadius: '16px',
+              border: 'none',
+              boxShadow: '0 20px 40px -10px rgba(0,0,0,0.08)',
+              padding: '16px'
+            }}
+            itemStyle={{ fontSize: '13px', fontWeight: '900', color: EMERALD }}
+            cursor={{ stroke: EMERALD, strokeWidth: 1, strokeDasharray: '6 6' }}
+          />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke={EMERALD}
+            strokeWidth={4}
+            dot={{ r: 5, fill: 'white', stroke: EMERALD, strokeWidth: 3 }}
+            activeDot={{ r: 8, fill: EMERALD, stroke: 'white', strokeWidth: 3 }}
+            animationDuration={2500}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
