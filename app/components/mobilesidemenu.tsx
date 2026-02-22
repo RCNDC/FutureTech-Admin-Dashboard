@@ -14,7 +14,8 @@ import {
     Globe,
     Lock,
     PieChart,
-    Star
+    Star,
+    BadgeDollarSign
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
@@ -40,6 +41,7 @@ const getIcon = (name: string) => {
     if (n.includes('job') || n.includes('career')) return <Briefcase className="w-5 h-5" />;
     if (n.includes('report') || n.includes('stat')) return <PieChart className="w-5 h-5" />;
     if (n.includes('menu')) return <MenuIcon className="w-5 h-5" />;
+    if (n.includes('sales')) return <BadgeDollarSign className="w-5 h-5" />;
     return <ChevronRight className="w-4 h-4" />;
 };
 

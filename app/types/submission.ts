@@ -18,7 +18,11 @@ export interface SubmissionResponse {
     pitchProduct: string;
     b2Schedule: string;
     position: string;
-
+    secondaryEmail?: string;
+    sector?: string;
+    socialLinks?: string;
+    isManual?: boolean;
+    companyLicense?: string;
 }
 
 export type LocalCompanySubmission = Omit<SubmissionResponse, 'sponsorshipTier' | 'interestType' | 'pitchProduct' | 'b2Schedule' | 'passport'> & personalDetail & {

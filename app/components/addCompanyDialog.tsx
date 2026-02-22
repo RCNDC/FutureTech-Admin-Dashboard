@@ -57,7 +57,7 @@ export const AddCompanyDialog = ({ type }: { type: 'local' | 'international' }) 
         },
         onSuccess: () => {
             toast.success("Company added successfully");
-            queryClient.invalidateQueries({ queryKey: ['submissions'] });
+            queryClient.invalidateQueries({ queryKey: ['submissions', type === 'local' ? 'localcompany' : 'internationalcompany'] });
             setOpen(false);
             reset();
             setFile(null);

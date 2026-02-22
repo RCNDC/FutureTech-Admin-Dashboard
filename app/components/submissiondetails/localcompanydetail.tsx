@@ -16,7 +16,7 @@ const DetailItem = ({ label, value, icon: Icon }: { label: string; value: any; i
             {Icon && <Icon className="w-3 h-3" />}
             {label}
         </span>
-        <span className="text-sm font-bold text-slate-700 leading-relaxed">
+        <span className="text-sm font-bold text-slate-700 leading-relaxed break-all">
             {value || <em className="text-slate-300 font-medium">Not provided</em>}
         </span>
     </div>
@@ -34,7 +34,7 @@ const LocalCompanyDetail: FC<LocalCompanyDetailProps> = ({ entry_id }) => {
 
     if (isLoading) return <div className="p-20 flex justify-center"><Loading /></div>;
 
-    const isManual = (data as any)?.isManual;
+    const isManual = data?.isManual;
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -42,6 +42,7 @@ const LocalCompanyDetail: FC<LocalCompanyDetailProps> = ({ entry_id }) => {
                 <DetailItem label="Full Name" value={data?.fullName} />
                 <DetailItem label="Company Name" value={data?.companyName} />
                 <DetailItem label="Email" value={data?.email} />
+                <DetailItem label="Secondary Email" value={data?.secondaryEmail} />
                 <DetailItem label="Phone Number" value={data?.phoneNo} />
                 <DetailItem label="Position" value={data?.position} />
                 <DetailItem label="Registered Date" value={data?.registeredDate ? new Date(data.registeredDate).toDateString() : null} />
@@ -58,16 +59,19 @@ const LocalCompanyDetail: FC<LocalCompanyDetailProps> = ({ entry_id }) => {
 
                 {isManual && (
                     <>
-                        <DetailItem label="LinkedIn / Social" value={(data as any).socialLinks} />
+                        <DetailItem label="Sector" value={data?.sector} />
+                        <div className="md:col-span-2">
+                            <DetailItem label="LinkedIn / Social" value={data?.socialLinks} />
+                        </div>
                         <DetailItem label="Source" value="Manual Registration" />
                     </>
                 )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <ShowFile file={data?.companyLicense} name="Company License" />
-                <ShowFile file={data?.companyProfile} name="Company Profile" />
-                <ShowFile file={data?.companyWebsite} name="Company Website" />
+                <ShowFile file={data?.companyLicense || ""} name="Company License" />
+                <ShowFile file={data?.companyProfile || ""} name="Company Profile" />
+                <ShowFile file={data?.companyWebsite || ""} name="Company Website" />
             </div>
         </div>
     )

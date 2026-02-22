@@ -16,7 +16,7 @@ const DetailItem = ({ label, value, icon: Icon }: { label: string; value: any; i
             {Icon && <Icon className="w-3 h-3" />}
             {label}
         </span>
-        <span className="text-sm font-bold text-slate-700 leading-relaxed">
+        <span className="text-sm font-bold text-slate-700 leading-relaxed break-all">
             {value || <em className="text-slate-300 font-medium">Not provided</em>}
         </span>
     </div>
@@ -33,7 +33,7 @@ const InternationalCompanyDetail: FC<InternationalCompanyDetailProps> = ({ entry
 
     if (isLoading) return <div className="p-20 flex justify-center"><Loading /></div>;
 
-    const isManual = (data as any)?.isManual;
+    const isManual = data?.isManual;
     const addressRegex = /country";s:\d+:"([^"]+)";/g;
     const country = data?.address ? addressRegex.exec(data.address)?.[1] : null;
 
@@ -43,6 +43,7 @@ const InternationalCompanyDetail: FC<InternationalCompanyDetailProps> = ({ entry
                 <DetailItem label="Full Name" value={data?.fullName} />
                 <DetailItem label="Company Name" value={data?.companyName} />
                 <DetailItem label="Email" value={data?.email} />
+                <DetailItem label="Secondary Email" value={data?.secondaryEmail} />
                 <DetailItem label="Phone Number" value={data?.phoneNo} />
                 <DetailItem label="Registered Date" value={data?.registeredDate ? new Date(data.registeredDate).toDateString() : null} />
 
@@ -58,18 +59,20 @@ const InternationalCompanyDetail: FC<InternationalCompanyDetailProps> = ({ entry
 
                 {isManual && (
                     <>
-                        <DetailItem label="Sector" value={(data as any).sector} />
-                        <DetailItem label="LinkedIn / Social" value={(data as any).socialLinks} />
+                        <DetailItem label="Sector" value={data?.sector} />
+                        <div className="md:col-span-2">
+                            <DetailItem label="LinkedIn / Social" value={data?.socialLinks} />
+                        </div>
                         <DetailItem label="Source" value="Manual Registration" />
                     </>
                 )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <ShowFile file={data?.passport} name="Passport / ID" />
-                <ShowFile file={data?.companyProfile} name="Company Profile" />
-                <ShowFile file={data?.companyWebsite} name="Company Website" />
-                {(data as any).upgradeLicense && <ShowFile file={(data as any).upgradeLicense} name="License Document" />}
+                <ShowFile file={data?.passport || ""} name="Passport / ID" />
+                <ShowFile file={data?.companyProfile || ""} name="Company Profile" />
+                <ShowFile file={data?.companyWebsite || ""} name="Company Website" />
+                {(data as any).upgradeLicense && <ShowFile file={(data as any).upgradeLicense || ""} name="License Document" />}
             </div>
         </div>
     )

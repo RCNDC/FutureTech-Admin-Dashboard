@@ -22,11 +22,11 @@ const SubmissionDetail: FC<SubmissionDetailProps> = ({ entry_id, submissionType 
                     <span className="font-medium">View Detail</span>
                 </div>
             </DialogTrigger>
-            <DialogContent className="min-w-fit">
-                <DialogHeader>
-                    <DialogTitle>Details</DialogTitle>
-                    <DialogDescription>
-                        Show details
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] border-none shadow-2xl p-10 pt-16">
+                <DialogHeader className="mb-8">
+                    <DialogTitle className="text-3xl font-black text-slate-900 tracking-tight">Submission Details</DialogTitle>
+                    <DialogDescription className="text-slate-500 font-medium">
+                        Comprehensive view of the registration data
                     </DialogDescription>
                 </DialogHeader>
                 {
