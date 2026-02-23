@@ -3,10 +3,16 @@
 set -e
 
 LOG_FILE="deploy.log"
+# Correct binary paths for CloudLinux
+NODE_BIN_DIR="/opt/alt/alt-nodejs20/root/usr/bin"
 NPM_PATH="/opt/alt/alt-nodejs20/root/usr/lib/node_modules/corepack/shims/npm"
 DEST_DIR="/home/futurebd/manageportal.futuretechaddis.com"
 
+# Add node to the path so npm can find it
+export PATH="$NODE_BIN_DIR:$PATH"
+
 echo "--- Dashboard Deployment Started: $(date) ---" > $LOG_FILE
+echo "Node version: $(node -v)" >> $LOG_FILE
 echo "Current Directory: $PWD" >> $LOG_FILE
 
 # Install dependencies
