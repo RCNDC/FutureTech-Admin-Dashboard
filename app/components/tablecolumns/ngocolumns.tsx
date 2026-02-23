@@ -51,7 +51,7 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
             <span className="text-gray-800">{new Date(props.getValue() as string).toDateString()}</span>
         ),
         filterFn: 'dateRange',
-        meta:{
+        meta: {
             filter: DateRangeColumnFilter
         }
     },
@@ -69,9 +69,9 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
         header: 'Actions ',
         cell: ({ row }) => {
             const [open, setOpen] = useState(false)
-            const {initialFollowUp} = useFollowUpStore();
+            const { initialFollowUp } = useFollowUpStore();
             const auth = useAuth()
-            const {user} = useUserStore();
+            const { user } = useUserStore();
             const queryClient = useQueryClient();
             const entryId = row.getValue('entry_id') as number;
             const { data, isLoading, refetch } = useQuery({
@@ -82,7 +82,7 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                   if(res.data.data){
+                    if (res.data.data) {
                         initialFollowUp(res?.data?.data, entryId)
 
                     }
@@ -124,7 +124,7 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
                             <DropdownMenuTrigger>
                                 <div className="flex items-center">
                                     {isLoading ? <Loading /> : <MoreVertical />}
-                                    <MarkAsCompleted entryId={row.getValue('entry_id')}/>
+                                    <MarkAsCompleted entryId={row.getValue('entry_id')} />
                                 </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
@@ -137,13 +137,15 @@ export const ngocolumns: ColumnDef<NGOSubmission>[] = [
                                         </Button>
                                     </DialogTrigger>
                                 </DropdownMenuItem>
-                               {user.role === 3 && <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                    <DeleteConfirmationDialog onDelete={handleDelete} />
-                                </DropdownMenuItem>}
+                                {user?.role && ![25, 29].includes(user.role) && (
+                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                        <DeleteConfirmationDialog onDelete={handleDelete} />
+                                    </DropdownMenuItem>
+                                )}
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data}/>}
+                        {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data} />}
                     </Dialog>
                 </>
             )

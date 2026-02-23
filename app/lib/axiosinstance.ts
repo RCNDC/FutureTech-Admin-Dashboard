@@ -8,10 +8,22 @@ const axiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
         'x-api-key': import.meta.env.VITE_API_KEY,
-        
     },
     withCredentials: true
 });
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 
 

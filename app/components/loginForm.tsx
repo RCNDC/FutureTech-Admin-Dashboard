@@ -23,8 +23,34 @@ const LoginForm = () => {
             const response = await axiosInstance.post('/auth/login', data);
             return response.data;
         },
-        onSuccess: () => {
-            navigate('/dashboard/home')
+        onSuccess: (data) => {
+            const token = data.accessToken;
+            localStorage.setItem('accessToken', token);
+
+            // Decode role from token to determine where to redirect
+            let role = 0;
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                const decoded = JSON.parse(jsonPayload);
+                role = Number(decoded.role);
+                localStorage.setItem('userRole', decoded.role);
+                localStorage.setItem('userId', decoded.userId);
+            } catch (e) {
+                console.error("Failed to decode token", e);
+            }
+
+            // Sales users land on their respective company profile pages
+            if (role === 25) {
+                navigate('/dashboard/submission/localcompany');
+            } else if (role === 29) {
+                navigate('/dashboard/submission/internationalcompany');
+            } else {
+                navigate('/dashboard/home');
+            }
         },
         onError: (error) => {
             if (error instanceof AxiosError) {

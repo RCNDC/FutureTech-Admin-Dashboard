@@ -25,18 +25,18 @@ import { AxiosError } from "axios";
 import { useUserStore } from "store/userstore";
 
 export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
-   ...(BaseColumns as ColumnDef<EmbassySubmission>[]),
-   {
-    accessorKey: 'embassy',
-    header: ({ column }) => {
-        return (
-            <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                Embassy
-                <ArrowUpDown className='w-5 h-5' />
-            </Button>
-        )
+    ...(BaseColumns as ColumnDef<EmbassySubmission>[]),
+    {
+        accessorKey: 'embassy',
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' className='cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                    Embassy
+                    <ArrowUpDown className='w-5 h-5' />
+                </Button>
+            )
+        },
     },
-   },
 
     {
         accessorKey: 'registeredDate',
@@ -52,7 +52,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
             <span className="text-gray-800">{new Date(props.getValue() as string).toDateString()}</span>
         ),
         filterFn: "dateRange",
-        meta:{
+        meta: {
             filter: DateRangeColumnFilter
         },
         enableColumnFilter: true
@@ -71,9 +71,9 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
         header: 'Actions ',
         cell: ({ row }) => {
             const [open, setOpen] = useState(false)
-            const {initialFollowUp} = useFollowUpStore();
+            const { initialFollowUp } = useFollowUpStore();
             const auth = useAuth()
-            const {user} = useUserStore();
+            const { user } = useUserStore();
             const queryClient = useQueryClient();
             const entryId = row.getValue('entry_id') as number;
             const { data, isLoading, refetch } = useQuery({
@@ -84,7 +84,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
                             'Authorization': 'Bearer ' + auth?.token
                         }
                     });
-                    if(res.data.data){
+                    if (res.data.data) {
                         initialFollowUp(res?.data?.data, entryId)
 
                     }
@@ -126,7 +126,7 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
                             <DropdownMenuTrigger>
                                 <div className="flex items-center">
                                     {isLoading ? <Loading /> : <MoreVertical />}
-                                    <MarkAsCompleted entryId={row.getValue('entry_id')}/>
+                                    <MarkAsCompleted entryId={row.getValue('entry_id')} />
                                 </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
@@ -139,13 +139,15 @@ export const embassycolumns: ColumnDef<EmbassySubmission>[] = [
                                         </Button>
                                     </DialogTrigger>
                                 </DropdownMenuItem>
-                                {user.role === 3 && <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                    <DeleteConfirmationDialog onDelete={handleDelete} />
-                                </DropdownMenuItem>}
+                                {user?.role && ![25, 29].includes(user.role) && (
+                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                        <DeleteConfirmationDialog onDelete={handleDelete} />
+                                    </DropdownMenuItem>
+                                )}
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data}/>}
+                        {!isLoading && <FollowUp entryId={row.getValue('entry_id')} clientName={row.getValue('fullName')} open={open} initalFollowUp={data?.data} />}
                     </Dialog>
                 </>
             )

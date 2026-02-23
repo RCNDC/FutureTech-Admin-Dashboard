@@ -15,7 +15,10 @@ import {
     Lock,
     PieChart,
     Star,
-    BadgeDollarSign
+    BadgeDollarSign,
+    Check,
+    GaugeCircle,
+    FormInput
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
@@ -30,11 +33,11 @@ import Logout from "./logout";
 
 const getIcon = (name: string) => {
     const n = name.toLowerCase();
-    if (n.includes('dashboard')) return <LayoutDashboard className="w-5 h-5" />;
+    if (n.includes('dashboard')) return <GaugeCircle className="w-5 h-5" />;
     if (n.includes('user')) return <Users className="w-5 h-5" />;
     if (n.includes('role') || n.includes('permission')) return <Shield className="w-5 h-5" />;
     if (n.includes('setting')) return <Settings className="w-5 h-5" />;
-    if (n.includes('submission')) return <FileText className="w-5 h-5" />;
+    if (n.includes('submission')) return <FormInput className="w-5 h-5" />;
     if (n.includes('event') || n.includes('ticket')) return <Calendar className="w-5 h-5" />;
     if (n.includes('attendee')) return <UserSquare className="w-5 h-5" />;
     if (n.includes('message') || n.includes('notification')) return <Bell className="w-5 h-5" />;
@@ -42,6 +45,7 @@ const getIcon = (name: string) => {
     if (n.includes('report') || n.includes('stat')) return <PieChart className="w-5 h-5" />;
     if (n.includes('menu')) return <MenuIcon className="w-5 h-5" />;
     if (n.includes('sales')) return <BadgeDollarSign className="w-5 h-5" />;
+    if (n.includes('checkin') || n.includes('check-in')) return <Check className="w-5 h-5" />;
     return <ChevronRight className="w-4 h-4" />;
 };
 
@@ -52,17 +56,22 @@ export const MobileSideMenu = () => {
     const auth = useAuth();
     const location = useLocation();
 
+    const role =
+        typeof window !== "undefined"
+            ? Number(localStorage.getItem("userRole"))
+            : 0;
+
     const { data, isLoading } = useQuery({
-        queryKey: ['user-menus', user?.role],
+        queryKey: ['user-menus-mobile', role],
         queryFn: async () => {
-            const res = await axiosInstance.get('permission/getmenutreebyrole/' + user?.role, {
+            const res = await axiosInstance.get('permission/getmenutreebyrole/' + role, {
                 headers: {
                     'Authorization': 'Bearer ' + auth?.token
                 }
             });
             return res.data;
         },
-        enabled: !!user?.role && !!auth?.token
+        enabled: !!role && !!auth?.token
     })
 
     const toggleSidebar = () => {
@@ -109,7 +118,7 @@ export const MobileSideMenu = () => {
                     <div className="relative group">
                         <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full blur opacity-10 group-hover:opacity-30 transition duration-1000 group-hover:duration-200"></div>
                         <img
-                            src="/images/removed.png"
+                            src="/images/logo-future-2.png"
                             alt="FutureTech Logo"
                             className="relative object-contain w-36 h-auto brightness-0 invert transition-transform hover:scale-105 duration-500 ease-out"
                         />
@@ -117,16 +126,16 @@ export const MobileSideMenu = () => {
                 </div>
 
                 <nav className="flex-1 px-5 pb-6 space-y-6 overflow-y-auto sidebar-nav scroll-smooth">
-                    {(isLoading || !user?.role) && (
+                    {isLoading && (
                         <div className="flex flex-col items-center justify-center p-12 space-y-4">
                             <Loading />
                             <p className="text-xs text-purple-300/50 animate-pulse font-medium tracking-widest uppercase">Syncing Workspace</p>
                         </div>
                     )}
 
-                    {!isLoading && user?.role && data?.data?.map((menuItem: any) => (
+                    {!isLoading && data?.data?.map((menuItem: any) => (
                         <div key={menuItem.id || menuItem.menuName} className="space-y-2">
-                            {menuItem.children.length > 0 && (
+                            {menuItem.children && menuItem.children.length > 0 && (
                                 <>
                                     <div className="flex items-center px-4 py-2">
                                         <span className="text-[10px] font-black uppercase text-purple-300/40 tracking-[0.3em] font-mono">
@@ -200,3 +209,4 @@ export const MobileSideMenu = () => {
     )
 }
 
+export default MobileSideMenu;

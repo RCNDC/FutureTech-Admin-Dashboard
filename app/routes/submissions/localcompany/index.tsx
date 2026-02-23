@@ -11,7 +11,7 @@ import { Download } from "lucide-react";
 import Loading from "@/components/loading";
 import exportToExcel from "@/hooks/useExport";
 
-export function meta({}: MetaArgs) {
+export function meta({ }: MetaArgs) {
   return [
     { title: "Registration Submissions - Future tech addis" },
     { name: "description", content: "Form submissions" },
@@ -34,7 +34,9 @@ const Index = () => {
     },
   });
 
-  const canAddCompany = user?.role === 1 || user?.role === 3;
+  const role = user?.role ?? 0;
+  const canAddCompany = role === 1 || role === 3;
+  const canExport = role === 3 || role === 1; // only admins can bulk-export
 
   return (
     <div className="space-y-6">
@@ -49,8 +51,8 @@ const Index = () => {
         columns={localcompanycolumns}
         data={data?.data}
         isLoading={isLoading}
-        name="Local Company Submissions"
-        exportEndPoint="localcompanies"
+        name="Local Company Profiles"
+        exportEndPoint={canExport ? "localcompanies" : undefined}
         type="localcompany"
       />
     </div>

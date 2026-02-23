@@ -144,9 +144,11 @@ export const localcompanycolumns: ColumnDef<LocalCompanySubmission>[] = [
                                         </Button>
                                     </DialogTrigger>
                                 </DropdownMenuItem>
-                                {user.role === 3 && <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                    <DeleteConfirmationDialog onDelete={handleDelete} />
-                                </DropdownMenuItem>}
+                                {user?.role && ![25, 29].includes(user.role) && (
+                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                        <DeleteConfirmationDialog onDelete={handleDelete} />
+                                    </DropdownMenuItem>
+                                )}
                             </DropdownMenuContent>
                         </DropdownMenu>
 

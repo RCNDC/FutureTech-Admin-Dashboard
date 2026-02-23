@@ -7,7 +7,7 @@ import type { SubmissionResponse } from "@/types/submission";
 import { useQuery } from "@tanstack/react-query";
 import type { MetaArgs } from "react-router";
 
-export function meta({}: MetaArgs) {
+export function meta({ }: MetaArgs) {
   return [
     { title: "Registration Submissions - Future tech addis" },
     { name: "description", content: "Form submissions" },
@@ -30,7 +30,9 @@ const Index = () => {
     },
   });
 
-  const canAddCompany = user?.role === 1 || user?.role === 3;
+  const role = user?.role ?? 0;
+  const canAddCompany = role === 1 || role === 3;
+  const canExport = role === 3 || role === 1; // only admins can bulk-export
 
   return (
     <div className="space-y-6">
@@ -45,8 +47,8 @@ const Index = () => {
         columns={columns}
         data={data?.data}
         isLoading={isLoading}
-        name="International Company Submissions"
-        exportEndPoint="internationalcompanies"
+        name="International Company Profiles"
+        exportEndPoint={canExport ? "internationalcompanies" : undefined}
         type="internationalcompany"
       />
     </div>
