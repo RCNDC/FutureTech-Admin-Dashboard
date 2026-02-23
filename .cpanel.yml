@@ -4,4 +4,4 @@ deployment:
     - export PATH=/opt/cpanel/ea-nodejs20/bin:$PATH
     - npm install
     - npm run build
-    - /bin/cp -R build/client/* /home/futurebd/public_html/
+    - /bin/cp -R build/client/* /home/futurebd/adminportalfuturetechaddis.com/
