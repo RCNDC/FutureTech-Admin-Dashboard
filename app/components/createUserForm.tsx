@@ -1,4 +1,5 @@
 import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useEffect, type FC } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
@@ -16,7 +17,12 @@ import { useAuth } from './authprovider';
 import type { RoleResponse } from '@/types/role';
 import type { response } from '@/types/response';
 
-const CreateUserForm = () => {
+interface CreateUserFormProps {
+  targetRoleName?: string;
+  onSuccess?: () => void;
+}
+
+const CreateUserForm: FC<CreateUserFormProps> = ({ targetRoleName, onSuccess }) => {
   const auth = useAuth();
   const { data: roles } = useQuery<response<RoleResponse[]>>({
     queryKey: ['roles'],
@@ -30,13 +36,24 @@ const CreateUserForm = () => {
     },
   });
 
-  const { register, handleSubmit, formState: { errors } } = useForm<CreateUserFormData>({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<CreateUserFormData>({
     resolver: zodResolver(CreateUserValidationSchema),
+    defaultValues: {
+      isLocked: false,
+    }
   });
+
+  useEffect(() => {
+    if (targetRoleName) {
+      const isLocal = targetRoleName.toLowerCase().includes('local');
+      setValue('roleId', isLocal ? 25 : 29);
+    }
+  }, [targetRoleName, setValue]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: CreateUserFormData) => {
-      const response = await axiosInstance.post('/user/createUser', data, {
+      const endpoint = targetRoleName ? '/sales-dashboard/createSales' : '/user/createUser';
+      const response = await axiosInstance.post(endpoint, data, {
         headers: {
           Authorization: `Bearer ${auth?.token}`,
         },
@@ -45,6 +62,7 @@ const CreateUserForm = () => {
     },
     onSuccess: () => {
       toastSuccess('User created successfully');
+      if (onSuccess) onSuccess();
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -59,6 +77,24 @@ const CreateUserForm = () => {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      {targetRoleName && (
+        <div className="space-y-1">
+          <Label htmlFor="fullName" className="text-sm text-purple-900">
+            Name
+          </Label>
+          <Input
+            type="text"
+            placeholder="Enter full name"
+            {...register('fullName')}
+          />
+          {errors.fullName && (
+            <span className="text-red-500 text-sm font-medium">
+              {errors.fullName.message}
+            </span>
+          )}
+        </div>
+      )}
+
       <div className="space-y-1">
         <Label htmlFor="email" className="text-sm text-purple-900">
           Email
@@ -94,37 +130,38 @@ const CreateUserForm = () => {
         <Label htmlFor="roleId" className="text-sm text-purple-900">
           Role
         </Label>
-        <select {...register('roleId')} className="w-full p-2 border rounded-md">
-          <option value="">None</option>
-          {roles?.data?.map((role) => (
-            <option key={role.id} value={role.id}>
-              {role.name}
-            </option>
-          ))}
-        </select>
+        {targetRoleName ? (
+          <div className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700">
+            {targetRoleName}
+          </div>
+        ) : (
+          <select {...register('roleId')} className="w-full p-2 border rounded-md">
+            <option value="">None</option>
+            {roles?.data?.map((role) => (
+              <option key={role.id} value={role.id}>
+                {role.name}
+              </option>
+            ))}
+          </select>
+        )}
         {errors.roleId && (
           <span className="text-red-500 text-sm font-medium">
             {errors.roleId.message}
           </span>
         )}
       </div>
-      <div className="flex items-center">
-        <Input
-          type="checkbox"
-          className="w-4 h-4 mr-2"
-          {...register('isLocked')}
-        />
-        <Label htmlFor="isLocked" className="text-sm text-purple-900">
-          Is Locked
-        </Label>
-      </div>
+
       <Button
         type="submit"
-        className="w-full bg-purple-700 text-white font-semibold hover:bg-purple-500"
+        className="w-full bg-slate-900 text-white font-black rounded-2xl hover:bg-emerald-600 transition-all h-14 mt-4"
         disabled={isPending}
       >
-        Create User
-        {isPending && <Loading />}
+        {isPending ? (
+          <div className="flex items-center gap-2">
+            <Loading />
+            <span>Processing...</span>
+          </div>
+        ) : "Create Account"}
       </Button>
     </form>
   );
