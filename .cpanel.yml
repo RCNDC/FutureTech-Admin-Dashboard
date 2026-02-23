@@ -1,9 +1,4 @@
 ---
 deployment:
   tasks:
-    - echo "--- Dashboard Deployment Started ---" > deploy.log
-    - echo "Current Dir: $(pwd)" >> deploy.log
-    - /opt/alt/alt-nodejs20/root/usr/lib/node_modules/corepack/shims/npm install >> deploy.log 2>&1
-    - /opt/alt/alt-nodejs20/root/usr/lib/node_modules/corepack/shims/npm run build >> deploy.log 2>&1
-    - /bin/cp -R build/client/* /home/futurebd/manageportal.futuretechaddis.com/ >> deploy.log 2>&1
-    - echo "--- Dashboard Deployment Finished ---" >> deploy.log
+    - /bin/bash deploy.sh
