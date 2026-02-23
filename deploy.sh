@@ -11,13 +11,14 @@ DEST_DIR="/home/futurebd/manageportal.futuretechaddis.com"
 # Add node to the path
 export PATH="$NODE_BIN_DIR:$PATH"
 
-# FIX: Disable problematic Wasm without breaking fetch
-export UNDICI_NO_WASM=1
-export NODE_OPTIONS="--max-old-space-size=1024"
+# cPanel environments can have low virtual-memory limits; this avoids
+# WebAssembly trap-handler 10GB virtual cage allocation failures.
+export NODE_OPTIONS="${NODE_OPTIONS:+$NODE_OPTIONS }--disable-wasm-trap-handler --max-old-space-size=1024"
 
 echo "--- Dashboard Deployment Started: $(date) ---" > $LOG_FILE
 echo "Node version: $(node -v)" >> $LOG_FILE
 echo "Current Directory: $PWD" >> $LOG_FILE
+echo "NODE_OPTIONS: $NODE_OPTIONS" >> $LOG_FILE
 
 # Install dependencies (limit processes to avoid EAGAIN)
 echo "Starting npm install..." >> $LOG_FILE
